@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      337 자
+      334 자
     </span>
   
 
@@ -240,7 +240,7 @@
               <script>
                    (adsbygoogle = window.adsbygoogle || []).push({});
               </script>
-              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p>[Dumping Stored Credentials with SeTrustedCredmanAccessPrivilege](Target : Windows)</p>
+              <h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a target="_blank" rel="external nofollow noopener noreferrer" href="https://www.tiraniddo.dev/2021/05/dumping-stored-credentials-with.html">Dumping Stored Credentials with SeTrustedCredmanAccessPrivilege</a></p>
 <h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Windows</p>
 <h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Windows에서는 <code>Credential Manager</code>를 통해 credential를 조작할 수 있습니다. Credential들은 DPAPI를 통해 보호되며, 시스템에 인증된 사용자만 접근할 수 있습니다.</p>
 <p>예를 들어, Remote Desktop Client에서는 <code>CredWrite</code>라는 API를 통해 domain credential을 저장합니다. 이 때 <code>CREDENTIAL</code> 구조체에 유저명과 비밀번호를 저장하게 되며 type은 <code>CRED_TYPE_DOMAIN_PASSWORD</code>으로 세팅됩니다. 이렇게 저장된 credential들은 <code>CredRead</code>, <code>CredEnumerate</code> 같은 API를 통해 읽어올 수 있지만, <code>CRED_TYPE_DOMAIN_PASSWORD</code>로 type이 세팅되면 credential을 읽어와도 구조적으로 비밀번호를 읽을 수 없게 구현되어 있습니다. NTLM, Kerberos, TSSSP 같이 LSASS 프로세스에서 실행되는 보안 패키지들은 내부 API를 통해 이런 제약 없이 credential 비밀번호에 접근이 가능합니다.</p>
