@@ -313,7 +313,7 @@
 <li>해제할 chunk를 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#HEAP">_HEAP-&gt;VirtualAllocdBlocks</a> 에서 제거합니다.</li>
 <li><code>RtlSecMemFreeVirtualMemory</code> 함수를 사용해 할당 해제합니다.</li>
 </ol>
-<p>복잡한 것처럼 보이지만, 사용하는 구조체 필드 설명을 part 1을 보면서 이해하면 <del>그래도 복잡하지만</del> Heap 메모리를 어떻게 관리하는지 보입니다!</p>
+<p>복잡한 것처럼 보이지만, 사용하는 구조체 필드 설명을 보면서 이해하면 <del>그래도 복잡하지만</del> Heap 메모리를 어떻게 관리하는지 보입니다!</p>
 <h1 id="NT-Heap-Exploitation"><a href="#NT-Heap-Exploitation" class="headerlink" title="NT Heap Exploitation"></a>NT Heap Exploitation</h1><p>일반적인 Back-End exploitation과 LFH인 Front-End exploitation 두 가지로 나뉩니다. </p>
 <h3 id="Back-End-Exploitation"><a href="#Back-End-Exploitation" class="headerlink" title="Back-End Exploitation"></a>Back-End Exploitation</h3><p>LFH는 <code>0x4000</code> 이하 크기의 chunk가 18개 할당될 때부터 활성화된다는 <a href="https://hackyboiz.github.io/2021/02/28/l0ch/pwncoolsexy-part2/#Low-Fragmentation-Heap">내용</a>이 part 2에서 나왔었죠? Back-End에서 취약점을 트리거하려면 LFH가 비활성화된 상태여야 하므로 chunk 할당을 18개 미만으로 제한해야 합니다. 보통 첫 번째(index 0)와 두 번째(index 1) 할당에도 chunk 간 거리가 크기 때문에 적합하지 않으니 우리가 접근하기 좋은 chunk의 index는 2 ~ 16 까지겠네요. 그 이후에는 일반적인 heap overflow로 chunk를 정렬하고 필요한 주소를 leak 하는 방법과 동일합니다.</p>
 <p>예제코드로 확인해볼게요.</p>
