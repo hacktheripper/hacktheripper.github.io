@@ -189,7 +189,7 @@
     
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      2.5k 자
+      2.6k 자
     </span>
   
 
@@ -199,7 +199,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      49
+      51
        분
     </span>
   
@@ -240,7 +240,9 @@
               <script>
                    (adsbygoogle = window.adsbygoogle || []).push({});
               </script>
-              <h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>2017년에 큰 변화가 있었습니다. 그 해에 보고된 새로운 취약점의 수는 약 14,000개로, 전년보다 두 배 이상 많습니다. 아마 그 이유는 자동 취약점 탐색 툴인 “퍼저”의 인기가 높아졌기 때문일 겁니다.</p>
+              <h1 id="번역-추신"><a href="#번역-추신" class="headerlink" title="번역 추신"></a>번역 추신</h1><p>WinAFL 연구글을 쓰면서 타겟함수 찾기 위해 분석하는 방식을 좀 더 공부하기 위해 읽은 글입니다. 참 애매한 주제인 게 타겟 분석을 너무 많이하면 퍼징을 하는 의미가 없어지고 그렇다고 분석을 너무 적게 하면 Harness 작성 및 퍼징을 돌리는 거 자체가 번거워집니다. 그 사이 어딘가 적정 선을 찾는 것이 중요한데 이 글이 도움이 될 거라 생각합니다. 이 글을 따라서 직접 실습해보고 재구성한 연구글을 업로드할 생각이었지만 종강 기념으로 놀다 와서 진득하게 연구글을 쓸 시간이 없었습니다. ㅎㅎ 그래서 일단 번역글을 올립니다. 현재 업로드 중인 WinAFL 시리즈의 다음 글은 이번 번역글을 좀 더 깊게 공부해보고 작성하겠습니다.</p>
+<p>원본글 :  <a target="_blank" rel="external nofollow noopener noreferrer" href="https://research.checkpoint.com/2018/50-adobe-cves-in-50-days/">https://research.checkpoint.com/2018/50-adobe-cves-in-50-days/</a></p>
+<h1 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h1><p>2017년에 큰 변화가 있었습니다. 그 해에 보고된 새로운 취약점의 수는 약 14,000개로, 전년보다 두 배 이상 많습니다. 아마 그 이유는 자동 취약점 탐색 툴인 “퍼저”의 인기가 높아졌기 때문일 겁니다.</p>
 <p><img src="/2021/07/04/fabu1ous/50cve/1.png" srcset="/img/loading.gif"></p>
 <p>퍼저 자체는 20년 이상 존재해 왔고 그리 새로운 기술은 아닙니다. 하지만 주목해야 할 사실은 퍼저들이 발전했다는 겁니다. 그들은 더욱 뛰어난 기능과 쉬운 접근성을 가지게 됐으며 무엇보다 완성도가 높아졌습니다. 그럼에도 불구하고, 퍼저를 사용하는 것은 “어두운 예술”이라는 평판을 가지고 있기 때문에 많은 연구자들은 퍼저를 사용하는 것을 꺼려합니다.</p>
 <p>위의 모든 것을 고려해 볼 때, 다음과 같은 질문을 해볼 수 있습니다. “더 많은 연구자들이 더 많은 취약점을 찾기 위해 퍼저를 사용하고 있다. 하지만 <em>모든</em> 연구자들이 <em>모든</em> 취약점을 찾기 위해 퍼저를 사용하고 있을까?” “FUZZ라고 적힌 커다란 버튼을 누르기만 하면 찾을 수 있는, 거저먹을 수 있는 취약점들이 얼마나 있을까?”</p>
