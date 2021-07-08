@@ -4,6 +4,107 @@
   
   
   <entry>
+    <title>[하루한줄] GCP VM takeover via DHCP flood attack</title>
+    <link href="/2021/07/08/fabu1ous/2021-07-08/"/>
+    <url>/2021/07/08/fabu1ous/2021-07-08/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://github.com/irsl/gcp-dhcp-takeover-code-exec">gcp-dhcp-takeover-code-exec</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>Google’s Comput Engine Platform</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p><strong>아직 패치되지 않은 취약점입니다.</strong></p><p>ISC DHCP가 사용하는 랜덤 로직에서 취약점이 발견되었습니다. 해커는 이를 악용해 자신을 Metadata server로 가장하고 Google Cloud Platform(GCP)의 가상 머신(VM: Virtual Machine)을 장악할 수 있습니다.</p><p>ISC DHCP 클라이언트는 random() 함수를 통해 유사 난수를 생성합니다. 난수의 seed는 다음과 같은 3가지 값을 조합해 사용하는데, 유효한 범위 내에서 XID 예측이 가능해 dhcilent에 DHCP packet을 보낼 수 있습니다.</p><ul><li>프로세스가 시작된 시점의 unixtime</li><li>dhclient 프로세스의 pid</li><li>네트워크 인터페이스 카드 이더넷 주소(MAC)의 마지막 4 byte</li></ul><p>GCP VM은 ssh 공개키 분배와 같은 초기 설정 작업을 Metadata server에 크게 의존합니다. XID을 유추한 해커는 VM이 네트워크를 재설정하도록 유도할 수 있고 그 과정에서 자신을 Metadata server로 속여 원하는 ssh 공개키를 VM에 전달할 수 있습니다. 이후 해커는 ssh를 통해 원격 쉘에 자유자재로 접근할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>gcp</tag>
+      
+      <tag>dhcp</tag>
+      
+      <tag>random</tag>
+      
+      <tag>network</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-1665: Windows 그래픽 드라이버 원격 코드 실행 취약점</title>
+    <link href="/2021/07/06/l0ch/2021-07-06/"/>
+    <url>/2021/07/06/l0ch/2021-07-06/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.mcafee.com/blogs/other-blogs/mcafee-labs/analyzing-cve-2021-1665-remote-code-execution-vulnerability-in-windows-gdi/">Analyzing CVE-2021-1665 – Remote Code Execution Vulnerability in Windows GDI+</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Windows의 그래픽 장치 인터페이스(Graphic Device Interface, GDI)에서 발견된 원격 코드 실행 취약점의 세부 정보가 공개되었습니다.</p><p>취약점은 <code>gdiplus.dll</code> 에서 EMF 파일을 파싱 할 때 발생합니다.</p><blockquote><p>EMF : WMF 파일의 확장으로 응용프로그램에서 이미지 또는 그래픽을 렌더링 할 수 있도록 하는 메타 파일</p></blockquote><p><code>Builtline::BuildAllLines</code> 함수에는 다음 루프 프로세스가 존재합니다.</p><ol><li><code>0x60</code> bytes 크기의 메모리를 할당</li><li><code>Builtline::BuiltLine</code>를 호출해 할당된 메모리에 데이터 복사</li><li><code>BuiltLine::GetUntrimmedCharacterCount</code> 함수를 호출하고 해당 함수의 반환 값(1)을 루프 카운터 더함</li><li>루프 카운터가 EMF 파일의 <code>Length</code> 필드보다 크면 루프 종료</li></ol><p>그러나 <code>BuiltLine::GetUntrimmedCharacterCount</code> 함수의 반환 값이 0이 되는 경우를 처리하는 코드가 없어 지정된 <code>Length</code> 필드 값 이상으로 루프가 실행되고 이는 데이터 손상과 원격 코드 실행으로 이어질 수 있습니다.</p><p>Microsoft는 <code>BuiltLine::GetUntrimmedCharacterCount</code> 함수의 반환 값을 확인하는 검사를 추가한 패치를 배포하였습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>windows</tag>
+      
+      <tag>rce</tag>
+      
+      <tag>microsoft</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>gdi</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] Abusing Kerberos S4U2self local privilege escalation</title>
+    <link href="/2021/07/05/idioth/2021-07-05/"/>
+    <url>/2021/07/05/idioth/2021-07-05/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://cyberstoph.org/posts/2021/06/abusing-kerberos-s4u2self-for-local-privilege-escalation/">Abusing Kerberos S4U2self for local privilege escalation</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Kerberos S4U2self</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>티켓을 기반으로 동작하는 컴퓨터 네트워크 인증 암호화 프로토콜 Kerberos의 <a href="http://www.harmj0y.net/blog/activedirectory/S4U2pwnage/">S4U2self extension을 악용</a>하여 권한 상승이 가능합니다. 해당 기술은 새로 발견된 것은 아니며 <a href="https://github.com/GhostPack/Rubeus#constrained-delegation-abuse">Rubeus manual</a>과 <a href="https://exploit.ph/revisiting-delegate-2-thyself.html">Charlie Clark의 게시글</a>에서 상세 내용을 확인할 수 있습니다.</p><p>S4U2proxy와 관련된 시스템 간에 작업은 권한을 가진 계정이 활성화 되어 있어야 하지만, SPN을 사용하는 모든 사용자는 S4U2self를 호출할 수 있습니다. Active Directory에서 네트워크 서비스 계정과 AppPool identities는 컴퓨터 계정의 역할을 할 수 있습니다. 따라서 네트워크 서비스 계정으로 실행되는 MSSQL이나, AppPool을 사용하는 IIS 등이 실행 중일 경우 S4U2self를 호출하여 모든 유저가 자신의 서비스 티켓을 요청할 수 있습니다. 이를 통해 권한 상승을 하는 방법은 다음과 같습니다.</p><ol><li>TGT 가져오기</li></ol><p>S4U2self를 호출하기 위해서는 TGT 또는 컴퓨터 계정의 자격 증명이 필요합니다. 컴퓨터 계정의 TGT는 Rubues의<code>tgt::deleg</code> trick을 통해 가져올 수 있습니다.</p><pre><code class="hljs cmake">Invoke-Rubeus -<span class="hljs-keyword">Command</span> <span class="hljs-string">&quot;tgtdeleg /nowrap&quot;</span></code></pre><ol start="2"><li>SPN 수정</li></ol><p>위의 TGT를 사용하여 S4U2self를 호출하여 도메인 관리자에 대한 티켓을 요청할 수 있습니다. </p><pre><code class="hljs cmake">Invoke-Rubeus -<span class="hljs-keyword">Command</span> <span class="hljs-string">&quot;s4u /self /nowrap /impersonateuser:doadmin /ticket:base64blob&quot;</span></code></pre><p>기본적으로 S4U2self를 통해 가져온 티켓의 SPN은 해커가 실행 중인  <code>Computername$</code>으로 설정되어 있습니다. 따라서 유효한 SPN이 아니므로 티켓을 사용할 수 없지만, <code>tgssub</code>와 <code>/altservice</code>를 사용하여 해당 부분을 수정할 수 있습니다.</p><pre><code class="hljs cmake">Invoke-Rubeus -<span class="hljs-keyword">Command</span> <span class="hljs-string">&quot;tgssub /altservice:http/adsec-00.contoso.com /ticket:base64blob&quot;</span></code></pre><p>그 후 다른 호스트에서 티켓을 복사해 사용할 수 있습니다.</p><p><img src="https://cyberstoph.org/img/7_tgssub_ptt_2.png" alt="tgtdeleg"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>lpe</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>kerberos</tag>
+      
+      <tag>s4u2self</tag>
+      
+      <tag>rubeus</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2020-1170 - Microsoft Windows Defender Elevation of Privilege Vulnerability</title>
     <link href="/2021/07/04/j0ker/2021-07-04/"/>
     <url>/2021/07/04/j0ker/2021-07-04/</url>
